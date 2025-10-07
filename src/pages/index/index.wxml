@@ -121,9 +121,9 @@
             <view class="result-name-container">
               <text class="result-name">{{item.name || '未命名用户'}}</text>
             </view>
-            <!-- 删除按钮，使用绝对定位避免被遮挡 -->
-            <view class="delete-btn-container">
-              <image src="/images/trash.png" class="delete-icon" bindtap="handleDeleteClick" data-user="{{item}}" catchtap="stopPropagation" />
+            <!-- 删除按钮，使用绝对定位避免被遮挡，并完全阻止事件冒泡 -->
+            <view class="delete-btn-container" catchtap="stopPropagation">
+              <image src="/images/trash.png" class="delete-icon" bindtap="handleDeleteClick" data-user="{{item}}" />
             </view>
           </view>
           <!-- 搜索结果信息 -->
@@ -225,6 +225,25 @@
         <button class="btn-cancel" bindtap="hideModal">取消</button>
         <button class="btn-confirm" bindtap="handleSaveNewUser" loading="{{addUserLoading}}">
           {{addUserLoading ? '保存中...' : '保存'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 删除确认对话框 -->
+  <view wx:if="{{showDeleteDialog}}" class="modal">
+    <view class="modal-content delete-modal">
+      <view class="modal-header">
+        <text class="modal-title">确认删除</text>
+        <text class="modal-subtitle">确定要删除用户 "{{userToDelete ? userToDelete.name : ''}}" 吗？</text>
+      </view>
+      <view class="modal-body">
+        <text>此操作不可恢复，请谨慎操作！</text>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideModal">取消</button>
+        <button class="btn-confirm" bindtap="confirmDelete" loading="{{deleting}}">
+          {{deleting ? '删除中...' : '确认删除'}}
         </button>
       </view>
     </view>

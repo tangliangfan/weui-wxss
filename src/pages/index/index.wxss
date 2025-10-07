@@ -258,6 +258,11 @@
   max-width: 680rpx;
 }
 
+.modal-content.delete-modal {
+  width: 80%;
+  max-width: 560rpx;
+}
+
 .modal-header {
   position: relative;
   padding: 32rpx;
@@ -388,6 +393,7 @@
   top: 0;
   right: 0;
   z-index: 20;
+  padding: 8rpx;
 }
 
 .delete-icon {
@@ -397,12 +403,13 @@
   background: rgba(245, 34, 45, 0.1);
   border-radius: 50%;
   opacity: 0.8;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .delete-icon:active {
   opacity: 1;
   background: rgba(245, 34, 45, 0.2);
+  transform: scale(0.95);
 }
 
 .result-info {
