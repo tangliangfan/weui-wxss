@@ -32,12 +32,44 @@ export default function HomePage(props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // 检查登录状态和页面加载逻辑
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+  const checkAuthentication = async () => {
+    try {
+      // 检查当前用户认证状态
+      const currentUser = $w.auth.currentUser;
+      if (currentUser && currentUser.userId) {
+        setIsAuthenticated(true);
+        fetchUsers();
+      } else {
+        // 未登录，跳转到登录页面
+        $w.utils.redirectTo({
+          pageId: 'login',
+          params: {}
+        });
+      }
+    } catch (error) {
+      console.error('认证检查失败:', error);
+      toast({
+        title: '认证失败',
+        description: '请重新登录',
+        variant: 'destructive',
+        duration: 1000
+      });
+      $w.utils.redirectTo({
+        pageId: 'login',
+        params: {}
+      });
+    }
+  };
 
   // 从数据模型查询用户数据
-  useEffect(() => {
-    fetchUsers();
-  }, []);
   const fetchUsers = async () => {
+    if (!isAuthenticated) return;
     try {
       setLoading(true);
       const result = await $w.cloud.callDataSource({
@@ -314,6 +346,16 @@ export default function HomePage(props) {
       };
     }
   };
+
+  // 如果未认证，显示加载状态
+  if (!isAuthenticated) {
+    return <div style={style} className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-sm text-gray-500">检查登录状态...</p>
+      </div>
+    </div>;
+  }
   return <div style={style} className="min-h-screen bg-gray-50">
       {/* 顶部搜索栏 - 修改为支持姓名、手机号、小区名称搜索 */}
       <div className="bg-white shadow-sm border-b px-4 py-3 sticky top-0 z-10">
