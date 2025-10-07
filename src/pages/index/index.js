@@ -278,6 +278,9 @@ Page({
 
   // 删除用户按钮点击事件
   handleDeleteClick(e) {
+    // 阻止事件冒泡，避免触发父元素的点击事件
+    e.stopPropagation();
+    
     // 获取要删除的用户数据
     const user = e.currentTarget.dataset.user
     // 显示删除确认对话框，并设置待删除用户
@@ -451,6 +454,10 @@ Page({
     this.setData({
       showSearchModal: false // 仅关闭搜索模态框
     })
+  },
+
+  // 阻止事件冒泡的辅助函数
+  stopPropagation(e) {
+    e.stopPropagation();
   }
 })
-  
