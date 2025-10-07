@@ -1,21 +1,17 @@
 
 <view class="login-container">
-  <view class="weui-cells weui-cells_after-title">
-    <view class="weui-cell weui-cell_access">
-      <view class="weui-cell__hd">
-        <mp-icon type="safe" size="20" color="#07C160"></mp-icon>
+  <view class="login-card">
+    <view class="login-header">
+      <view class="logo">
+        <image src="https://healthmanagementinfosys01-0ae99f-1381435234.tcloudbaseapp.com/resources/2025-10/lowcode-2381039" mode="aspectFill" class="logo-image" />
       </view>
-      <view class="weui-cell__bd">
-        <text class="weui-label">健管师服务管理信息系统</text>
-      </view>
+      <text class="title">健管师服务管理信息系统</text>
+      <text class="subtitle">健管师服务管理信息系统登录</text>
     </view>
-  </view>
 
-  <!-- 使用原生form组件替代mp-form，确保事件绑定可靠 -->
-  <form bindsubmit="handleLogin">
-    <mp-cells>
-      <mp-cell>
-        <view class="weui-label">账号</view>
+    <form bindsubmit="handleLogin">
+      <view class="form-group">
+        <text class="label">账号</text>
         <input 
           name="username" 
           type="text" 
@@ -23,14 +19,14 @@
           value="{{formData.username}}" 
           bindinput="onInputChange" 
           data-field="username"
-          class="weui-input"
+          class="input"
           disabled="{{loading}}"
         />
-      </mp-cell>
+      </view>
 
-      <mp-cell>
-        <view class="weui-label">密码</view>
-        <view class="weui-input-group">
+      <view class="form-group">
+        <text class="label">密码</text>
+        <view class="password-input">
           <input 
             name="password" 
             type="{{showPassword ? 'text' : 'password'}}" 
@@ -38,43 +34,32 @@
             value="{{formData.password}}" 
             bindinput="onInputChange" 
             data-field="password"
-            class="weui-input"
+            class="input"
             disabled="{{loading}}"
           />
-          <view class="weui-icon-btn" bindtap="togglePassword">
-            <mp-icon 
-              type="{{showPassword ? 'eye' : 'eye-close'}}" 
-              size="20" 
-              color="#999"
-            ></mp-icon>
+          <view class="eye-icon" bindtap="togglePassword">
+            <image 
+              src="{{showPassword ? '/images/eye-off.png' : '/images/eye.png'}}" 
+              mode="aspectFit" 
+              class="eye-image"
+            />
           </view>
         </view>
-      </mp-cell>
-    </mp-cells>
+      </view>
 
-    <view class="weui-btn-area">
       <button 
         formType="submit" 
-        class="weui-btn weui-btn_primary" 
+        class="login-btn" 
         disabled="{{loading}}"
         loading="{{loading}}"
-        bindtap="testButtonClick"
       >
         {{loading ? '登录中...' : '登录'}}
       </button>
-      
-      <!-- 添加测试按钮，用于调试 -->
-      <button 
-        class="weui-btn weui-btn_default" 
-        style="margin-top: 20rpx;"
-        bindtap="testButtonClick"
-      >
-        测试按钮点击
-      </button>
-    </view>
-  </form>
+    </form>
 
-  <view class="weui-footer">
-    <view class="weui-footer__text">账号申请：联系系统开发人员或管理员</view>
+    <view class="footer">
+      <text class="footer-text">账号申请：联系系统开发人员或管理员</text>
+    </view>
   </view>
 </view>
+  

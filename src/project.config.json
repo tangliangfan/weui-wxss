@@ -1,8 +1,9 @@
 
 {
-  "description": "项目配置文件",
+  "description": "健管师服务管理信息系统",
   "packOptions": {
-    "ignore": []
+    "ignore": [],
+    "include": []
   },
   "setting": {
     "bundle": false,
@@ -25,14 +26,17 @@
     "enhance": true,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
-    "useApiHostProcess": true,
+    "useApiHostProcess": false,
     "showShadowRootInWxmlPanel": true,
     "packNpmManually": false,
     "enableEngineNative": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
-    "showES6CompileOption": false,
+    "disableUseStrict": false,
+    "ignoreUploadUnusedFiles": true,
+    "useStaticServer": false,
     "minifyWXML": true,
+    "checkInvalidKey": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -41,43 +45,54 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.19.4",
-  "appid": "touristappid",
-  "projectname": "健管师服务管理",
+  "appid": "wx-your-appid",
+  "projectname": "health-management-system",
   "debugOptions": {
     "hidedInDevtools": []
   },
   "scripts": {},
-  "staticServerOptions": {
-    "baseURL": "",
-    "servePath": ""
-  },
+  "staticServerOptions": {},
   "isGameTourist": false,
-  "cloudfunctionRoot": "cloudfunctions/",
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
-  "cloudbaseRoot": "cloudbase/",
-  "qcloudRoot": "qcloud/",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
+      "current": -1,
       "list": []
     },
     "conversation": {
+      "current": -1,
       "list": []
     },
     "game": {
+      "current": -1,
       "list": []
     },
     "plugin": {
+      "current": -1,
       "list": []
     },
     "gamePlugin": {
+      "current": -1,
       "list": []
     },
     "miniprogram": {
+      "current": -1,
       "list": []
     }
   },
+  "cloudfunctionTemplateRoot": "",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "srcMiniprogramRoot": "./",
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
+  },
+  "plugins": {
+    "weui": {
+      "version": "1.0.0",
+      "provider": "wxa6c5e3d4e6a6c5e3"
+    }
   }
 }
+  

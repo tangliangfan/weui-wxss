@@ -1,102 +1,243 @@
 
 <!-- 页面容器 -->
 <view class="container">
-  <!-- 搜索栏区域 - 使用 WeUI 搜索栏 -->
-  <mp-search-bar 
-    placeholder="搜索姓名、手机号或小区名称..." 
-    value="{{searchText}}" 
-    bindinput="onSearchInput"
-    bindsearch="handleSearch"
-    bindclear="onSearchClear"
-    class="custom-search-bar"
-  />
+  <!-- 搜索栏区域 -->
+  <view class="search-bar">
+    <!-- 搜索输入框容器 -->
+    <view class="search-input">
+      <!-- 搜索图标 - 使用 WeUI 图标 -->
+      <i class="weui-icon-search weui-icon_gray"></i>
+      <!-- 搜索输入框，绑定搜索文本和输入事件 -->
+      <input 
+        type="text" 
+        placeholder="搜索姓名、手机号或小区名称..." 
+        value="{{searchText}}" 
+        bindinput="onSearchInput"
+        bindconfirm="handleSearch"
+      />
+    </view>
+    <!-- 搜索按钮，点击触发搜索 -->
+    <button class="weui-btn weui-btn_primary search-btn" bindtap="handleSearch">搜索</button>
+  </view>
 
-  <!-- 添加用户按钮区域 - 使用 WeUI 按钮 -->
-  <view class="weui-btn-area">
+  <!-- 添加用户按钮区域 -->
+  <view class="add-user-btn">
+    <!-- 添加用户按钮，点击显示添加用户模态框 -->
     <button class="weui-btn weui-btn_primary" bindtap="handleAddUser">
-      <mp-icon type="add" size="16" color="#fff"></mp-icon>
+      <!-- 添加图标 - 使用 WeUI 图标 -->
+      <i class="weui-icon-add weui-icon_in-btn"></i>
+      <!-- 按钮文字 -->
       添加新用户
     </button>
   </view>
 
   <!-- 用户列表区域 -->
   <view class="user-list">
-    <!-- 列表头部 -->
-    <view class="weui-cells__title">
-      <text>待随访用户</text>
-      <text class="weui-cells__title-extra">{{filteredUsers.length}} 位</text>
+    <!-- 列表头部，显示标题和数量 -->
+    <view class="section-header">
+      <text class="section-title">待随访用户</text>
+      <text class="section-count">{{filteredUsers.length}} 位</text>
     </view>
 
     <!-- 加载中状态显示 -->
     <view wx:if="{{loading}}" class="weui-loadmore">
-      <mp-loading type="circle" size="20"></mp-loading>
-      <view class="weui-loadmore__tips">加载中...</view>
+      <i class="weui-loading"></i>
+      <text class="weui-loadmore__tips">加载中...</text>
     </view>
 
-    <!-- 空状态显示 -->
+    <!-- 空状态显示，当没有用户数据时 -->
     <view wx:if="{{!loading && filteredUsers.length === 0}}" class="weui-empty">
-      <mp-icon type="info" size="48" color="#ccc"></mp-icon>
-      <view class="weui-empty__desc">暂无待随访用户</view>
+      <i class="weui-icon-info-circle weui-icon_gray"></i>
+      <text class="weui-empty__description">暂无待随访用户</text>
     </view>
 
-    <!-- 用户列表循环渲染 -->
-    <mp-cells>
-      <mp-cell 
-        wx:for="{{filteredUsers}}" 
-        wx:key="_id" 
-        bindtap="handleUserClick" 
-        data-user="{{item}}"
-        class="user-cell"
-      >
-        <!-- 随访时间徽章 -->
-        <view 
-          wx:if="{{item.followups && item.followups.length > 0 && item.followups[item.followups.length - 1].nextFollowupDate}}" 
-          class="weui-badge {{getFollowupTimeClass(item)}}"
-          slot="title-extra"
-        >
-          {{getFollowupTimeText(item)}}
-        </view>
+    <!-- 用户列表循环渲染，每个用户卡片 -->
+    <view wx:for="{{filteredUsers}}" wx:key="_id" class="weui-cell weui-cell_access user-card" bindtap="handleUserClick" data-user="{{item}}">
+      <!-- 随访剩余时间显示 - 只在用户卡片中显示，搜索结果中不显示 -->
+      <view wx:if="{{item.followups && item.followups.length > 0 && item.followups[item.followups.length - 1].nextFollowupDate}}" class="weui-badge {{getFollowupTimeClass(item)}}">
+        <text>{{getFollowupTimeText(item)}}</text>
+      </view>
 
-        <!-- 用户信息 -->
-        <view slot="title">
-          <view class="user-name">{{item.name || '未命名用户'}}</view>
-          <view class="weui-cell__desc">
-            <text>{{item.phone || '未设置手机号'}}</text>
-            <text>{{item.address || '未设置地址'}}</text>
-          </view>
+      <!-- 用户卡片头部，包含姓名和状态标签 -->
+      <view class="user-header">
+        <text class="weui-cell__bd user-name">{{item.name || '未命名用户'}}</text>
+        <!-- 状态标签，根据随访状态显示不同样式 -->
+        <view class="weui-badge {{item.statusClass}}">
+          {{item.statusText}}
         </view>
+      </view>
 
-        <!-- 状态标签 -->
-        <view slot="footer">
-          <view class="weui-badge {{item.statusClass}}">
-            {{item.statusText}}
-          </view>
+      <!-- 用户信息详情区域 -->
+      <view class="weui-cell__ft user-info">
+        <!-- 手机号信息项 -->
+        <view class="info-item">
+          <i class="weui-icon-phone weui-icon_gray"></i>
+          <text>{{item.phone || '未设置手机号'}}</text>
         </view>
-      </mp-cell>
-    </mp-cells>
+        <!-- 地址信息项 -->
+        <view class="info-item">
+          <i class="weui-icon-location weui-icon_gray"></i>
+          <text>{{item.address || '未设置地址'}}</text>
+        </view>
+        <!-- 下次随访日期信息项，如果有随访记录才显示 -->
+        <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="info-item">
+          <i class="weui-icon-time weui-icon_gray"></i>
+          <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
 
   <!-- 搜索弹窗模态框 -->
-  <view wx:if="{{showSearchModal}}" class="weui-half-screen-dialog weui-half-screen-dialog_show">
+  <view wx:if="{{showSearchModal}}" class="weui-half-screen-dialog">
     <view class="weui-half-screen-dialog__hd">
-      <view class="weui-half-screen-dialog__title">搜索结果</view>
-      <view class="weui-half-screen-dialog__subtitle">找到 {{searchResults.length}} 个匹配的用户</view>
+      <text class="weui-half-screen-dialog__title">搜索结果</text>
+      <text class="weui-half-screen-dialog__subtitle">找到 {{searchResults.length}} 个匹配的用户</text>
+      <!-- 关闭按钮 -->
+      <button class="weui-btn weui-btn_default weui-btn_mini" bindtap="hideSearchModal">
+        <i class="weui-icon-close"></i>
+      </button>
     </view>
-    <view class="weui-half-screen-dialog__bd">
-      <!-- 搜索内容 -->
-    </view>
+
+    <!-- 弹窗内容区域，可滚动 -->
+    <scroll-view class="weui-half-screen-dialog__bd" scroll-y>
+      <!-- 搜索加载中状态 -->
+      <view wx:if="{{searchLoading}}" class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <text class="weui-loadmore__tips">搜索中...</text>
+      </view>
+
+      <!-- 搜索结果为空状态 -->
+      <view wx:if="{{!searchLoading && searchResults.length === 0}}" class="weui-empty">
+        <i class="weui-icon-search weui-icon_gray"></i>
+        <text class="weui-empty__description">未找到匹配的用户</text>
+      </view>
+
+      <!-- 搜索结果列表循环渲染 - 搜索结果中不显示随访时间徽章 -->
+      <view wx:for="{{searchResults}}" wx:key="_id" class="weui-cell weui-cell_access search-result-item" bindtap="handleSearchResultClick" data-user="{{item}}">
+        <!-- 搜索结果项头部 -->
+        <view class="result-header">
+          <text class="weui-cell__bd result-name">{{item.name || '未命名用户'}}</text>
+          <!-- 删除按钮，阻止事件冒泡 -->
+          <button class="weui-btn weui-btn_warn weui-btn_mini" bindtap="handleDeleteClick" data-user="{{item}}" catchtap="stopPropagation">
+            <i class="weui-icon-delete"></i>
+          </button>
+        </view>
+        <!-- 搜索结果信息 -->
+        <view class="weui-cell__ft result-info">
+          <text>{{item.phone || '未设置手机号'}}</text>
+          <text>{{item.address || '未设置地址'}}</text>
+          <!-- 下次随访日期显示 -->
+          <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}">
+            <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 
   <!-- 添加用户模态框 -->
-  <view wx:if="{{showAddUserModal}}" class="weui-dialog weui-dialog_show">
+  <view wx:if="{{showAddUserModal}}" class="weui-dialog">
     <view class="weui-dialog__hd">
-      <view class="weui-dialog__title">添加新用户</view>
+      <text class="weui-dialog__title">添加新用户</text>
+      <text class="weui-dialog__subtitle">请填写用户基本信息</text>
+      <!-- 关闭按钮 -->
+      <button class="weui-btn weui-btn_default weui-btn_mini" bindtap="hideModal">
+        <i class="weui-icon-close"></i>
+      </button>
     </view>
+
+    <!-- 弹窗内容区域 -->
     <view class="weui-dialog__bd">
-      <mp-form>
-        <!-- 表单内容 -->
-      </mp-form>
+      <!-- 表单区域 -->
+      <view class="weui-cells weui-cells_form">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <label class="weui-label">姓名</label>
+          </view>
+          <view class="weui-cell__bd">
+            <input 
+              type="text" 
+              placeholder="请输入姓名" 
+              value="{{newUserForm.name}}" 
+              bindinput="onFormInput" 
+              data-field="name"
+              class="weui-input"
+            />
+          </view>
+        </view>
+
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <label class="weui-label">手机号</label>
+          </view>
+          <view class="weui-cell__bd">
+            <input 
+              type="number" 
+              placeholder="请输入手机号" 
+              value="{{newUserForm.phone}}" 
+              bindinput="onFormInput" 
+              data-field="phone"
+              class="weui-input"
+            />
+          </view>
+        </view>
+
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <label class="weui-label">地址</label>
+          </view>
+          <view class="weui-cell__bd">
+            <input 
+              type="text" 
+              placeholder="请输入详细地址" 
+              value="{{newUserForm.address}}" 
+              bindinput="onFormInput" 
+              data-field="address"
+              class="weui-input"
+            />
+          </view>
+        </view>
+
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <label class="weui-label">基础疾病</label>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea 
+              placeholder="请输入基础疾病，多个疾病用顿号分隔" 
+              value="{{newUserForm.diseases}}" 
+              bindinput="onFormInput" 
+              data-field="diseases"
+              class="weui-textarea"
+            />
+          </view>
+        </view>
+
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <label class="weui-label">用药情况</label>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea 
+              placeholder="请输入用药情况，每行一个药物" 
+              value="{{newUserForm.medications}}" 
+              bindinput="onFormInput" 
+              data-field="medications"
+              class="weui-textarea"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部按钮区域 -->
+    <view class="weui-dialog__ft">
+      <button class="weui-btn weui-btn_default" bindtap="hideModal">取消</button>
+      <button class="weui-btn weui-btn_primary" bindtap="handleSaveNewUser" loading="{{addUserLoading}}">
+        {{addUserLoading ? '保存中...' : '保存'}}
+      </button>
     </view>
   </view>
 </view>

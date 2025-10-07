@@ -1,11 +1,6 @@
 
 {
-  "usingComponents": {
-    "mp-cells": "weui-miniprogram/cells/cells",
-    "mp-cell": "weui-miniprogram/cell/cell",
-    "mp-icon": "weui-miniprogram/icon/icon",
-    "mp-form": "weui-miniprogram/form/form"
-  },
+  "usingComponents": {},
   "navigationBarTitleText": "登录",
   "navigationStyle": "custom"
 }

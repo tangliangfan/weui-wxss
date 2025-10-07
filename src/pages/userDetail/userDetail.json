@@ -1,15 +1,25 @@
 
 {
   "usingComponents": {
-    "mp-cells": "weui-miniprogram/cells/cells",
-    "mp-cell": "weui-miniprogram/cell/cell",
-    "mp-icon": "weui-miniprogram/icon/icon",
-    "mp-loading": "weui-miniprogram/loading/loading",
-    "mp-form": "weui-miniprogram/form/form",
-    "mp-dialog": "weui-miniprogram/dialog/dialog"
+    "modal": "/components/Modal/Modal"
   },
   "navigationBarTitleText": "用户详情",
   "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black"
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f9fa",
+  "backgroundTextStyle": "light",
+  "enablePullDownRefresh": false,
+  "disableScroll": false,
+  "usingComponents": {
+    "weui-navbar": "weui-miniprogram/navbar/navbar",
+    "weui-panel": "weui-miniprogram/panel/panel",
+    "weui-cell": "weui-miniprogram/cell/cell",
+    "weui-avatar": "weui-miniprogram/avatar/avatar",
+    "weui-tag": "weui-miniprogram/tag/tag",
+    "weui-actionsheet": "weui-miniprogram/actionsheet/actionsheet",
+    "weui-dialog": "weui-miniprogram/dialog/dialog",
+    "weui-loadmore": "weui-miniprogram/loadmore/loadmore",
+    "weui-empty": "weui-miniprogram/empty/empty"
+  }
 }
   
