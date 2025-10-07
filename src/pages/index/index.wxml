@@ -230,7 +230,7 @@
     </view>
   </view>
 
-  <!-- 删除确认对话框 - 重新设计布局 -->
+  <!-- 删除确认对话框 - 优化文字排版 -->
   <view wx:if="{{showDeleteDialog}}" class="modal">
     <view class="modal-content delete-modal">
       <!-- 警告图标 -->
@@ -238,11 +238,13 @@
         <image src="/images/warning.png" class="warning-icon" />
       </view>
       
-      <!-- 对话框内容 -->
+      <!-- 对话框内容 - 左对齐布局 -->
       <view class="delete-content">
         <text class="delete-title">确认删除</text>
-        <text class="delete-subtitle">确定要删除用户 "{{userToDelete ? userToDelete.name : ''}}" 吗？</text>
-        <text class="delete-warning">此操作不可恢复，请谨慎操作！</text>
+        <view class="delete-message">
+          <text class="delete-subtitle">确定要删除用户 "{{userToDelete ? userToDelete.name : ''}}" 吗？</text>
+          <text class="delete-warning">此操作不可恢复，请谨慎操作！</text>
+        </view>
       </view>
 
       <!-- 底部按钮区域 -->
