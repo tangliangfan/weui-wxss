@@ -276,10 +276,10 @@ Page({
     })
   },
 
-  // 删除用户按钮点击事件
+  // 删除用户按钮点击事件 - 修复 stopPropagation 错误
   handleDeleteClick(e) {
-    // 阻止事件冒泡，避免触发父元素的点击事件
-    e.stopPropagation();
+    // 在小程序中，事件对象没有 stopPropagation 方法
+    // 使用 WXML 中的 catchtap 来阻止事件冒泡
     
     // 获取要删除的用户数据
     const user = e.currentTarget.dataset.user
@@ -456,8 +456,6 @@ Page({
     })
   },
 
-  // 阻止事件冒泡的辅助函数
-  stopPropagation(e) {
-    e.stopPropagation();
-  }
+  // 阻止事件冒泡的辅助函数 - 在小程序中不需要此方法
+  // 使用 WXML 中的 catchtap 来阻止事件冒泡
 })
