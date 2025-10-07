@@ -1,9 +1,13 @@
 
 {
   "usingComponents": {
-    "search-bar": "/components/SearchBar/SearchBar",
-    "user-card": "/components/UserCard/UserCard",
-    "modal": "/components/Modal/Modal"
+    "mp-cells": "weui-miniprogram/cells/cells",
+    "mp-cell": "weui-miniprogram/cell/cell",
+    "mp-icon": "weui-miniprogram/icon/icon",
+    "mp-loading": "weui-miniprogram/loading/loading",
+    "mp-toptips": "weui-miniprogram/toptips/toptips",
+    "mp-form": "weui-miniprogram/form/form",
+    "mp-search-bar": "weui-miniprogram/search-bar/search-bar"
   },
   "navigationBarTitleText": "健管师服务管理",
   "navigationBarBackgroundColor": "#ffffff",
@@ -14,3 +18,4 @@
   "onReachBottomDistance": 50,
   "disableScroll": false
 }
+  

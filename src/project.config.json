@@ -1,9 +1,8 @@
 
 {
-  "description": "健管师服务管理信息系统",
+  "description": "项目配置文件",
   "packOptions": {
-    "ignore": [],
-    "include": []
+    "ignore": []
   },
   "setting": {
     "bundle": false,
@@ -26,17 +25,14 @@
     "enhance": true,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
-    "useApiHostProcess": false,
+    "useApiHostProcess": true,
     "showShadowRootInWxmlPanel": true,
     "packNpmManually": false,
     "enableEngineNative": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
-    "disableUseStrict": false,
-    "ignoreUploadUnusedFiles": true,
-    "useStaticServer": false,
+    "showES6CompileOption": false,
     "minifyWXML": true,
-    "checkInvalidKey": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -45,47 +41,40 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.19.4",
-  "appid": "wx-your-appid", // 替换为实际小程序appid
-  "projectname": "health-management-system",
+  "appid": "touristappid",
+  "projectname": "健管师服务管理",
   "debugOptions": {
     "hidedInDevtools": []
   },
   "scripts": {},
-  "staticServerOptions": {},
+  "staticServerOptions": {
+    "baseURL": "",
+    "servePath": ""
+  },
   "isGameTourist": false,
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
-      "current": -1,
       "list": []
     },
     "conversation": {
-      "current": -1,
       "list": []
     },
     "game": {
-      "current": -1,
       "list": []
     },
     "plugin": {
-      "current": -1,
       "list": []
     },
     "gamePlugin": {
-      "current": -1,
       "list": []
     },
     "miniprogram": {
-      "current": -1,
       "list": []
     }
   },
-  "cloudfunctionTemplateRoot": "",
-  "cloudfunctionRoot": "cloudfunctions/",
-  "srcMiniprogramRoot": "./",
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
   }
 }
+  
