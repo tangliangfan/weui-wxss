@@ -89,15 +89,17 @@
   </view>
 </view>
 
-  <!-- 搜索弹窗模态框 -->
+  <!-- 搜索弹窗模态框 - 优化头部排版 -->
   <view wx:if="{{showSearchModal}}" class="modal">
     <view class="modal-content search-modal">
-      <!-- 弹窗头部 -->
-      <view class="modal-header">
-        <text class="modal-title">搜索结果</text>
-        <text class="modal-subtitle">找到 {{searchResults.length}} 个匹配的用户</text>
+      <!-- 弹窗头部 - 优化为上下排版，文字左对齐 -->
+      <view class="search-modal-header">
+        <view class="search-header-content">
+          <text class="search-modal-title">搜索结果</text>
+          <text class="search-modal-count">找到 {{searchResults.length}} 个匹配的用户</text>
+        </view>
         <!-- 关闭按钮 -->
-        <image src="/images/close.png" class="close-icon" bindtap="hideSearchModal" />
+        <image src="/images/close.png" class="search-close-icon" bindtap="hideSearchModal" />
       </view>
 
       <!-- 弹窗内容区域，可滚动 -->

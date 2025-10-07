@@ -254,8 +254,8 @@
 }
 
 .modal-content.search-modal {
-  width: 85%;
-  max-width: 680rpx;
+  width: 88%;
+  max-width: 700rpx;
 }
 
 .modal-content.delete-modal {
@@ -264,6 +264,53 @@
   padding: 48rpx 40rpx 40rpx;
   display: flex;
   flex-direction: column;
+}
+
+/* 搜索弹窗头部样式 - 优化版 */
+.search-modal-header {
+  position: relative;
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.search-header-content {
+  flex: 1;
+  text-align: left;
+}
+
+.search-modal-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #262626;
+  margin-bottom: 8rpx;
+  letter-spacing: 0.5rpx;
+}
+
+.search-modal-count {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.search-close-icon {
+  width: 36rpx;
+  height: 36rpx;
+  opacity: 0.6;
+  padding: 8rpx;
+  margin-top: -8rpx;
+  margin-right: -8rpx;
+}
+
+.search-close-icon:active {
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
 }
 
 .modal-header {
