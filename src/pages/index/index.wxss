@@ -6,34 +6,34 @@
   padding: 16rpx;
 }
 
-/* 搜索栏样式 - 进一步优化宽度比例 */
+/* 搜索栏样式 - 优化宽度比例，确保提示文字完整显示 */
 .search-bar {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: 12rpx; /* 减小间距 */
   margin-bottom: 24rpx;
   background: #ffffff;
   border-radius: 16rpx;
-  padding: 20rpx; /* 增加内边距 */
+  padding: 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
 }
 
 .search-input {
-  flex: 1;
+  flex: 1; /* 搜索框占据剩余所有空间 */
   display: flex;
   align-items: center;
   background: #f5f5f5;
   border-radius: 12rpx;
   padding: 0 20rpx;
   height: 80rpx;
-  min-width: 0;
+  min-width: 0; /* 允许搜索框收缩 */
 }
 
 .search-icon {
   width: 32rpx;
   height: 32rpx;
   margin-right: 12rpx;
-  flex-shrink: 0;
+  flex-shrink: 0; /* 防止图标被压缩 */
 }
 
 .search-input input {
@@ -41,7 +41,8 @@
   height: 100%;
   font-size: 28rpx;
   color: #333;
-  min-width: 0;
+  min-width: 0; /* 允许输入框收缩 */
+  width: 100%; /* 确保输入框宽度充满容器 */
 }
 
 .search-btn {
@@ -51,11 +52,11 @@
   border-radius: 12rpx;
   padding: 0 16rpx; /* 进一步减小左右内边距 */
   height: 80rpx;
-  font-size: 28rpx;
+  font-size: 26rpx; /* 稍微减小字体大小 */
   line-height: 80rpx;
   min-width: 100rpx; /* 减小最小宽度 */
-  flex-shrink: 0;
-  white-space: nowrap;
+  flex-shrink: 0; /* 防止按钮被压缩 */
+  white-space: nowrap; /* 防止文字换行 */
 }
 
 /* 添加用户按钮样式 */
