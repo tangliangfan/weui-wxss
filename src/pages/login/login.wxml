@@ -11,7 +11,8 @@
     </view>
   </view>
 
-  <mp-form bindsubmit="handleLogin">
+  <!-- 使用原生form组件替代mp-form，确保事件绑定可靠 -->
+  <form bindsubmit="handleLogin">
     <mp-cells>
       <mp-cell>
         <view class="weui-label">账号</view>
@@ -57,14 +58,23 @@
         class="weui-btn weui-btn_primary" 
         disabled="{{loading}}"
         loading="{{loading}}"
+        bindtap="testButtonClick"
       >
         {{loading ? '登录中...' : '登录'}}
       </button>
+      
+      <!-- 添加测试按钮，用于调试 -->
+      <button 
+        class="weui-btn weui-btn_default" 
+        style="margin-top: 20rpx;"
+        bindtap="testButtonClick"
+      >
+        测试按钮点击
+      </button>
     </view>
-  </mp-form>
+  </form>
 
   <view class="weui-footer">
     <view class="weui-footer__text">账号申请：联系系统开发人员或管理员</view>
   </view>
 </view>
-  
