@@ -52,6 +52,10 @@
     "servePath": ""
   },
   "isGameTourist": false,
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "cloudbaseRoot": "cloudbase/",
+  "qcloudRoot": "qcloud/",
   "condition": {
     "search": {
       "list": []
@@ -77,4 +81,3 @@
     "tabSize": 2
   }
 }
-  

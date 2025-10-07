@@ -30,63 +30,17 @@ export default function UserDetailPage(props) {
     diseases: '',
     medications: ''
   });
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // 从路由参数获取用户ID
   const userId = $w.page.dataset.params?.id;
 
-  // 检查认证状态和页面加载逻辑
-  useEffect(() => {
-    checkAuthentication();
-  }, []);
-  const checkAuthentication = async () => {
-    try {
-      // 检查当前用户认证状态
-      const currentUser = $w.auth.currentUser;
-      if (currentUser && currentUser.userId) {
-        setIsAuthenticated(true);
-        if (userId) {
-          fetchUserData();
-        } else {
-          toast({
-            title: '参数错误',
-            description: '用户ID参数缺失',
-            variant: 'destructive',
-            duration: 1000
-          });
-          $w.utils.navigateBack();
-        }
-      } else {
-        // 未登录，跳转到登录页面
-        toast({
-          title: '请先登录',
-          description: '需要登录后才能查看用户详情',
-          variant: 'destructive',
-          duration: 1000
-        });
-        $w.utils.redirectTo({
-          pageId: 'login',
-          params: {}
-        });
-      }
-    } catch (error) {
-      console.error('认证检查失败:', error);
-      toast({
-        title: '认证失败',
-        description: '请重新登录',
-        variant: 'destructive',
-        duration: 1000
-      });
-      $w.utils.redirectTo({
-        pageId: 'login',
-        params: {}
-      });
-    }
-  };
-
   // 从数据模型查询用户数据
+  useEffect(() => {
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
   const fetchUserData = async () => {
-    if (!userId) return;
     try {
       setLoading(true);
       const result = await $w.cloud.callDataSource({
@@ -107,9 +61,7 @@ export default function UserDetailPage(props) {
           }
         }
       });
-
-      // 正确解析返回的数据结构
-      if (result && result._id) {
+      if (result) {
         setUserData(result);
       } else {
         toast({
@@ -128,7 +80,6 @@ export default function UserDetailPage(props) {
         variant: 'destructive',
         duration: 1000
       });
-      $w.utils.navigateBack();
     } finally {
       setLoading(false);
     }
@@ -356,16 +307,6 @@ export default function UserDetailPage(props) {
       day: '2-digit'
     });
   };
-
-  // 如果未认证，显示加载状态
-  if (!isAuthenticated) {
-    return <div style={style} className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-        <p className="text-sm text-gray-500">检查登录状态...</p>
-      </div>
-    </div>;
-  }
   if (loading) {
     return <div style={style} className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">

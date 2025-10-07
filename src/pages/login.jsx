@@ -58,13 +58,10 @@ export default function LoginPage(props) {
           },
           select: {
             $master: true
-          },
-          getCount: true
+          }
         }
       });
-
-      // 正确解析返回的数据结构
-      if (result && result.records && result.records.length > 0) {
+      if (result.records && result.records.length > 0) {
         const user = result.records[0];
         toast({
           title: '登录成功',
