@@ -12,8 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "wx-server-sdk": "^2.8.0",
-    "weui-wxss": "^2.6.3"
+    "wx-server-sdk": "^2.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.0",
@@ -40,4 +39,3 @@
   "author": "Health Management Team",
   "license": "MIT"
 }
-  

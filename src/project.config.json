@@ -45,7 +45,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.19.4",
-  "appid": "wx-your-appid",
+  "appid": "wx-your-appid", // 替换为实际小程序appid
   "projectname": "health-management-system",
   "debugOptions": {
     "hidedInDevtools": []
@@ -87,12 +87,5 @@
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  },
-  "plugins": {
-    "weui": {
-      "version": "1.0.0",
-      "provider": "wxa6c5e3d4e6a6c5e3"
-    }
   }
 }
-  

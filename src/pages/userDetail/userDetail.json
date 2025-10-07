@@ -1,8 +1,6 @@
 
 {
-  "usingComponents": {
-    "modal": "/components/Modal/Modal"
-  },
+  "usingComponents": {},
   "navigationBarTitleText": "用户详情",
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black",
@@ -11,15 +9,6 @@
   "enablePullDownRefresh": false,
   "disableScroll": false,
   "usingComponents": {
-    "weui-navbar": "weui-miniprogram/navbar/navbar",
-    "weui-panel": "weui-miniprogram/panel/panel",
-    "weui-cell": "weui-miniprogram/cell/cell",
-    "weui-avatar": "weui-miniprogram/avatar/avatar",
-    "weui-tag": "weui-miniprogram/tag/tag",
-    "weui-actionsheet": "weui-miniprogram/actionsheet/actionsheet",
-    "weui-dialog": "weui-miniprogram/dialog/dialog",
-    "weui-loadmore": "weui-miniprogram/loadmore/loadmore",
-    "weui-empty": "weui-miniprogram/empty/empty"
+    "modal": "/components/Modal/Modal"
   }
 }
-  

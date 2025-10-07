@@ -28,9 +28,10 @@
   height: 80rpx;
 }
 
-.search-input .weui-icon-search {
+.search-icon {
+  width: 32rpx;
+  height: 32rpx;
   margin-right: 12rpx;
-  font-size: 32rpx;
 }
 
 .search-input input {
@@ -38,14 +39,17 @@
   height: 100%;
   font-size: 28rpx;
   color: #333;
-  background: transparent;
-  border: none;
 }
 
 .search-btn {
+  background: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
   height: 80rpx;
-  line-height: 80rpx;
   font-size: 28rpx;
+  line-height: 80rpx;
 }
 
 /* 添加用户按钮样式 */
@@ -53,7 +57,14 @@
   margin-bottom: 24rpx;
 }
 
-.add-user-btn .weui-btn_primary {
+.btn-primary {
+  background: linear-gradient(135deg, #1890ff, #096dd9);
+  color: white;
+  border: none;
+  border-radius: 16rpx;
+  padding: 20rpx 32rpx;
+  font-size: 28rpx;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,8 +72,9 @@
   box-shadow: 0 4rpx 12rpx rgba(24, 144, 255, 0.3);
 }
 
-.add-user-btn .weui-icon-add {
-  font-size: 32rpx;
+.btn-icon {
+  width: 32rpx;
+  height: 32rpx;
 }
 
 /* 用户列表样式 */
@@ -106,26 +118,27 @@
 }
 
 /* 随访剩余时间徽章样式 */
-.weui-badge.followup-time-remaining {
+.followup-time-badge {
   position: absolute;
   top: 16rpx;
   right: 16rpx;
-  background: #dcfce7;
-  color: #166534;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  font-weight: 500;
   z-index: 10;
   min-width: 80rpx;
   text-align: center;
 }
 
-.weui-badge.followup-time-overdue {
-  position: absolute;
-  top: 16rpx;
-  right: 16rpx;
+.followup-time-remaining {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.followup-time-overdue {
   background: #fee2e2;
   color: #991b1b;
-  z-index: 10;
-  min-width: 80rpx;
-  text-align: center;
 }
 
 .user-header {
@@ -139,6 +152,13 @@
   font-size: 32rpx;
   font-weight: 600;
   color: #333;
+}
+
+.status-badge {
+  padding: 8rpx 16rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  font-weight: 500;
 }
 
 .status-badge.success {
@@ -170,100 +190,243 @@
   color: #666;
 }
 
-.info-item .weui-icon {
-  font-size: 28rpx;
+.info-icon {
+  width: 28rpx;
+  height: 28rpx;
   opacity: 0.6;
 }
 
-/* 搜索结果项样式 */
+/* 加载状态样式 */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: #999;
+}
+
+.loading-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-bottom: 16rpx;
+}
+
+/* 空状态样式 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: #999;
+}
+
+.empty-icon {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 20rpx;
+  width: 90%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-content.search-modal {
+  width: 85%;
+  max-width: 680rpx;
+}
+
+.modal-header {
+  position: relative;
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.modal-subtitle {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.close-icon {
+  position: absolute;
+  top: 32rpx;
+  right: 32rpx;
+  width: 32rpx;
+  height: 32rpx;
+  opacity: 0.6;
+}
+
+.modal-body {
+  padding: 32rpx;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background: #fafafa;
+}
+
+.form-textarea {
+  min-height: 120rpx;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx 32rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.btn-cancel, .btn-confirm {
+  flex: 1;
+  border: none;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-confirm {
+  background: #1890ff;
+  color: white;
+}
+
+/* 搜索结果项样式 - 重新设计避免按钮被遮挡 */
 .search-result-item {
   position: relative;
   padding: 24rpx;
   border-bottom: 2rpx solid #f0f0f0;
   background: #ffffff;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 }
 
 .search-result-item:last-child {
   border-bottom: none;
+  margin-bottom: 0;
 }
 
 .result-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 16rpx;
+  position: relative;
+}
+
+.result-name-container {
+  flex: 1;
+  min-width: 0;
+  margin-right: 80rpx;
 }
 
 .result-name {
   font-size: 30rpx;
   font-weight: 600;
   color: #333;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-btn-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 20;
+}
+
+.delete-icon {
+  width: 36rpx;
+  height: 36rpx;
+  padding: 12rpx;
+  background: rgba(245, 34, 45, 0.1);
+  border-radius: 50%;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.delete-icon:active {
+  opacity: 1;
+  background: rgba(245, 34, 45, 0.2);
 }
 
 .result-info {
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: 12rpx;
+}
+
+.result-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
   font-size: 26rpx;
   color: #666;
+}
+
+.result-info-icon {
+  width: 28rpx;
+  height: 28rpx;
+  opacity: 0.6;
 }
 
 /* 阻止事件冒泡 */
 .stop-propagation {
   /* 空样式，用于事件处理 */
-}
-
-/* 模态框样式调整 */
-.weui-half-screen-dialog,
-.weui-dialog {
-  z-index: 1000;
-}
-
-.weui-half-screen-dialog__bd,
-.weui-dialog__bd {
-  max-height: 60vh;
-}
-
-/* 表单样式调整 */
-.weui-cells {
-  margin-top: 0;
-}
-
-.weui-cell {
-  padding: 20rpx 0;
-}
-
-.weui-label {
-  width: 160rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.weui-input,
-.weui-textarea {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.weui-textarea {
-  min-height: 120rpx;
-}
-
-/* 按钮样式调整 */
-.weui-btn_mini {
-  padding: 8rpx 16rpx;
-  font-size: 24rpx;
-}
-
-/* 空状态和加载状态样式调整 */
-.weui-empty,
-.weui-loadmore {
-  padding: 80rpx 0;
-}
-
-.weui-empty__description,
-.weui-loadmore__tips {
-  font-size: 28rpx;
-  color: #999;
 }
   

@@ -12,10 +12,5 @@
   "backgroundTextStyle": "light",
   "enablePullDownRefresh": true,
   "onReachBottomDistance": 50,
-  "disableScroll": false,
-  "usingComponents": {
-    "weui-loadmore": "weui-miniprogram/loadmore/loadmore",
-    "weui-empty": "weui-miniprogram/empty/empty"
-  }
+  "disableScroll": false
 }
-  
