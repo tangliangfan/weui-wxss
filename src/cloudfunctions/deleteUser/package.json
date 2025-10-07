@@ -1,0 +1,10 @@
+
+{
+  "name": "deleteUser",
+  "version": "1.0.0",
+  "description": "删除用户",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

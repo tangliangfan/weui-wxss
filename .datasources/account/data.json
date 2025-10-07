@@ -1,0 +1,13 @@
+
+[
+  {
+    "_id": "admin_user",
+    "username": "admin",
+    "password": "$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "管理员",
+    "name": "管理员",
+    "createdAt": 1728000000000,
+    "updatedAt": 1728000000000
+  }
+]
+  

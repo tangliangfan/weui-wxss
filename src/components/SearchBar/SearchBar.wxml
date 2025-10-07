@@ -1,0 +1,40 @@
+
+<!-- 搜索栏组件 -->
+<view class="search-bar">
+  <view class="search-container">
+    <image src="/images/search.png" class="search-icon" />
+    <input
+      type="text"
+      value="{{searchText}}"
+      placeholder="搜索用户姓名或手机号"
+      bindinput="onInput"
+      bindconfirm="onSearch"
+      class="search-input"
+    />
+    <view wx:if="{{searchText}}" class="clear-btn" bindtap="onClear">
+      <image src="/images/close.png" class="clear-icon" />
+    </view>
+  </view>
+  
+  <button wx:if="{{!searchText}}" class="filter-btn" bindtap="onFilter">
+    <image src="/images/filter.png" class="filter-icon" />
+  </button>
+  
+  <button wx:if="{{searchText}}" class="search-btn" bindtap="onSearch">
+    搜索
+  </button>
+</view>
+
+<!-- 搜索历史 -->
+<view wx:if="{{showHistory && searchHistory.length > 0}}" class="search-history">
+  <view class="history-header">
+    <text class="history-title">搜索历史</text>
+    <text class="clear-history" bindtap="onClearHistory">清空</text>
+  </view>
+  <view class="history-list">
+    <view wx:for="{{searchHistory}}" wx:key="index" class="history-item" bindtap="onHistoryItemClick" data-item="{{item}}">
+      <image src="/images/history.png" class="history-icon" />
+      <text class="history-text">{{item}}</text>
+    </view>
+  </view>
+</view>

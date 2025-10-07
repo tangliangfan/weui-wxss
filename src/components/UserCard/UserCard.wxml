@@ -1,0 +1,29 @@
+
+<!-- 用户卡片组件 -->
+<view class="user-card" bindtap="onCardClick">
+  <view class="card-content">
+    <!-- 用户头像 -->
+    <view class="avatar">
+      <text class="avatar-text">{{userInfo.name ? userInfo.name.charAt(0) : '?'}}</text>
+    </view>
+    
+    <!-- 用户信息 -->
+    <view class="user-info">
+      <text class="user-name">{{userInfo.name || '未命名用户'}}</text>
+      <text class="user-phone">{{userInfo.phone || '未设置手机号'}}</text>
+    </view>
+    
+    <!-- 状态标签 -->
+    <view class="status-tags">
+      <view wx:if="{{userInfo.diseases && userInfo.diseases.length > 0}}" class="tag disease-tag">
+        <text>有病史</text>
+      </view>
+      <view wx:if="{{userInfo.followups && userInfo.followups.length > 0}}" class="tag followup-tag">
+        <text>有随访</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 分隔线 -->
+  <view class="divider"></view>
+</view>

@@ -1,0 +1,26 @@
+
+[
+  {
+    "_id": "user_1",
+    "name": "张三",
+    "phone": "13800138001",
+    "address": "北京市朝阳区建国路123号",
+    "diseases": ["高血压", "糖尿病"],
+    "medications": ["降压药-每日1次", "降糖药-每日2次"],
+    "followups": [
+      {
+        "followupDate": "2024-01-15",
+        "nextFollowupDate": "2024-02-15",
+        "content": "血压控制良好，血糖略有波动，建议调整用药剂量"
+      },
+      {
+        "followupDate": "2023-12-15",
+        "nextFollowupDate": "2024-01-15",
+        "content": "常规随访，各项指标正常"
+      }
+    ],
+    "createdAt": 1728000000000,
+    "updatedAt": 1728000000000
+  }
+]
+  

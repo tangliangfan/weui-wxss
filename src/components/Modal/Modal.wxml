@@ -1,0 +1,42 @@
+
+<!-- 模态弹窗组件 -->
+<view wx:if="{{show}}" class="modal-mask" bindtap="onMaskTap" catchtouchmove="preventTouchMove">
+  <view class="modal-container" bindtap="stopPropagation">
+    <!-- 头部 -->
+    <view class="modal-header">
+      <view class="modal-title-section">
+        <text class="modal-title">{{title}}</text>
+        <text wx:if="{{subtitle}}" class="modal-subtitle">{{subtitle}}</text>
+      </view>
+      <button wx:if="{{showClose}}" class="close-btn" bindtap="onClose">
+        <image src="/images/close.png" class="close-icon" />
+      </button>
+    </view>
+    
+    <!-- 内容 -->
+    <view class="modal-content">
+      <slot></slot>
+    </view>
+    
+    <!-- 底部按钮 -->
+    <view wx:if="{{showFooter}}" class="modal-footer">
+      <button 
+        wx:if="{{cancelText}}" 
+        class="btn-cancel" 
+        bindtap="onCancel"
+        disabled="{{cancelDisabled}}"
+      >
+        {{cancelText}}
+      </button>
+      <button 
+        wx:if="{{confirmText}}" 
+        class="btn-confirm" 
+        bindtap="onConfirm"
+        disabled="{{confirmDisabled}}"
+        loading="{{confirmLoading}}"
+      >
+        {{confirmLoading ? '处理中...' : confirmText}}
+      </button>
+    </view>
+  </view>
+</view>

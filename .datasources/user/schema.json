@@ -1,0 +1,47 @@
+
+{
+  "name": "user",
+  "title": "用户信息",
+  "schemas": [
+    {
+      "name": "name",
+      "title": "姓名",
+      "type": "String"
+    },
+    {
+      "name": "phone",
+      "title": "手机号",
+      "type": "String"
+    },
+    {
+      "name": "address",
+      "title": "地址",
+      "type": "String"
+    },
+    {
+      "name": "diseases",
+      "title": "基础疾病",
+      "type": "Array",
+      "items": {
+        "type": "String"
+      }
+    },
+    {
+      "name": "medications",
+      "title": "用药情况",
+      "type": "Array",
+      "items": {
+        "type": "String"
+      }
+    },
+    {
+      "name": "followups",
+      "title": "随访记录",
+      "type": "Array",
+      "items": {
+        "type": "Object"
+      }
+    }
+  ]
+}
+  

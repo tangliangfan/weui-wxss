@@ -1,0 +1,137 @@
+
+/* 搜索栏样式 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx 32rpx;
+  background: white;
+  border-bottom: 2rpx solid #f3f4f6;
+}
+
+.search-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+  height: 80rpx;
+}
+
+.search-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 16rpx;
+  opacity: 0.5;
+}
+
+.search-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: #1f2937;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.clear-btn {
+  padding: 8rpx;
+}
+
+.clear-icon {
+  width: 24rpx;
+  height: 24rpx;
+  opacity: 0.5;
+}
+
+.filter-btn,
+.search-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-icon {
+  width: 32rpx;
+  height: 32rpx;
+  opacity: 0.7;
+}
+
+.search-btn {
+  background: #3b82f6;
+  color: white;
+  border-radius: 16rpx;
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  min-width: 120rpx;
+}
+
+.search-btn:active {
+  background: #2563eb;
+}
+
+/* 搜索历史 */
+.search-history {
+  background: white;
+  border-top: 2rpx solid #f3f4f6;
+  padding: 24rpx 32rpx;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.history-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.clear-history {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx;
+  background: #f9fafb;
+  border-radius: 12rpx;
+}
+
+.history-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 12rpx;
+  opacity: 0.6;
+}
+
+.history-text {
+  font-size: 28rpx;
+  color: #374151;
+}
+
+/* 点击效果 */
+.history-item:active,
+.clear-history:active {
+  opacity: 0.7;
+}

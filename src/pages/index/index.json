@@ -1,0 +1,16 @@
+
+{
+  "usingComponents": {
+    "search-bar": "/components/SearchBar/SearchBar",
+    "user-card": "/components/UserCard/UserCard",
+    "modal": "/components/Modal/Modal"
+  },
+  "navigationBarTitleText": "健管师服务管理",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f9fa",
+  "backgroundTextStyle": "light",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "disableScroll": false
+}

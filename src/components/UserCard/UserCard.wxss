@@ -1,0 +1,86 @@
+
+/* 用户卡片样式 */
+.user-card {
+  background: white;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.avatar-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: white;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4rpx;
+}
+
+.user-phone {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.status-tags {
+  display: flex;
+  gap: 8rpx;
+  margin-left: 16rpx;
+}
+
+.tag {
+  padding: 8rpx 16rpx;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+.disease-tag {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.followup-tag {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.divider {
+  height: 2rpx;
+  background: #f3f4f6;
+  margin: 0 32rpx;
+}
+
+/* 点击效果 */
+.user-card:active {
+  background: #f9fafb;
+  transform: translateY(1rpx);
+}

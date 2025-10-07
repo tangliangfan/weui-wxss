@@ -1,0 +1,28 @@
+
+{
+  "name": "account",
+  "title": "账号管理",
+  "schemas": [
+    {
+      "name": "username",
+      "title": "账号",
+      "type": "String"
+    },
+    {
+      "name": "password",
+      "title": "密码",
+      "type": "String"
+    },
+    {
+      "name": "role",
+      "title": "角色",
+      "type": "String"
+    },
+    {
+      "name": "name",
+      "title": "显示名称",
+      "type": "String"
+    }
+  ]
+}
+  
