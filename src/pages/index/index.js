@@ -107,9 +107,9 @@ Page({
     }
   },
 
-  // 搜索输入处理函数
+  // 搜索输入处理函数 - 适配 WeUI search-bar
   onSearchInput(e) {
-    // 获取输入框的值
+    // WeUI search-bar 的输入事件参数结构
     const searchText = e.detail.value
     // 更新搜索文本
     this.setData({ searchText })
@@ -125,15 +125,30 @@ Page({
     this.setData({ filteredUsers })
   },
 
-  // 搜索按钮点击事件处理 - 使用云函数搜索
-  async handleSearch() {
-    const { searchText } = this.data
+  // 搜索按钮点击事件处理 - 适配 WeUI search-bar
+  handleSearch(e) {
+    // WeUI search-bar 的搜索事件
+    const searchText = e.detail.value || this.data.searchText
     // 检查搜索文本是否为空
     if (!searchText.trim()) {
       showToast('请输入搜索内容', 'error')
       return
     }
 
+    this.setData({ searchText })
+    this.performSearch(searchText)
+  },
+
+  // 清空搜索 - 适配 WeUI search-bar
+  onSearchClear() {
+    this.setData({ 
+      searchText: '',
+      filteredUsers: this.data.users
+    })
+  },
+
+  // 执行搜索操作
+  async performSearch(searchText) {
     try {
       // 设置搜索加载状态，显示搜索加载动画
       this.setData({ searchLoading: true })
@@ -186,9 +201,9 @@ Page({
     })
   },
 
-  // 表单输入处理函数
+  // 表单输入处理函数 - 适配 WeUI form
   onFormInput(e) {
-    // 获取输入字段名和值
+    // WeUI form 组件的输入事件参数结构
     const { field } = e.currentTarget.dataset
     const value = e.detail.value
     // 动态更新表单对应字段的值
@@ -453,4 +468,3 @@ Page({
     })
   }
 })
-  
