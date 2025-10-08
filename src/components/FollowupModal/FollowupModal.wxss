@@ -87,7 +87,57 @@
   margin-bottom: 8rpx;
 }
 
-.form-input,
+/* 日期选择器样式 */
+.picker-container {
+  border: 2rpx solid #e5e7eb;
+  border-radius: 16rpx;
+  background: white;
+  overflow: hidden;
+}
+
+.date-picker {
+  width: 100%;
+}
+
+.picker-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  min-height: 80rpx;
+}
+
+.picker-text {
+  font-size: 28rpx;
+  color: #374151;
+  flex: 1;
+}
+
+.picker-text.placeholder {
+  color: #9ca3af;
+}
+
+.picker-icon {
+  width: 24rpx;
+  height: 24rpx;
+  opacity: 0.6;
+}
+
+/* 禁用状态的日期选择器 */
+.disabled-picker .picker-container {
+  background-color: #f9fafb;
+  border-color: #f3f4f6;
+}
+
+.disabled-picker .picker-text {
+  color: #6b7280;
+}
+
+.disabled-picker .picker-icon {
+  opacity: 0.3;
+}
+
+/* 文本区域样式 */
 .form-textarea {
   width: 100%;
   border: 2rpx solid #e5e7eb;
@@ -95,27 +145,17 @@
   padding: 24rpx;
   font-size: 28rpx;
   background: white;
+  resize: none;
+  min-height: 120rpx;
 }
 
-.form-input:focus,
 .form-textarea:focus {
   border-color: #3b82f6;
   outline: none;
 }
 
-.form-input::placeholder,
 .form-textarea::placeholder {
   color: #9ca3af;
-}
-
-.form-textarea {
-  resize: none;
-  min-height: 120rpx;
-}
-
-.disabled-input {
-  background-color: #f9fafb;
-  color: #6b7280;
 }
 
 .error-message {
@@ -170,5 +210,19 @@
 @media (max-width: 768px) {
   .modal {
     padding: 16rpx;
+  }
+  
+  .picker-display {
+    padding: 20rpx;
+    min-height: 72rpx;
+  }
+  
+  .picker-text {
+    font-size: 26rpx;
+  }
+  
+  .picker-icon {
+    width: 20rpx;
+    height: 20rpx;
   }
 }
