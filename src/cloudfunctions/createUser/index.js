@@ -15,8 +15,8 @@ exports.main = async (event, context) => {
       .add({
         data: {
           ...userData,
-          createdAt: db.serverDate(), // 使用服务器时间作为创建时间
-          updatedAt: db.serverDate()   // 同时设置更新时间
+          createdAt: db.serverDate(),
+          updatedAt: db.serverDate()
         }
       })
 

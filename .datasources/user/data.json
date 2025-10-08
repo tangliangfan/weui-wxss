@@ -11,16 +11,128 @@
       {
         "followupDate": "2024-01-15",
         "nextFollowupDate": "2024-02-15",
-        "content": "血压控制良好，血糖略有波动，建议调整用药剂量"
+        "content": "血压控制良好，血糖略有波动，建议调整用药剂量",
+        "createdAt": 1705305600000
       },
       {
         "followupDate": "2023-12-15",
         "nextFollowupDate": "2024-01-15",
-        "content": "常规随访，各项指标正常"
+        "content": "常规随访，各项指标正常",
+        "createdAt": 1702627200000
       }
     ],
+    "lastFollowupDate": 1705305600000,
+    "nextFollowupDate": 1707984000000,
+    "followupStatus": "active",
+    "yearCreated": 2024,
+    "monthCreated": 1,
+    "hasFollowupRecords": true,
     "createdAt": 1728000000000,
-    "updatedAt": 1728000000000
+    "updatedAt": 1728000000000,
+    "owner": "system",
+    "createBy": "admin",
+    "updateBy": "admin"
+  },
+  {
+    "_id": "user_2",
+    "name": "李四",
+    "phone": "13900139002",
+    "address": "上海市浦东新区张江高科技园区",
+    "diseases": ["冠心病"],
+    "medications": ["阿司匹林-每日1次", "硝酸甘油-按需服用"],
+    "followups": [
+      {
+        "followupDate": "2024-02-10",
+        "nextFollowupDate": "2024-03-10",
+        "content": "心绞痛症状有所缓解，建议继续服药",
+        "createdAt": 1707523200000
+      }
+    ],
+    "lastFollowupDate": 1707523200000,
+    "nextFollowupDate": 1710000000000,
+    "followupStatus": "active",
+    "yearCreated": 2024,
+    "monthCreated": 2,
+    "hasFollowupRecords": true,
+    "createdAt": 1735689600000,
+    "updatedAt": 1735689600000,
+    "owner": "system",
+    "createBy": "admin",
+    "updateBy": "admin"
+  },
+  {
+    "_id": "user_3",
+    "name": "王五",
+    "phone": "13700137003",
+    "address": "广州市天河区体育西路",
+    "diseases": ["哮喘"],
+    "medications": ["沙丁胺醇吸入剂-按需使用"],
+    "followups": [],
+    "lastFollowupDate": null,
+    "nextFollowupDate": null,
+    "followupStatus": "no_record",
+    "yearCreated": 2024,
+    "monthCreated": 1,
+    "hasFollowupRecords": false,
+    "createdAt": 1728000000000,
+    "updatedAt": 1728000000000,
+    "owner": "system",
+    "createBy": "admin",
+    "updateBy": "admin"
+  },
+  {
+    "_id": "user_4",
+    "name": "赵六",
+    "phone": "13600136004",
+    "address": "深圳市南山区科技园",
+    "diseases": ["糖尿病"],
+    "medications": ["胰岛素-每日注射"],
+    "followups": [
+      {
+        "followupDate": "2024-01-20",
+        "nextFollowupDate": "2024-02-20",
+        "content": "血糖控制不稳定，建议调整胰岛素剂量",
+        "createdAt": 1705766400000
+      }
+    ],
+    "lastFollowupDate": 1705766400000,
+    "nextFollowupDate": 1708444800000,
+    "followupStatus": "expired",
+    "yearCreated": 2023,
+    "monthCreated": 12,
+    "hasFollowupRecords": true,
+    "createdAt": 1704067200000,
+    "updatedAt": 1705766400000,
+    "owner": "system",
+    "createBy": "admin",
+    "updateBy": "admin"
+  },
+  {
+    "_id": "user_5",
+    "name": "钱七",
+    "phone": "13500135005",
+    "address": "杭州市西湖区文三路",
+    "diseases": ["高血压", "高血脂"],
+    "medications": ["降压药-每日1次", "降脂药-每日1次"],
+    "followups": [
+      {
+        "followupDate": "2024-02-15",
+        "nextFollowupDate": "2024-05-15",
+        "content": "血压血脂控制良好，继续保持",
+        "createdAt": 1707955200000
+      }
+    ],
+    "lastFollowupDate": 1707955200000,
+    "nextFollowupDate": 1715721600000,
+    "followupStatus": "passed",
+    "yearCreated": 2024,
+    "monthCreated": 2,
+    "hasFollowupRecords": true,
+    "createdAt": 1738368000000,
+    "updatedAt": 1738368000000,
+    "owner": "system",
+    "createBy": "admin",
+    "updateBy": "admin"
   }
 ]
   
