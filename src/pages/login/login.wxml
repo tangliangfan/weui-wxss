@@ -35,12 +35,11 @@
             bindinput="onInputChange" 
             data-field="password"
             class="input"
-            password="{{!showPassword}}"
             disabled="{{loading}}"
           />
           <view class="eye-icon" bindtap="togglePassword">
             <image 
-              src="{{showPassword ? '/images/eye-off.png' : '/images/eye.png'}}" 
+              src="{{showPassword ? 'https://healthmanagementinfosys01-0ae99f-1381435234.tcloudbaseapp.com/resources/2025-10/lowcode-2381039' : 'https://healthmanagementinfosys01-0ae99f-1381435234.tcloudbaseapp.com/resources/2025-10/lowcode-2381039'}}" 
               mode="aspectFit" 
               class="eye-image"
             />
