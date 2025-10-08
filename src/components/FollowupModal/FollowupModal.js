@@ -60,133 +60,94 @@ Component({
       followupDate: '',
       nextFollowupDate: '',
       content: ''
-    },
-    // 日期选择器相关状态
-    showDatePicker: false,
-    datePickerField: '',
-    selectedDate: ''
+    }
   },
 
   methods: {
-    // 打开日期选择器
-    openDatePicker(e) {
-      if (this.data.disabled) return;
+    // 日期选择变化处理
+    onDateChange(e) {
+      const { field } = e.currentTarget.dataset
+      const value = e.detail.value
       
-      const { field } = e.currentTarget.dataset;
-      const currentDate = this.data.localFollowupData[field] || this.getTodayDate();
-      
-      this.setData({
-        showDatePicker: true,
-        datePickerField: field,
-        selectedDate: currentDate
-      });
-    },
-
-    // 关闭日期选择器
-    closeDatePicker() {
-      this.setData({
-        showDatePicker: false,
-        datePickerField: '',
-        selectedDate: ''
-      });
-    },
-
-    // 日期选择完成
-    onDateSelected(e) {
-      const value = e.detail.value;
-      const { datePickerField } = this.data;
-      
-      // 更新内部数据
-      const updateData = {};
-      updateData[`localFollowupData.${datePickerField}`] = value;
+      // 先更新显示，再验证日期
+      const updateData = {}
+      updateData[`localFollowupData.${field}`] = value
       
       this.setData(updateData, () => {
-        // 验证日期
-        this.validateDates(this.data.localFollowupData);
+        // 在回调中验证日期，确保数据已更新
+        this.validateDates(this.data.localFollowupData)
         
         // 触发输入事件，通知父组件
-        this.triggerEvent('input', { field: datePickerField, value });
-        
-        // 关闭选择器
-        this.closeDatePicker();
-      });
-    },
-
-    // 获取今天日期
-    getTodayDate() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = (now.getMonth() + 1).toString().padStart(2, '0');
-      const day = now.getDate().toString().padStart(2, '0');
-      return `${year}-${month}-${day}`;
+        this.triggerEvent('input', { field, value })
+      })
     },
 
     // 输入处理
     onInput(e) {
-      const { field } = e.currentTarget.dataset;
-      const value = e.detail.value;
+      const { field } = e.currentTarget.dataset
+      const value = e.detail.value
       
       // 更新内部数据
-      const updateData = {};
-      updateData[`localFollowupData.${field}`] = value;
+      const updateData = {}
+      updateData[`localFollowupData.${field}`] = value
       
       this.setData(updateData, () => {
         // 触发输入事件，通知父组件
-        this.triggerEvent('input', { field, value });
-      });
+        this.triggerEvent('input', { field, value })
+      })
     },
 
     // 验证日期（不触发事件）
     validateDatesSilent(data) {
-      const { followupDate, nextFollowupDate } = data;
+      const { followupDate, nextFollowupDate } = data
       
       if (followupDate && nextFollowupDate) {
-        const followup = new Date(followupDate);
-        const nextFollowup = new Date(nextFollowupDate);
-        const dateError = nextFollowup < followup;
+        const followup = new Date(followupDate)
+        const nextFollowup = new Date(nextFollowupDate)
+        const dateError = nextFollowup < followup
         
-        this.setData({ dateError });
+        this.setData({ dateError })
       } else {
-        this.setData({ dateError: false });
+        this.setData({ dateError: false })
       }
     },
 
     // 验证日期（触发事件）
     validateDates(data) {
-      const { followupDate, nextFollowupDate } = data;
+      const { followupDate, nextFollowupDate } = data
       
       if (followupDate && nextFollowupDate) {
-        const followup = new Date(followupDate);
-        const nextFollowup = new Date(nextFollowupDate);
-        const dateError = nextFollowup < followup;
+        const followup = new Date(followupDate)
+        const nextFollowup = new Date(nextFollowupDate)
+        const dateError = nextFollowup < followup
         
-        this.setData({ dateError });
+        this.setData({ dateError })
         
         // 触发验证事件
         this.triggerEvent('validation', { 
           isValid: !dateError,
           error: dateError ? '下次随访日期不能早于本次随访日期' : ''
-        });
+        })
       } else {
-        this.setData({ dateError: false });
-        this.triggerEvent('validation', { isValid: true, error: '' });
+        this.setData({ dateError: false })
+        this.triggerEvent('validation', { isValid: true, error: '' })
       }
     },
 
     // 关闭模态框
     onClose() {
-      this.triggerEvent('close');
+      this.triggerEvent('close')
     },
 
     // 取消
     onCancel() {
-      this.triggerEvent('cancel');
+      this.triggerEvent('cancel')
     },
 
     // 确认
     onConfirm() {
       if (!this.data.dateError) {
-        this.triggerEvent('confirm', this.data.localFollowupData);
+        this.triggerEvent('confirm', this.data.localFollowupData)
       }
     }
   },
@@ -195,16 +156,16 @@ Component({
   lifetimes: {
     attached() {
       // 初始化时设置内部数据
-      const { followupData } = this.data;
+      const { followupData } = this.data
       this.setData({
         localFollowupData: {
           followupDate: followupData.followupDate || '',
           nextFollowupDate: followupData.nextFollowupDate || '',
           content: followupData.content || ''
         }
-      });
+      })
       // 初始化时验证日期（不触发事件）
-      this.validateDatesSilent(this.data.localFollowupData);
+      this.validateDatesSilent(this.data.localFollowupData)
     }
   }
-});
+})
