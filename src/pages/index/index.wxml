@@ -24,79 +24,98 @@
   <view class="overview-section">
     <view class="section-header">
       <text class="section-title">数据总览</text>
+      <text class="section-subtitle">实时统计用户管理数据</text>
     </view>
     
     <!-- 总览卡片加载状态 -->
     <view wx:if="{{overviewLoading}}" class="overview-loading">
       <image src="/images/loading.gif" class="loading-icon" />
-      <text>加载中...</text>
+      <text>数据加载中...</text>
     </view>
 
-    <!-- 总览卡片网格布局 -->
+    <!-- 总览卡片网格布局 - 3×2 网格 -->
     <view wx:else class="overview-grid">
-      <!-- 用户总数卡片 -->
+      <!-- 用户总数卡片 - 蓝色 -->
       <view class="overview-card total-users">
-        <view class="card-icon">
-          <image src="/images/users.png" class="icon" />
+        <view class="card-icon-wrapper">
+          <image src="/images/users-blue.png" class="card-icon" />
         </view>
         <view class="card-content">
           <text class="card-value">{{overviewData.totalUsers}}</text>
           <text class="card-label">用户总数</text>
         </view>
+        <view class="card-trend">
+          <text class="trend-text">总用户量</text>
+        </view>
       </view>
 
-      <!-- 本年新增用户卡片 -->
+      <!-- 本年新增用户卡片 - 青色 -->
       <view class="overview-card new-users-year">
-        <view class="card-icon">
-          <image src="/images/user-plus.png" class="icon" />
+        <view class="card-icon-wrapper">
+          <image src="/images/user-plus-cyan.png" class="card-icon" />
         </view>
         <view class="card-content">
           <text class="card-value">{{overviewData.newUsersThisYear}}</text>
           <text class="card-label">本年新增</text>
         </view>
+        <view class="card-trend">
+          <text class="trend-text">年度增长</text>
+        </view>
       </view>
 
-      <!-- 本月新增用户卡片 -->
+      <!-- 本月新增用户卡片 - 紫色 -->
       <view class="overview-card new-users-month">
-        <view class="card-icon">
-          <image src="/images/user-plus.png" class="icon" />
+        <view class="card-icon-wrapper">
+          <image src="/images/user-plus-purple.png" class="card-icon" />
         </view>
         <view class="card-content">
           <text class="card-value">{{overviewData.newUsersThisMonth}}</text>
           <text class="card-label">本月新增</text>
         </view>
+        <view class="card-trend">
+          <text class="trend-text">月度增长</text>
+        </view>
       </view>
 
-      <!-- 本月随访卡片 -->
+      <!-- 本月随访卡片 - 绿色 -->
       <view class="overview-card followed-month">
-        <view class="card-icon">
-          <image src="/images/calendar-check.png" class="icon" />
+        <view class="card-icon-wrapper">
+          <image src="/images/calendar-check-green.png" class="card-icon" />
         </view>
         <view class="card-content">
           <text class="card-value">{{overviewData.followedThisMonth}}</text>
           <text class="card-label">本月随访</text>
         </view>
+        <view class="card-trend">
+          <text class="trend-text">已完成</text>
+        </view>
       </view>
 
-      <!-- 过期随访卡片 -->
+      <!-- 过期随访卡片 - 红色 -->
       <view class="overview-card overdue-followup">
-        <view class="card-icon">
-          <image src="/images/alert-triangle.png" class="icon" />
+        <view class="card-icon-wrapper">
+          <image src="/images/alert-triangle-red.png" class="card-icon" />
         </view>
         <view class="card-content">
           <text class="card-value">{{overviewData.overdueFollowup}}</text>
           <text class="card-label">过期随访</text>
         </view>
+        <view class="card-trend">
+          <text class="trend-text">需处理</text>
+        </view>
       </view>
 
-      <!-- 无随访记录卡片 -->
+      <!-- 无随访记录卡片 - 灰色 -->
       <view class="overview-card no-followup">
-        <view class="card-icon">
-          <image src="/images/user-x.png" class="icon" />
+        <view class="card-icon-wrapper">
+          <image src="/images/user-x-gray.png" class="card-icon" />
         </view>
         <view class="card-content">
           <text class="card-value">{{overviewData.noFollowupRecords}}</text>
           <text class="card-label">无随访记录</text>
+        </view>
+        <view class="card-trend">
+          <text class="trend-text">待跟进</text>
         </view>
       </view>
     </view>
