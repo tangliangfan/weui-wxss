@@ -284,9 +284,16 @@ Page({
               break;
           }
           
-          // 格式化用户数据
+          // 格式化用户数据 - 修复：为 createdAt 字段添加格式化后的字段
           const formattedUsers = filteredUsers.map(user => {
             const formattedUser = { ...user };
+            
+            // 格式化创建时间
+            if (user.createdAt) {
+              formattedUser.formattedCreatedAt = this.formatDateForDisplay(user.createdAt);
+            }
+            
+            // 格式化下次随访日期
             if (user.followups && user.followups.length > 0) {
               const latestFollowup = user.followups[user.followups.length - 1];
               formattedUser.formattedNextFollowupDate = this.formatDateForDisplay(latestFollowup.nextFollowupDate);

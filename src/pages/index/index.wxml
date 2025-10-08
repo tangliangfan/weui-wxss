@@ -238,10 +238,10 @@
               <image src="/images/map-pin.png" class="info-icon" />
               <text>{{item.address || '未设置地址'}}</text>
             </view>
-            <!-- 创建时间信息项 -->
+            <!-- 创建时间信息项 - 修复：使用格式化后的字段 -->
             <view wx:if="{{item.createdAt}}" class="info-item">
               <image src="/images/calendar.png" class="info-icon" />
-              <text>创建时间: {{formatDateForDisplay(item.createdAt)}}</text>
+              <text>创建时间: {{item.formattedCreatedAt || '未设置日期'}}</text>
             </view>
             <!-- 下次随访日期信息项，如果有随访记录才显示 -->
             <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="info-item">
