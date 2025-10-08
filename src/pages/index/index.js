@@ -37,12 +37,12 @@ Page({
     this.fetchUsers()
   },
 
-  // 页面显示生命周期函数 - 新增
+  // 页面显示生命周期函数 - 修改刷新逻辑
   onShow() {
     // 检查是否需要刷新数据
     if (this.data.needRefresh) {
       this.fetchUsers()
-      this.setData({ needRefresh: false })
+      // 注意：这里不再立即设置 needRefresh: false，而是在 fetchUsers 完成后设置
     }
   },
 
@@ -106,7 +106,8 @@ Page({
         this.setData({
           users: formattedUsers,
           filteredUsers: formattedUsers,
-          lastRefreshTime: Date.now() // 更新最后刷新时间
+          lastRefreshTime: Date.now(), // 更新最后刷新时间
+          needRefresh: false // 数据刷新完成后重置标志
         })
       }
     } catch (error) {
@@ -477,4 +478,3 @@ Page({
   // 阻止事件冒泡的辅助函数 - 在小程序中不需要此方法
   // 使用 WXML 中的 catchtap 来阻止事件冒泡
 })
-  
