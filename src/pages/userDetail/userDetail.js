@@ -65,12 +65,7 @@ Page({
         
         // 格式化随访记录并计算状态
         if (processedUserData.followups && processedUserData.followups.length > 0) {
-          processedUserData.followups = processedUserData.followups.map(followup => ({
-            ...followup,
-            formattedFollowupDate: this.formatDate(followup.followupDate),
-            formattedNextFollowupDate: this.formatDate(followup.nextFollowupDate),
-            nextFollowupStatus: this.calculateNextFollowupStatus(followup.nextFollowupDate)
-          }))
+          processedUserData.followups = this.processFollowupsWithStatus(processedUserData.followups)
         }
         
         const userInitial = processedUserData.name ? processedUserData.name.charAt(0) : '?'
@@ -92,6 +87,26 @@ Page({
     } finally {
       this.setData({ loading: false })
     }
+  },
+
+  // 处理随访记录状态计算
+  processFollowupsWithStatus(followups) {
+    return followups.map((followup, index) => {
+      const hasNextFollowup = index < followups.length - 1
+      let nextFollowupStatus = this.calculateNextFollowupStatus(followup.nextFollowupDate)
+      
+      // 如果当前记录状态为 expired 且存在下一条随访记录，则变更为 passed 状态
+      if (nextFollowupStatus === 'expired' && hasNextFollowup) {
+        nextFollowupStatus = 'passed'
+      }
+      
+      return {
+        ...followup,
+        formattedFollowupDate: this.formatDate(followup.followupDate),
+        formattedNextFollowupDate: this.formatDate(followup.nextFollowupDate),
+        nextFollowupStatus: nextFollowupStatus
+      }
+    })
   },
 
   // 计算下次随访日期状态
@@ -216,16 +231,12 @@ Page({
         previousFollowups: updatedFollowups
       })
 
-      // 格式化新添加的随访记录
-      const formattedFollowup = {
-        ...newFollowupRecord,
-        formattedFollowupDate: this.formatDate(newFollowupRecord.followupDate),
-        formattedNextFollowupDate: this.formatDate(newFollowupRecord.nextFollowupDate),
-        nextFollowupStatus: this.calculateNextFollowupStatus(newFollowupRecord.nextFollowupDate)
-      }
+      // 重新处理所有随访记录的状态
+      const allFollowups = [...updatedFollowups, newFollowupRecord]
+      const processedFollowups = this.processFollowupsWithStatus(allFollowups)
 
       this.setData({
-        'userData.followups': [...updatedFollowups, formattedFollowup],
+        'userData.followups': processedFollowups,
         showFollowupDialog: false,
         newFollowup: {
           followupDate: '',
@@ -259,24 +270,24 @@ Page({
         ...updatedFollowups[editFollowupForm.index],
         followupDate: editFollowupForm.followupDate,
         nextFollowupDate: editFollowupForm.nextFollowupDate,
-        content: editFollowupForm.content,
-        formattedFollowupDate: this.formatDate(editFollowupForm.followupDate),
-        formattedNextFollowupDate: this.formatDate(editFollowupForm.nextFollowupDate),
-        nextFollowupStatus: this.calculateNextFollowupStatus(editFollowupForm.nextFollowupDate)
+        content: editFollowupForm.content
       }
       
       updatedFollowups[editFollowupForm.index] = updatedFollowup
+
+      // 重新处理所有随访记录的状态
+      const processedFollowups = this.processFollowupsWithStatus(updatedFollowups)
 
       // 调用云函数更新随访记录
       await callCloudFunction('updateUser', {
         userId: this.data.userId,
         updateData: {
-          followups: updatedFollowups
+          followups: processedFollowups
         }
       })
 
       this.setData({
-        'userData.followups': updatedFollowups,
+        'userData.followups': processedFollowups,
         showEditFollowupDialog: false,
         editFollowupForm: {
           index: -1,
