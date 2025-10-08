@@ -32,17 +32,31 @@ Page({
     userInitial: '?',
     currentDate: '',
     newFollowupDateError: false,
-    editFollowupDateError: false
+    editFollowupDateError: false,
+    loadError: false,
+    errorMessage: ''
   },
 
   onLoad(options) {
     const { id } = options
     if (id) {
-      this.setData({ userId: id })
+      this.setData({ 
+        userId: id,
+        loading: true,
+        loadError: false,
+        errorMessage: ''
+      })
       this.fetchUserData()
     } else {
+      this.setData({
+        loading: false,
+        loadError: true,
+        errorMessage: '用户ID不存在'
+      })
       showToast('用户ID不存在', 'error')
-      wx.navigateBack()
+      setTimeout(() => {
+        this.handleBack()
+      }, 1500)
     }
     
     // 设置当前日期
@@ -50,13 +64,26 @@ Page({
     this.setData({ currentDate: today })
   },
 
-  // 获取用户详情数据
+  // 获取用户详情数据 - 修复异步操作处理
   async fetchUserData() {
     try {
-      this.setData({ loading: true })
-      const result = await callCloudFunction('getUserDetail', {
-        userId: this.data.userId
+      this.setData({ 
+        loading: true,
+        loadError: false,
+        errorMessage: ''
       })
+      
+      // 添加超时处理
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('请求超时，请检查网络连接')), 10000)
+      })
+      
+      const result = await Promise.race([
+        callCloudFunction('getUserDetail', {
+          userId: this.data.userId
+        }),
+        timeoutPromise
+      ])
       
       if (result && result.success && result.data) {
         const userData = result.data
@@ -79,10 +106,17 @@ Page({
         
         this.setData({ 
           userData: processedUserData,
-          userInitial: userInitial
+          userInitial: userInitial,
+          loading: false,
+          loadError: false
         })
       } else {
         const errorMessage = result?.message || '用户不存在'
+        this.setData({
+          loading: false,
+          loadError: true,
+          errorMessage: errorMessage
+        })
         showToast(errorMessage, 'error')
         setTimeout(() => {
           this.handleBack()
@@ -90,9 +124,13 @@ Page({
       }
     } catch (error) {
       console.error('获取用户详情失败:', error)
-      showToast('获取用户详情失败，请稍后重试', 'error')
-    } finally {
-      this.setData({ loading: false })
+      const errorMsg = error.message || '获取用户详情失败，请稍后重试'
+      this.setData({
+        loading: false,
+        loadError: true,
+        errorMessage: errorMsg
+      })
+      showToast(errorMsg, 'error')
     }
   },
 
@@ -171,6 +209,16 @@ Page({
   // 返回上一页
   handleBack() {
     wx.navigateBack()
+  },
+
+  // 重新加载数据
+  handleRetry() {
+    this.setData({
+      loading: true,
+      loadError: false,
+      errorMessage: ''
+    })
+    this.fetchUserData()
   },
 
   // 打开新增随访弹窗
