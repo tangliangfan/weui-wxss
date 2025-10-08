@@ -48,6 +48,25 @@ Component({
   },
 
   methods: {
+    // 日期选择变化处理
+    onDateChange(e) {
+      const { field } = e.currentTarget.dataset
+      const value = e.detail.value
+      
+      // 更新数据
+      const newData = { ...this.data.followupData, [field]: value }
+      
+      this.setData({
+        followupData: newData
+      })
+      
+      // 验证日期
+      this.validateDates(newData)
+      
+      // 触发输入事件
+      this.triggerEvent('input', { field, value })
+    },
+
     // 输入处理
     onInput(e) {
       const { field } = e.currentTarget.dataset
@@ -55,11 +74,6 @@ Component({
       
       // 更新数据
       const newData = { ...this.data.followupData, [field]: value }
-      
-      // 验证日期
-      if (field === 'nextFollowupDate' || field === 'followupDate') {
-        this.validateDates(newData)
-      }
       
       this.setData({
         followupData: newData
