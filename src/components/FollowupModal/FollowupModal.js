@@ -27,7 +27,8 @@ Component({
           'localFollowupData.nextFollowupDate': newVal.nextFollowupDate || '',
           'localFollowupData.content': newVal.content || ''
         });
-        this.validateDates(newVal);
+        // 只验证日期，不触发事件，避免递归更新
+        this.validateDatesSilent(newVal);
       }
     },
     // 是否正在编辑模式
@@ -96,7 +97,22 @@ Component({
       })
     },
 
-    // 验证日期
+    // 验证日期（不触发事件）
+    validateDatesSilent(data) {
+      const { followupDate, nextFollowupDate } = data
+      
+      if (followupDate && nextFollowupDate) {
+        const followup = new Date(followupDate)
+        const nextFollowup = new Date(nextFollowupDate)
+        const dateError = nextFollowup < followup
+        
+        this.setData({ dateError })
+      } else {
+        this.setData({ dateError: false })
+      }
+    },
+
+    // 验证日期（触发事件）
     validateDates(data) {
       const { followupDate, nextFollowupDate } = data
       
@@ -148,8 +164,8 @@ Component({
           content: followupData.content || ''
         }
       })
-      // 初始化时验证日期
-      this.validateDates(this.data.localFollowupData)
+      // 初始化时验证日期（不触发事件）
+      this.validateDatesSilent(this.data.localFollowupData)
     }
   }
 })
