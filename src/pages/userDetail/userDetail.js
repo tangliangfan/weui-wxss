@@ -348,9 +348,12 @@ Page({
       })
 
       showToast('随访记录已保存', 'success')
+      
+      // 设置全局刷新标志，通知首页刷新数据
+      this.setGlobalRefreshFlag()
     } catch (error) {
       console.error('保存随访记录失败:', error)
-      showToast('保存随访记录失败，请稍后重试', 'error')
+      showToast('保存随访记录失败', 'error')
     } finally {
       this.setData({ saving: false })
     }
@@ -407,9 +410,12 @@ Page({
       })
 
       showToast('随访记录已更新', 'success')
+      
+      // 设置全局刷新标志，通知首页刷新数据
+      this.setGlobalRefreshFlag()
     } catch (error) {
       console.error('更新随访记录失败:', error)
-      showToast('更新随访记录失败，请稍后重试', 'error')
+      showToast('更新随访记录失败', 'error')
     } finally {
       this.setData({ saving: false })
     }
@@ -464,9 +470,12 @@ Page({
       })
 
       showToast('基本信息已更新', 'success')
+      
+      // 设置全局刷新标志，通知首页刷新数据
+      this.setGlobalRefreshFlag()
     } catch (error) {
       console.error('保存基本信息失败:', error)
-      showToast('保存基本信息失败，请稍后重试', 'error')
+      showToast('保存基本信息失败', 'error')
     } finally {
       this.setData({ saving: false })
     }
@@ -545,11 +554,29 @@ Page({
       })
 
       showToast('健康档案已更新', 'success')
+      
+      // 设置全局刷新标志，通知首页刷新数据
+      this.setGlobalRefreshFlag()
     } catch (error) {
       console.error('保存健康档案失败:', error)
-      showToast('保存健康档案失败，请稍后重试', 'error')
+      showToast('保存健康档案失败', 'error')
     } finally {
       this.setData({ saving: false })
+    }
+  },
+
+  // 设置全局刷新标志
+  setGlobalRefreshFlag() {
+    // 获取首页页面实例
+    const pages = getCurrentPages()
+    if (pages.length > 1) {
+      const indexPage = pages[0]
+      if (indexPage && indexPage.setData) {
+        // 设置首页的 needRefresh 标志为 true
+        indexPage.setData({
+          needRefresh: true
+        })
+      }
     }
   },
 
