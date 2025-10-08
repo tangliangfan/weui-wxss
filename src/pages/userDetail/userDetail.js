@@ -63,9 +63,9 @@ Page({
           followups: userData.followups || []
         }
         
-        // 格式化随访记录并计算状态
+        // 格式化随访记录并计算状态 - 优化性能，只处理最后两条记录
         if (processedUserData.followups && processedUserData.followups.length > 0) {
-          processedUserData.followups = this.processFollowupsWithStatus(processedUserData.followups)
+          processedUserData.followups = this.processFollowupsWithStatusOptimized(processedUserData.followups)
         }
         
         const userInitial = processedUserData.name ? processedUserData.name.charAt(0) : '?'
@@ -89,22 +89,56 @@ Page({
     }
   },
 
-  // 处理随访记录状态计算
-  processFollowupsWithStatus(followups) {
+  // 优化后的随访记录状态计算方法 - 只处理最后两条记录
+  processFollowupsWithStatusOptimized(followups) {
+    const totalRecords = followups.length
+    
+    // 如果记录数量很少，直接处理所有记录
+    if (totalRecords <= 2) {
+      return followups.map((followup, index) => {
+        const hasNextFollowup = index < totalRecords - 1
+        let nextFollowupStatus = this.calculateNextFollowupStatus(followup.nextFollowupDate)
+        
+        // 如果当前记录状态为 expired 且存在下一条随访记录，则变更为 passed 状态
+        if (nextFollowupStatus === 'expired' && hasNextFollowup) {
+          nextFollowupStatus = 'passed'
+        }
+        
+        return {
+          ...followup,
+          formattedFollowupDate: this.formatDate(followup.followupDate),
+          formattedNextFollowupDate: this.formatDate(followup.nextFollowupDate),
+          nextFollowupStatus: nextFollowupStatus
+        }
+      })
+    }
+    
+    // 对于大量记录，只处理最后两条记录，前面的记录保持原样
     return followups.map((followup, index) => {
-      const hasNextFollowup = index < followups.length - 1
-      let nextFollowupStatus = this.calculateNextFollowupStatus(followup.nextFollowupDate)
-      
-      // 如果当前记录状态为 expired 且存在下一条随访记录，则变更为 passed 状态
-      if (nextFollowupStatus === 'expired' && hasNextFollowup) {
-        nextFollowupStatus = 'passed'
-      }
-      
-      return {
-        ...followup,
-        formattedFollowupDate: this.formatDate(followup.followupDate),
-        formattedNextFollowupDate: this.formatDate(followup.nextFollowupDate),
-        nextFollowupStatus: nextFollowupStatus
+      // 只处理最后两条记录
+      if (index >= totalRecords - 2) {
+        const hasNextFollowup = index < totalRecords - 1
+        let nextFollowupStatus = this.calculateNextFollowupStatus(followup.nextFollowupDate)
+        
+        // 如果当前记录状态为 expired 且存在下一条随访记录，则变更为 passed 状态
+        if (nextFollowupStatus === 'expired' && hasNextFollowup) {
+          nextFollowupStatus = 'passed'
+        }
+        
+        return {
+          ...followup,
+          formattedFollowupDate: this.formatDate(followup.followupDate),
+          formattedNextFollowupDate: this.formatDate(followup.nextFollowupDate),
+          nextFollowupStatus: nextFollowupStatus
+        }
+      } else {
+        // 前面的记录保持原样，只确保有基本的状态字段
+        return {
+          ...followup,
+          formattedFollowupDate: this.formatDate(followup.followupDate),
+          formattedNextFollowupDate: this.formatDate(followup.nextFollowupDate),
+          nextFollowupStatus: followup.nextFollowupStatus || this.calculateNextFollowupStatus(followup.nextFollowupDate)
+        }
       }
     })
   },
@@ -231,9 +265,9 @@ Page({
         previousFollowups: updatedFollowups
       })
 
-      // 重新处理所有随访记录的状态
+      // 重新处理随访记录的状态 - 使用优化后的方法
       const allFollowups = [...updatedFollowups, newFollowupRecord]
-      const processedFollowups = this.processFollowupsWithStatus(allFollowups)
+      const processedFollowups = this.processFollowupsWithStatusOptimized(allFollowups)
 
       this.setData({
         'userData.followups': processedFollowups,
@@ -275,8 +309,8 @@ Page({
       
       updatedFollowups[editFollowupForm.index] = updatedFollowup
 
-      // 重新处理所有随访记录的状态
-      const processedFollowups = this.processFollowupsWithStatus(updatedFollowups)
+      // 重新处理随访记录的状态 - 使用优化后的方法
+      const processedFollowups = this.processFollowupsWithStatusOptimized(updatedFollowups)
 
       // 调用云函数更新随访记录
       await callCloudFunction('updateUser', {
