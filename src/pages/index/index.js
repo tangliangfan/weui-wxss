@@ -28,7 +28,16 @@ Page({
     userToDelete: null, // 待删除的用户对象
     deleting: false, // 删除操作加载状态
     lastRefreshTime: 0, // 上次刷新时间戳
-    needRefresh: false // 是否需要刷新标志
+    needRefresh: false, // 是否需要刷新标志
+    // 新增数据总览统计
+    dashboardStats: {
+      totalUsers: 0, // 用户总人数
+      newUsersThisYear: 0, // 本年新增用户数（由于模型限制，暂用总人数代替）
+      followedThisMonth: 0, // 本月已随访人数
+      overdueFollowup: 0, // 已过随访日期人数
+      noFollowup: 0 // 无随访记录人数
+    },
+    dashboardLoading: true // 数据总览加载状态
   },
 
   // 页面加载生命周期函数
@@ -58,12 +67,20 @@ Page({
   async fetchUsers() {
     try {
       // 设置加载状态为true，显示加载动画
-      this.setData({ loading: true })
+      this.setData({ 
+        loading: true,
+        dashboardLoading: true 
+      })
       // 调用云函数获取用户列表，不传搜索条件获取所有用户
       const result = await callCloudFunction('getUsers', {})
       
       // 检查云函数返回结果是否成功且有数据
       if (result.success && result.data && result.data.records) {
+        const allUsers = result.data.records
+        
+        // 计算数据总览统计
+        this.calculateDashboardStats(allUsers)
+        
         // 获取当前日期
         const today = new Date()
         // 计算7天后的日期
@@ -71,7 +88,7 @@ Page({
         sevenDaysLater.setDate(today.getDate() + 7)
         
         // 筛选出需要随访的用户（7天内或已过期）
-        const followupUsers = result.data.records.filter(user => {
+        const followupUsers = allUsers.filter(user => {
           // 如果没有随访记录，过滤掉该用户
           if (!user.followups || user.followups.length === 0) return false
 
@@ -116,8 +133,61 @@ Page({
       showToast('数据加载失败，请稍后重试', 'error')
     } finally {
       // 无论成功或失败，都设置加载状态为false，隐藏加载动画
-      this.setData({ loading: false })
+      this.setData({ 
+        loading: false,
+        dashboardLoading: false 
+      })
     }
+  },
+
+  // 计算数据总览统计
+  calculateDashboardStats(users) {
+    const today = new Date()
+    const currentMonth = today.getMonth()
+    const currentYear = today.getFullYear()
+    
+    let totalUsers = users.length
+    let followedThisMonth = 0
+    let overdueFollowup = 0
+    let noFollowup = 0
+    
+    // 遍历所有用户计算统计
+    users.forEach(user => {
+      // 统计无随访记录人数
+      if (!user.followups || user.followups.length === 0) {
+        noFollowup++
+        return
+      }
+      
+      const latestFollowup = user.followups[user.followups.length - 1]
+      
+      // 统计本月已随访人数（本月有随访记录）
+      if (latestFollowup.followupDate) {
+        const followupDate = new Date(latestFollowup.followupDate)
+        if (followupDate.getMonth() === currentMonth && followupDate.getFullYear() === currentYear) {
+          followedThisMonth++
+        }
+      }
+      
+      // 统计已过随访日期人数
+      if (latestFollowup.nextFollowupDate) {
+        const nextFollowupDate = new Date(latestFollowup.nextFollowupDate)
+        if (nextFollowupDate < today) {
+          overdueFollowup++
+        }
+      }
+    })
+    
+    // 更新数据总览统计
+    this.setData({
+      dashboardStats: {
+        totalUsers: totalUsers,
+        newUsersThisYear: totalUsers, // 由于模型限制，暂用总人数代替本年新增
+        followedThisMonth: followedThisMonth,
+        overdueFollowup: overdueFollowup,
+        noFollowup: noFollowup
+      }
+    })
   },
 
   // 搜索输入处理函数
@@ -478,3 +548,4 @@ Page({
   // 阻止事件冒泡的辅助函数 - 在小程序中不需要此方法
   // 使用 WXML 中的 catchtap 来阻止事件冒泡
 })
+  
