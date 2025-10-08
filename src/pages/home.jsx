@@ -32,28 +32,11 @@ export default function HomePage(props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  // 监听页面显示事件，当从其他页面返回时刷新数据
-  useEffect(() => {
-    const handlePageShow = () => {
-      // 当页面显示时刷新用户数据
-      fetchUsers();
-    };
-
-    // 添加页面显示事件监听
-    window.addEventListener('pageshow', handlePageShow);
-
-    // 组件卸载时移除监听
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow);
-    };
-  }, []);
 
   // 从数据模型查询用户数据
   useEffect(() => {
     fetchUsers();
-  }, [refreshTrigger]);
+  }, []);
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -95,11 +78,6 @@ export default function HomePage(props) {
     } finally {
       setLoading(false);
     }
-  };
-
-  // 手动刷新函数，可以从其他页面调用
-  const refreshHomeData = () => {
-    setRefreshTrigger(prev => prev + 1);
   };
 
   // 过滤用户列表
@@ -276,9 +254,7 @@ export default function HomePage(props) {
     $w.utils.navigateTo({
       pageId: 'userDetail',
       params: {
-        id: user._id,
-        // 传递刷新函数，让详情页可以触发首页刷新
-        onReturnRefresh: true
+        id: user._id
       }
     });
   };

@@ -26,13 +26,24 @@ Page({
     },
     showDeleteDialog: false, // 控制删除确认对话框显示
     userToDelete: null, // 待删除的用户对象
-    deleting: false // 删除操作加载状态
+    deleting: false, // 删除操作加载状态
+    lastRefreshTime: 0, // 上次刷新时间戳
+    needRefresh: false // 是否需要刷新标志
   },
 
   // 页面加载生命周期函数
   onLoad() {
     // 页面加载时获取用户列表
     this.fetchUsers()
+  },
+
+  // 页面显示生命周期函数 - 新增
+  onShow() {
+    // 检查是否需要刷新数据
+    if (this.data.needRefresh) {
+      this.fetchUsers()
+      this.setData({ needRefresh: false })
+    }
   },
 
   // 下拉刷新生命周期函数
@@ -94,7 +105,8 @@ Page({
         // 更新页面数据，设置用户列表和过滤后的用户列表
         this.setData({
           users: formattedUsers,
-          filteredUsers: formattedUsers
+          filteredUsers: formattedUsers,
+          lastRefreshTime: Date.now() // 更新最后刷新时间
         })
       }
     } catch (error) {
@@ -257,6 +269,9 @@ Page({
       searchText: ''
     })
     
+    // 设置需要刷新标志，当从详情页返回时刷新数据
+    this.setData({ needRefresh: true })
+    
     // 跳转到用户详情页面，传递用户ID参数
     wx.navigateTo({
       url: `/pages/userDetail/userDetail?id=${user._id}`
@@ -269,6 +284,9 @@ Page({
     const user = e.currentTarget.dataset.user
     // 关闭搜索模态框
     this.setData({ showSearchModal: false })
+    
+    // 设置需要刷新标志，当从详情页返回时刷新数据
+    this.setData({ needRefresh: true })
     
     // 跳转到用户详情页面，传递用户ID参数
     wx.navigateTo({
@@ -459,3 +477,4 @@ Page({
   // 阻止事件冒泡的辅助函数 - 在小程序中不需要此方法
   // 使用 WXML 中的 catchtap 来阻止事件冒泡
 })
+  
