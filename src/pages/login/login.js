@@ -29,7 +29,13 @@ Page({
     const { username, password } = this.data.formData;
     
     if (!username || !password) {
-      showToast('请填写账号和密码');
+      // 使用自定义的 toast 样式确保文字完整显示
+      wx.showToast({
+        title: '请填写账号和密码',
+        icon: 'none',
+        duration: 2000,
+        mask: true
+      });
       return;
     }
 
@@ -44,7 +50,13 @@ Page({
         wx.setStorageSync('token', result.data.token);
         wx.setStorageSync('userInfo', result.data.user);
         
-        showToast('登录成功', 'success');
+        // 使用自定义的 toast 样式确保文字完整显示
+        wx.showToast({
+          title: '登录成功',
+          icon: 'success',
+          duration: 1000,
+          mask: true
+        });
         
         // 跳转到首页
         setTimeout(() => {
@@ -53,14 +65,25 @@ Page({
           });
         }, 1000);
       } else {
-        showToast(result.message || '登录失败');
+        // 使用自定义的 toast 样式确保文字完整显示
+        wx.showToast({
+          title: result.message || '登录失败',
+          icon: 'none',
+          duration: 2000,
+          mask: true
+        });
       }
     } catch (error) {
       console.error('登录错误:', error);
-      showToast('网络连接异常，请稍后重试');
+      // 使用自定义的 toast 样式确保文字完整显示
+      wx.showToast({
+        title: '网络连接异常，请稍后重试',
+        icon: 'none',
+        duration: 2000,
+        mask: true
+      });
     } finally {
       this.setData({ loading: false });
     }
   }
 });
-  

@@ -71,6 +71,8 @@
   padding: 28rpx;
   font-size: 28rpx;
   background: white;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input:focus {
@@ -87,6 +89,7 @@
   top: 50%;
   transform: translateY(-50%);
   padding: 20rpx;
+  z-index: 10;
 }
 
 .eye-image {
@@ -103,6 +106,7 @@
   font-size: 32rpx;
   font-weight: 600;
   margin: 40rpx 60rpx;
+  width: calc(100% - 120rpx);
 }
 
 .login-btn:active {
@@ -122,4 +126,15 @@
   font-size: 24rpx;
   color: #9ca3af;
 }
-  
+
+/* 修复 Toast 提示框样式 */
+.toast-container {
+  max-width: 80%;
+  word-break: break-all;
+  text-align: center;
+}
+
+.toast-text {
+  font-size: 28rpx;
+  line-height: 1.4;
+}
