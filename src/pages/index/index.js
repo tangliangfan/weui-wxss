@@ -37,7 +37,12 @@ Page({
       overdueFollowup: 0, // 已过随访日期人数
       noFollowupRecords: 0 // 无随访记录人数
     },
-    overviewLoading: false // 总览数据加载状态
+    overviewLoading: false, // 总览数据加载状态
+    showOverviewDetailModal: false, // 控制数据卡片详情模态框显示
+    overviewModalTitle: '', // 数据卡片模态框标题
+    overviewDetailUsers: [], // 数据卡片详情用户列表
+    overviewDetailLoading: false, // 数据卡片详情加载状态
+    currentOverviewType: '' // 当前选中的数据卡片类型
   },
 
   // 页面加载生命周期函数
@@ -187,6 +192,145 @@ Page({
         // 无论成功或失败，都设置加载状态为false，隐藏加载动画
         this.setData({ loading: false })
       }
+    },
+    
+    // 数据卡片点击事件处理
+    async handleOverviewCardClick(e) {
+      const { type } = e.currentTarget.dataset;
+      this.setData({ 
+        currentOverviewType: type,
+        overviewDetailLoading: true,
+        showOverviewDetailModal: true
+      });
+      
+      // 设置模态框标题
+      let modalTitle = '';
+      switch (type) {
+        case 'total':
+          modalTitle = '所有用户';
+          break;
+        case 'yearNew':
+          modalTitle = '本年新增用户';
+          break;
+        case 'monthNew':
+          modalTitle = '本月新增用户';
+          break;
+        case 'monthFollowed':
+          modalTitle = '本月已随访用户';
+          break;
+        case 'overdue':
+          modalTitle = '过期随访用户';
+          break;
+        case 'noFollowup':
+          modalTitle = '无随访记录用户';
+          break;
+        default:
+          modalTitle = '用户列表';
+      }
+      
+      this.setData({ overviewModalTitle: modalTitle });
+      
+      try {
+        // 调用云函数获取所有用户数据
+        const result = await callCloudFunction('getUsers', {});
+        
+        if (result.success && result.data && result.data.records) {
+          const allUsers = result.data.records;
+          const currentYear = new Date().getFullYear();
+          const currentMonth = new Date().getMonth();
+          const today = new Date();
+          
+          // 根据卡片类型筛选用户
+          let filteredUsers = [];
+          switch (type) {
+            case 'total':
+              filteredUsers = allUsers;
+              break;
+            case 'yearNew':
+              filteredUsers = allUsers.filter(user => {
+                const createDate = new Date(user.createdAt);
+                return createDate.getFullYear() === currentYear;
+              });
+              break;
+            case 'monthNew':
+              filteredUsers = allUsers.filter(user => {
+                const createDate = new Date(user.createdAt);
+                return createDate.getFullYear() === currentYear && 
+                       createDate.getMonth() === currentMonth;
+              });
+              break;
+            case 'monthFollowed':
+              filteredUsers = allUsers.filter(user => {
+                if (!user.followups || user.followups.length === 0) return false;
+                const latestFollowup = user.followups[user.followups.length - 1];
+                const followupDate = new Date(latestFollowup.followupDate);
+                return followupDate.getFullYear() === currentYear && 
+                       followupDate.getMonth() === currentMonth;
+              });
+              break;
+            case 'overdue':
+              filteredUsers = allUsers.filter(user => {
+                if (!user.followups || user.followups.length === 0) return false;
+                const latestFollowup = user.followups[user.followups.length - 1];
+                if (!latestFollowup.nextFollowupDate) return false;
+                const nextDate = new Date(latestFollowup.nextFollowupDate);
+                return nextDate < today;
+              });
+              break;
+            case 'noFollowup':
+              filteredUsers = allUsers.filter(user => 
+                !user.followups || user.followups.length === 0
+              );
+              break;
+          }
+          
+          // 格式化用户数据
+          const formattedUsers = filteredUsers.map(user => {
+            const formattedUser = { ...user };
+            if (user.followups && user.followups.length > 0) {
+              const latestFollowup = user.followups[user.followups.length - 1];
+              formattedUser.formattedNextFollowupDate = this.formatDateForDisplay(latestFollowup.nextFollowupDate);
+            }
+            
+            // 预处理状态信息
+            const statusInfo = this.getStatusInfo(user);
+            formattedUser.statusClass = statusInfo.class;
+            formattedUser.statusText = statusInfo.text;
+            
+            return formattedUser;
+          });
+          
+          this.setData({ overviewDetailUsers: formattedUsers });
+        }
+      } catch (error) {
+        console.error('获取用户数据失败:', error);
+        showToast('数据加载失败', 'error');
+      } finally {
+        this.setData({ overviewDetailLoading: false });
+      }
+    },
+    
+    // 数据卡片详情用户点击事件
+    handleOverviewDetailUserClick(e) {
+      const user = e.currentTarget.dataset.user;
+      this.hideOverviewDetailModal();
+      
+      // 设置需要刷新标志，当从详情页返回时刷新数据
+      this.setData({ needRefresh: true });
+      
+      // 跳转到用户详情页面，传递用户ID参数
+      wx.navigateTo({
+        url: `/pages/userDetail/userDetail?id=${user._id}`
+      });
+    },
+    
+    // 关闭数据卡片详情模态框
+    hideOverviewDetailModal() {
+      this.setData({
+        showOverviewDetailModal: false,
+        overviewDetailUsers: [],
+        overviewDetailLoading: false
+      });
     },
     
     // 搜索输入处理函数

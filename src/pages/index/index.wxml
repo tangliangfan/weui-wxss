@@ -36,7 +36,7 @@
     <!-- 总览卡片网格布局 - 3×2 网格 -->
     <view wx:else class="overview-grid">
       <!-- 用户总数卡片 - 蓝色 -->
-      <view class="overview-card total-users">
+      <view class="overview-card total-users" bindtap="handleOverviewCardClick" data-type="total">
         <view class="card-icon-wrapper">
           <image src="/images/users-blue.png" class="card-icon" />
         </view>
@@ -50,7 +50,7 @@
       </view>
 
       <!-- 本年新增用户卡片 - 青色 -->
-      <view class="overview-card new-users-year">
+      <view class="overview-card new-users-year" bindtap="handleOverviewCardClick" data-type="yearNew">
         <view class="card-icon-wrapper">
           <image src="/images/user-plus-cyan.png" class="card-icon" />
         </view>
@@ -64,7 +64,7 @@
       </view>
 
       <!-- 本月新增用户卡片 - 紫色 -->
-      <view class="overview-card new-users-month">
+      <view class="overview-card new-users-month" bindtap="handleOverviewCardClick" data-type="monthNew">
         <view class="card-icon-wrapper">
           <image src="/images/user-plus-purple.png" class="card-icon" />
         </view>
@@ -78,7 +78,7 @@
       </view>
 
       <!-- 本月随访卡片 - 绿色 -->
-      <view class="overview-card followed-month">
+      <view class="overview-card followed-month" bindtap="handleOverviewCardClick" data-type="monthFollowed">
         <view class="card-icon-wrapper">
           <image src="/images/calendar-check-green.png" class="card-icon" />
         </view>
@@ -92,7 +92,7 @@
       </view>
 
       <!-- 过期随访卡片 - 红色 -->
-      <view class="overview-card overdue-followup">
+      <view class="overview-card overdue-followup" bindtap="handleOverviewCardClick" data-type="overdue">
         <view class="card-icon-wrapper">
           <image src="/images/alert-triangle-red.png" class="card-icon" />
         </view>
@@ -106,7 +106,7 @@
       </view>
 
       <!-- 无随访记录卡片 - 灰色 -->
-      <view class="overview-card no-followup">
+      <view class="overview-card no-followup" bindtap="handleOverviewCardClick" data-type="noFollowup">
         <view class="card-icon-wrapper">
           <image src="/images/user-x-gray.png" class="card-icon" />
         </view>
@@ -190,6 +190,70 @@
   </view>
 </view>
 
+  <!-- 数据卡片详情模态框 -->
+  <view wx:if="{{showOverviewDetailModal}}" class="modal">
+    <view class="modal-content overview-detail-modal">
+      <!-- 弹窗头部 -->
+      <view class="modal-header">
+        <text class="modal-title">{{overviewModalTitle}}</text>
+        <text class="modal-subtitle">共 {{overviewDetailUsers.length}} 位用户</text>
+        <!-- 关闭按钮 -->
+        <image src="/images/close.png" class="close-icon" bindtap="hideOverviewDetailModal" />
+      </view>
+
+      <!-- 弹窗内容区域，可滚动 -->
+      <scroll-view class="modal-body" scroll-y>
+        <!-- 加载中状态 -->
+        <view wx:if="{{overviewDetailLoading}}" class="loading">
+          <image src="/images/loading.gif" class="loading-icon" />
+          <text>加载中...</text>
+        </view>
+
+        <!-- 空状态显示 -->
+        <view wx:if="{{!overviewDetailLoading && overviewDetailUsers.length === 0}}" class="empty">
+          <image src="/images/user-empty.png" class="empty-icon" />
+          <text>暂无相关用户</text>
+        </view>
+
+        <!-- 用户列表循环渲染 -->
+        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card" bindtap="handleOverviewDetailUserClick" data-user="{{item}}">
+          <!-- 用户卡片头部 -->
+          <view class="user-header">
+            <text class="user-name">{{item.name || '未命名用户'}}</text>
+            <!-- 状态标签 -->
+            <view class="status-badge {{item.statusClass}}">
+              {{item.statusText}}
+            </view>
+          </view>
+
+          <!-- 用户信息详情区域 -->
+          <view class="user-info">
+            <!-- 手机号信息项 -->
+            <view class="info-item">
+              <image src="/images/phone.png" class="info-icon" />
+              <text>{{item.phone || '未设置手机号'}}</text>
+            </view>
+            <!-- 地址信息项 -->
+            <view class="info-item">
+              <image src="/images/map-pin.png" class="info-icon" />
+              <text>{{item.address || '未设置地址'}}</text>
+            </view>
+            <!-- 创建时间信息项 -->
+            <view wx:if="{{item.createdAt}}" class="info-item">
+              <image src="/images/calendar.png" class="info-icon" />
+              <text>创建时间: {{formatDateForDisplay(item.createdAt)}}</text>
+            </view>
+            <!-- 下次随访日期信息项，如果有随访记录才显示 -->
+            <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="info-item">
+              <image src="/images/calendar.png" class="info-icon" />
+              <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
   <!-- 搜索弹窗模态框 - 优化头部排版 -->
   <view wx:if="{{showSearchModal}}" class="modal">
     <view class="modal-content search-modal">
@@ -234,21 +298,21 @@
             <view class="result-info-item">
               <image src="/images/phone.png" class="result-info-icon" />
               <text>{{item.phone || '未设置手机号'}}</text>
+            </view>
+            <view class="result-info-item">
+              <image src="/images/map-pin.png" class="result-info-icon" />
+              <text>{{item.address || '未设置地址'}}</text>
+            </view>
+            <!-- 下次随访日期显示 -->
+            <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="result-info-item">
+              <image src="/images/calendar.png" class="result-info-icon" />
+              <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
+            </view>
+          </view>
         </view>
-        <view class="result-info-item">
-          <image src="/images/map-pin.png" class="result-info-icon" />
-          <text>{{item.address || '未设置地址'}}</text>
-        </view>
-        <!-- 下次随访日期显示 -->
-        <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="result-info-item">
-          <image src="/images/calendar.png" class="result-info-icon" />
-          <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
-        </view>
-      </view>
+      </scroll-view>
     </view>
-  </scroll-view>
-</view>
-</view>
+  </view>
 
   <!-- 添加用户模态框 -->
   <view wx:if="{{showAddUserModal}}" class="modal">

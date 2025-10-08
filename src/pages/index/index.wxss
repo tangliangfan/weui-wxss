@@ -123,6 +123,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .overview-card:active {
@@ -272,6 +273,92 @@
 .overview-card.no-followup .trend-text {
   color: #4b5563;
   background: rgba(107, 114, 128, 0.1);
+}
+
+/* 数据卡片详情模态框样式 */
+.modal-content.overview-detail-modal {
+  width: 90%;
+  max-width: 700rpx;
+  max-height: 80vh;
+}
+
+.overview-detail-modal .modal-header {
+  position: relative;
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  text-align: center;
+}
+
+.overview-detail-modal .modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.overview-detail-modal .modal-subtitle {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.overview-detail-modal .modal-body {
+  padding: 24rpx;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* 数据卡片详情用户卡片样式 */
+.overview-detail-user-card {
+  position: relative;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  background: #ffffff;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  border: 1rpx solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.overview-detail-user-card:active {
+  transform: translateY(1rpx);
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.08);
+}
+
+.overview-detail-user-card:last-child {
+  margin-bottom: 0;
+}
+
+.overview-detail-user-card .user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.overview-detail-user-card .user-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.overview-detail-user-card .user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.overview-detail-user-card .info-item {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.overview-detail-user-card .info-icon {
+  width: 26rpx;
+  height: 26rpx;
+  opacity: 0.6;
 }
 
 /* 添加用户按钮样式 */
