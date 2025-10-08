@@ -19,6 +19,15 @@ Component({
         followupDate: '',
         nextFollowupDate: '',
         content: ''
+      },
+      observer: function(newVal) {
+        // 当外部传入的 followupData 变化时，更新内部数据
+        this.setData({
+          'localFollowupData.followupDate': newVal.followupDate || '',
+          'localFollowupData.nextFollowupDate': newVal.nextFollowupDate || '',
+          'localFollowupData.content': newVal.content || ''
+        });
+        this.validateDates(newVal);
       }
     },
     // 是否正在编辑模式
@@ -44,7 +53,13 @@ Component({
   },
 
   data: {
-    dateError: false
+    dateError: false,
+    // 内部使用的随访数据，用于显示
+    localFollowupData: {
+      followupDate: '',
+      nextFollowupDate: '',
+      content: ''
+    }
   },
 
   methods: {
@@ -53,17 +68,22 @@ Component({
       const { field } = e.currentTarget.dataset
       const value = e.detail.value
       
-      // 更新数据
-      const newData = { ...this.data.followupData, [field]: value }
+      // 更新内部数据
+      const newData = { 
+        ...this.data.localFollowupData, 
+        [field]: value 
+      }
       
       this.setData({
-        followupData: newData
+        'localFollowupData.followupDate': newData.followupDate,
+        'localFollowupData.nextFollowupDate': newData.nextFollowupDate,
+        'localFollowupData.content': newData.content
       })
       
       // 验证日期
       this.validateDates(newData)
       
-      // 触发输入事件
+      // 触发输入事件，通知父组件
       this.triggerEvent('input', { field, value })
     },
 
@@ -72,14 +92,19 @@ Component({
       const { field } = e.currentTarget.dataset
       const value = e.detail.value
       
-      // 更新数据
-      const newData = { ...this.data.followupData, [field]: value }
+      // 更新内部数据
+      const newData = { 
+        ...this.data.localFollowupData, 
+        [field]: value 
+      }
       
       this.setData({
-        followupData: newData
+        'localFollowupData.followupDate': newData.followupDate,
+        'localFollowupData.nextFollowupDate': newData.nextFollowupDate,
+        'localFollowupData.content': newData.content
       })
       
-      // 触发输入事件
+      // 触发输入事件，通知父组件
       this.triggerEvent('input', { field, value })
     },
 
@@ -118,7 +143,7 @@ Component({
     // 确认
     onConfirm() {
       if (!this.data.dateError) {
-        this.triggerEvent('confirm', this.data.followupData)
+        this.triggerEvent('confirm', this.data.localFollowupData)
       }
     }
   },
@@ -126,8 +151,17 @@ Component({
   // 组件生命周期
   lifetimes: {
     attached() {
+      // 初始化时设置内部数据
+      const { followupData } = this.data
+      this.setData({
+        localFollowupData: {
+          followupDate: followupData.followupDate || '',
+          nextFollowupDate: followupData.nextFollowupDate || '',
+          content: followupData.content || ''
+        }
+      })
       // 初始化时验证日期
-      this.validateDates(this.data.followupData)
+      this.validateDates(this.data.localFollowupData)
     }
   }
 })
