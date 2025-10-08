@@ -41,38 +41,6 @@
       "items": {
         "type": "Object"
       }
-    },
-    {
-      "name": "lastFollowupDate",
-      "title": "最后随访日期",
-      "type": "DateTime",
-      "format": "timestamp-ms"
-    },
-    {
-      "name": "nextFollowupDate",
-      "title": "下次随访日期",
-      "type": "DateTime",
-      "format": "timestamp-ms"
-    },
-    {
-      "name": "followupStatus",
-      "title": "随访状态",
-      "type": "String"
-    },
-    {
-      "name": "yearCreated",
-      "title": "创建年份",
-      "type": "Number"
-    },
-    {
-      "name": "monthCreated",
-      "title": "创建月份",
-      "type": "Number"
-    },
-    {
-      "name": "hasFollowupRecords",
-      "title": "是否有随访记录",
-      "type": "Boolean"
     }
   ]
 }

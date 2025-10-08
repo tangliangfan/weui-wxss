@@ -29,28 +29,21 @@ Page({
     deleting: false, // 删除操作加载状态
     lastRefreshTime: 0, // 上次刷新时间戳
     needRefresh: false, // 是否需要刷新标志
-    // 新增统计数据
-    statistics: {
+    overviewData: { // 数据总览统计
       totalUsers: 0, // 用户总人数
       newUsersThisYear: 0, // 本年新增用户数
       followedThisMonth: 0, // 本月已随访人数
       overdueFollowup: 0, // 已过随访日期人数
-      noFollowupRecords: 0, // 无随访记录人数
-      followupStatus: { // 随访状态分布
-        active: 0, // 活跃随访
-        expired: 0, // 已过期
-        passed: 0 // 已完成
-      }
+      noFollowupRecords: 0 // 无随访记录人数
     },
-    statsLoading: false, // 统计加载状态
-    showStatsChart: false // 控制统计图表显示
+    overviewLoading: false // 总览数据加载状态
   },
 
   // 页面加载生命周期函数
   onLoad() {
-    // 页面加载时获取用户列表和统计数据
+    // 页面加载时获取用户列表和数据总览
     this.fetchUsers()
-    this.fetchStatistics()
+    this.fetchOverviewData()
   },
 
   // 页面显示生命周期函数 - 修改刷新逻辑
@@ -58,121 +51,70 @@ Page({
     // 检查是否需要刷新数据
     if (this.data.needRefresh) {
       this.fetchUsers()
-      this.fetchStatistics()
+      this.fetchOverviewData()
       // 注意：这里不再立即设置 needRefresh: false，而是在 fetchUsers 完成后设置
     }
   },
 
   // 下拉刷新生命周期函数
   onPullDownRefresh() {
-    // 下拉刷新时重新获取用户列表和统计数据，完成后停止下拉刷新动画
+    // 下拉刷新时重新获取用户列表和数据总览，完成后停止下拉刷新动画
     Promise.all([
       this.fetchUsers(),
-      this.fetchStatistics()
+      this.fetchOverviewData()
     ]).finally(() => {
       wx.stopPullDownRefresh()
     })
   },
 
-  // 获取统计数据
-  async fetchStatistics() {
+  // 获取数据总览统计
+  async fetchOverviewData() {
     try {
-      this.setData({ statsLoading: true })
+      this.setData({ overviewLoading: true })
       
       // 调用云函数获取所有用户数据用于统计
       const result = await callCloudFunction('getUsers', {})
       
       if (result.success && result.data && result.data.records) {
         const allUsers = result.data.records
-        const currentDate = new Date()
-        const currentYear = currentDate.getFullYear()
-        const currentMonth = currentDate.getMonth()
+        const currentYear = new Date().getFullYear()
+        const currentMonth = new Date().getMonth()
+        const today = new Date()
         
         // 计算统计数据
-        const stats = this.calculateStatistics(allUsers, currentYear, currentMonth)
+        const overviewData = {
+          totalUsers: allUsers.length,
+          newUsersThisYear: allUsers.filter(user => {
+            const createDate = new Date(user.createdAt)
+            return createDate.getFullYear() === currentYear
+          }).length,
+          followedThisMonth: allUsers.filter(user => {
+            if (!user.followups || user.followups.length === 0) return false
+            const latestFollowup = user.followups[user.followups.length - 1]
+            const followupDate = new Date(latestFollowup.followupDate)
+            return followupDate.getFullYear() === currentYear && 
+                   followupDate.getMonth() === currentMonth
+          }).length,
+          overdueFollowup: allUsers.filter(user => {
+            if (!user.followups || user.followups.length === 0) return false
+            const latestFollowup = user.followups[user.followups.length - 1]
+            if (!latestFollowup.nextFollowupDate) return false
+            const nextDate = new Date(latestFollowup.nextFollowupDate)
+            return nextDate < today
+          }).length,
+          noFollowupRecords: allUsers.filter(user => 
+            !user.followups || user.followups.length === 0
+          ).length
+        }
         
-        this.setData({
-          statistics: stats,
-          statsLoading: false
-        })
+        this.setData({ overviewData })
       }
     } catch (error) {
-      console.error('获取统计数据失败:', error)
-      this.setData({ statsLoading: false })
+      console.error('获取数据总览失败:', error)
+      showToast('数据总览加载失败', 'error')
+    } finally {
+      this.setData({ overviewLoading: false })
     }
-  },
-
-  // 计算统计数据
-  calculateStatistics(users, currentYear, currentMonth) {
-    let totalUsers = users.length
-    let newUsersThisYear = 0
-    let followedThisMonth = 0
-    let overdueFollowup = 0
-    let noFollowupRecords = 0
-    const followupStatus = { active: 0, expired: 0, passed: 0 }
-
-    users.forEach(user => {
-      // 统计本年新增用户
-      if (user.createdAt) {
-        const createDate = new Date(user.createdAt)
-        if (createDate.getFullYear() === currentYear) {
-          newUsersThisYear++
-        }
-      }
-
-      // 统计随访相关数据
-      if (!user.followups || user.followups.length === 0) {
-        noFollowupRecords++
-      } else {
-        const latestFollowup = user.followups[user.followups.length - 1]
-        
-        // 统计本月已随访
-        if (latestFollowup.followupDate) {
-          const followupDate = new Date(latestFollowup.followupDate)
-          if (followupDate.getFullYear() === currentYear && 
-              followupDate.getMonth() === currentMonth) {
-            followedThisMonth++
-          }
-        }
-
-        // 统计已过随访日期
-        if (latestFollowup.nextFollowupDate) {
-          const nextFollowupDate = new Date(latestFollowup.nextFollowupDate)
-          if (nextFollowupDate < new Date()) {
-            overdueFollowup++
-          }
-        }
-
-        // 统计随访状态分布
-        const status = this.getFollowupStatus(user)
-        if (status === 'active') followupStatus.active++
-        else if (status === 'expired') followupStatus.expired++
-        else if (status === 'passed') followupStatus.passed++
-      }
-    })
-
-    return {
-      totalUsers,
-      newUsersThisYear,
-      followedThisMonth,
-      overdueFollowup,
-      noFollowupRecords,
-      followupStatus
-    }
-  },
-
-  // 获取随访状态
-  getFollowupStatus(user) {
-    if (!user.followups || user.followups.length === 0) return 'passed'
-    
-    const latestFollowup = user.followups[user.followups.length - 1]
-    if (!latestFollowup.nextFollowupDate) return 'passed'
-
-    const daysDiff = this.getDaysDiff(latestFollowup.nextFollowupDate)
-    
-    if (daysDiff < 0) return 'expired'
-    else if (daysDiff <= 7) return 'active'
-    else return 'passed'
   },
 
   // 获取用户列表 - 使用云函数
@@ -239,13 +181,6 @@ Page({
       // 无论成功或失败，都设置加载状态为false，隐藏加载动画
       this.setData({ loading: false })
     }
-  },
-
-  // 切换统计图表显示
-  toggleStatsChart() {
-    this.setData({
-      showStatsChart: !this.data.showStatsChart
-    })
   },
 
   // 搜索输入处理函数
@@ -376,9 +311,9 @@ Page({
       // 关闭添加用户模态框
       this.setData({ showAddUserModal: false })
       
-      // 刷新用户列表和统计数据，显示新添加的用户
+      // 刷新用户列表和数据总览，显示新添加的用户
       this.fetchUsers()
-      this.fetchStatistics()
+      this.fetchOverviewData()
     } catch (error) {
       // 捕获并记录添加用户错误
       console.error('添加用户失败:', error)
@@ -459,9 +394,9 @@ Page({
         searchResults: this.data.searchResults.filter(user => user._id !== userToDelete._id)
       })
       
-      // 刷新用户列表和统计数据
+      // 刷新用户列表和数据总览
       this.fetchUsers()
-      this.fetchStatistics()
+      this.fetchOverviewData()
     } catch (error) {
       // 捕获并记录删除错误
       console.error('删除用户失败:', error)
