@@ -102,8 +102,8 @@
   margin-bottom: 12rpx;
 }
 
-/* 日期选择器样式 - 优化垂直居中 */
-.picker-container {
+/* 自定义日期选择器样式 - 完全控制字体大小 */
+.custom-date-picker {
   border: 2rpx solid #e5e7eb;
   border-radius: 16rpx;
   background: white;
@@ -111,16 +111,12 @@
   transition: border-color 0.2s ease;
 }
 
-.picker-container:focus-within {
+.custom-date-picker:active {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3rpx rgba(59, 130, 246, 0.1);
 }
 
-.date-picker {
-  width: 100%;
-}
-
-.picker-display {
+.custom-picker-display {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,42 +125,104 @@
   cursor: pointer;
 }
 
-/* 修复picker-text字体大小问题 */
-.picker-text {
-  font-size: 28rpx !important; /* 添加!important确保优先级 */
-  color: #374151 !important;
+.custom-picker-text {
+  font-size: 28rpx; /* 完全控制字体大小 */
+  color: #374151;
   flex: 1;
   display: flex;
   align-items: center;
   min-height: 40rpx;
   line-height: 1.4;
-  font-family: inherit; /* 确保字体继承 */
 }
 
-.picker-text.placeholder {
-  color: #9ca3af !important;
+.custom-picker-text.placeholder {
+  color: #9ca3af;
   font-weight: 400;
 }
 
-.picker-icon {
+.custom-picker-icon {
   width: 24rpx;
   height: 24rpx;
   opacity: 0.6;
   flex-shrink: 0;
 }
 
-/* 禁用状态的日期选择器 */
-.disabled-picker .picker-container {
+/* 禁用状态 */
+.disabled-picker .custom-date-picker {
   background-color: #f9fafb;
   border-color: #f3f4f6;
 }
 
-.disabled-picker .picker-text {
-  color: #6b7280 !important;
+.disabled-picker .custom-picker-text {
+  color: #6b7280;
 }
 
-.disabled-picker .picker-icon {
+.disabled-picker .custom-picker-icon {
   opacity: 0.3;
+}
+
+/* 日期选择器弹窗样式 */
+.date-picker-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.date-picker-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.date-picker-content {
+  background: white;
+  border-radius: 20rpx;
+  width: 90%;
+  max-width: 500rpx;
+  z-index: 2001;
+  position: relative;
+}
+
+.date-picker-header {
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f3f4f6;
+  position: relative;
+  text-align: center;
+}
+
+.date-picker-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.date-picker-close {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  background: transparent;
+  border: none;
+  padding: 8rpx;
+}
+
+.date-picker-close-icon {
+  width: 20rpx;
+  height: 20rpx;
+  opacity: 0.6;
+}
+
+.date-picker-native-wrapper {
+  padding: 32rpx;
+  text-align: center;
 }
 
 /* 文本区域样式 - 优化 */
@@ -279,13 +337,13 @@
     padding: 24rpx;
   }
   
-  .picker-display {
+  .custom-picker-display {
     padding: 20rpx;
     min-height: 80rpx;
   }
   
-  .picker-text {
-    font-size: 26rpx !important; /* 响应式也添加!important */
+  .custom-picker-text {
+    font-size: 26rpx;
   }
   
   .btn-cancel,

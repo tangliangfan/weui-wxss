@@ -16,45 +16,25 @@
     <view class="modal-body">
       <view class="form-group">
         <label class="form-label">本次随访日期</label>
-        <view class="picker-container {{isEditing ? 'disabled-picker' : ''}}">
-          <picker 
-            mode="date" 
-            value="{{localFollowupData.followupDate}}" 
-            disabled="{{disabled || isEditing}}"
-            bindchange="onDateChange"
-            data-field="followupDate"
-            start="{{minDate}}"
-            class="date-picker"
-          >
-            <view class="picker-display">
-              <text class="picker-text {{localFollowupData.followupDate ? '' : 'placeholder'}}">
-                {{localFollowupData.followupDate ? localFollowupData.followupDate : '请选择本次随访日期'}}
-              </text>
-              <image src="/images/calendar-select.png" class="picker-icon" />
-            </view>
-          </picker>
+        <view class="custom-date-picker {{isEditing ? 'disabled-picker' : ''}}">
+          <view class="custom-picker-display" bindtap="openDatePicker" data-field="followupDate">
+            <text class="custom-picker-text {{localFollowupData.followupDate ? '' : 'placeholder'}}">
+              {{localFollowupData.followupDate ? localFollowupData.followupDate : '请选择本次随访日期'}}
+            </text>
+            <image src="/images/calendar-select.png" class="custom-picker-icon" />
+          </view>
         </view>
       </view>
 
       <view class="form-group">
         <label class="form-label">下次随访日期</label>
-        <view class="picker-container">
-          <picker 
-            mode="date" 
-            value="{{localFollowupData.nextFollowupDate}}" 
-            disabled="{{disabled}}"
-            bindchange="onDateChange"
-            data-field="nextFollowupDate"
-            start="{{localFollowupData.followupDate || minDate}}"
-            class="date-picker"
-          >
-            <view class="picker-display">
-              <text class="picker-text {{localFollowupData.nextFollowupDate ? '' : 'placeholder'}}">
-                {{localFollowupData.nextFollowupDate ? localFollowupData.nextFollowupDate : '请选择下次随访日期'}}
-              </text>
-              <image src="/images/calendar-select.png" class="picker-icon" />
-            </view>
-          </picker>
+        <view class="custom-date-picker">
+          <view class="custom-picker-display" bindtap="openDatePicker" data-field="nextFollowupDate">
+            <text class="custom-picker-text {{localFollowupData.nextFollowupDate ? '' : 'placeholder'}}">
+              {{localFollowupData.nextFollowupDate ? localFollowupData.nextFollowupDate : '请选择下次随访日期'}}
+            </text>
+            <image src="/images/calendar-select.png" class="custom-picker-icon" />
+          </view>
         </view>
         <view wx:if="{{dateError}}" class="error-message">
           <text>下次随访日期不能早于本次随访日期</text>
@@ -81,6 +61,30 @@
         <image wx:if="{{disabled}}" src="/images/loading.gif" class="btn-loading" />
         <text>{{confirmText}}</text>
       </button>
+    </view>
+  </view>
+
+  <!-- 日期选择器弹窗 -->
+  <view wx:if="{{showDatePicker}}" class="date-picker-modal">
+    <view class="date-picker-overlay" bindtap="closeDatePicker"></view>
+    <view class="date-picker-content">
+      <view class="date-picker-header">
+        <text class="date-picker-title">选择{{datePickerField === 'followupDate' ? '本次' : '下次'}}随访日期</text>
+        <button class="date-picker-close" bindtap="closeDatePicker">
+          <image src="/images/close.png" class="date-picker-close-icon" />
+        </button>
+      </view>
+      <picker 
+        mode="date" 
+        value="{{selectedDate}}" 
+        bindchange="onDateSelected"
+        start="{{datePickerField === 'nextFollowupDate' ? localFollowupData.followupDate || minDate : minDate}}"
+        class="date-picker-native"
+      >
+        <view class="date-picker-native-wrapper">
+          <text>使用系统选择器</text>
+        </view>
+      </picker>
     </view>
   </view>
 </view>
