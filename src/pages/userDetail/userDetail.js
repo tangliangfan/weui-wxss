@@ -29,7 +29,10 @@ Page({
       diseases: '',
       medications: ''
     },
-    userInitial: '?'
+    userInitial: '?',
+    currentDate: '',
+    newFollowupDateError: false,
+    editFollowupDateError: false
   },
 
   onLoad(options) {
@@ -41,6 +44,10 @@ Page({
       showToast('用户ID不存在', 'error')
       wx.navigateBack()
     }
+    
+    // 设置当前日期
+    const today = new Date().toISOString().split('T')[0]
+    this.setData({ currentDate: today })
   },
 
   // 获取用户详情数据
@@ -179,7 +186,8 @@ Page({
         followupDate: today,
         nextFollowupDate: nextWeekStr,
         content: ''
-      }
+      },
+      newFollowupDateError: false
     })
   },
 
@@ -197,7 +205,8 @@ Page({
           followupDate: followup.followupDate || '',
           nextFollowupDate: followup.nextFollowupDate || '',
           content: followup.content || ''
-        }
+        },
+        editFollowupDateError: false
       })
     }
   },
@@ -206,23 +215,81 @@ Page({
   onNewFollowupInput(e) {
     const { field } = e.currentTarget.dataset
     const value = e.detail.value
+    
     this.setData({
       [`newFollowup.${field}`]: value
     })
+    
+    // 验证日期
+    if (field === 'nextFollowupDate' || field === 'followupDate') {
+      this.validateNewFollowupDates()
+    }
   },
 
   // 编辑随访输入处理
   onEditFollowupInput(e) {
     const { field } = e.currentTarget.dataset
     const value = e.detail.value
+    
     this.setData({
       [`editFollowupForm.${field}`]: value
     })
+    
+    // 验证日期
+    if (field === 'nextFollowupDate') {
+      this.validateEditFollowupDates()
+    }
+  },
+
+  // 新增随访日期验证
+  validateNewFollowupDates() {
+    const { followupDate, nextFollowupDate } = this.data.newFollowup
+    
+    if (followupDate && nextFollowupDate) {
+      const followup = new Date(followupDate)
+      const nextFollowup = new Date(nextFollowupDate)
+      const dateError = nextFollowup < followup
+      
+      this.setData({ newFollowupDateError: dateError })
+    } else {
+      this.setData({ newFollowupDateError: false })
+    }
+  },
+
+  // 编辑随访日期验证
+  validateEditFollowupDates() {
+    const { followupDate, nextFollowupDate } = this.data.editFollowupForm
+    
+    if (followupDate && nextFollowupDate) {
+      const followup = new Date(followupDate)
+      const nextFollowup = new Date(nextFollowupDate)
+      const dateError = nextFollowup < followup
+      
+      this.setData({ editFollowupDateError: dateError })
+    } else {
+      this.setData({ editFollowupDateError: false })
+    }
+  },
+
+  // 新增随访验证回调
+  onNewFollowupValidation(e) {
+    this.setData({ newFollowupDateError: !e.detail.isValid })
+  },
+
+  // 编辑随访验证回调
+  onEditFollowupValidation(e) {
+    this.setData({ editFollowupDateError: !e.detail.isValid })
   },
 
   // 保存随访记录
   async handleSaveFollowup() {
-    const { newFollowup, userData } = this.data
+    const { newFollowup, userData, newFollowupDateError } = this.data
+    
+    if (newFollowupDateError) {
+      showToast('下次随访日期不能早于本次随访日期', 'error')
+      return
+    }
+    
     if (!newFollowup.followupDate || !newFollowup.nextFollowupDate || !newFollowup.content) {
       showToast('请填写完整的随访信息', 'error')
       return
@@ -276,7 +343,8 @@ Page({
           followupDate: '',
           nextFollowupDate: '',
           content: ''
-        }
+        },
+        newFollowupDateError: false
       })
 
       showToast('随访记录已保存', 'success')
@@ -290,7 +358,13 @@ Page({
 
   // 保存编辑的随访记录
   async handleSaveEditFollowup() {
-    const { editFollowupForm, userData } = this.data
+    const { editFollowupForm, userData, editFollowupDateError } = this.data
+    
+    if (editFollowupDateError) {
+      showToast('下次随访日期不能早于本次随访日期', 'error')
+      return
+    }
+    
     if (!editFollowupForm.followupDate || !editFollowupForm.nextFollowupDate || !editFollowupForm.content) {
       showToast('请填写完整的随访信息', 'error')
       return
@@ -328,7 +402,8 @@ Page({
           followupDate: '',
           nextFollowupDate: '',
           content: ''
-        }
+        },
+        editFollowupDateError: false
       })
 
       showToast('随访记录已更新', 'success')
@@ -484,7 +559,9 @@ Page({
       showFollowupDialog: false,
       showEditFollowupDialog: false,
       showBasicEditDialog: false,
-      showHealthEditDialog: false
+      showHealthEditDialog: false,
+      newFollowupDateError: false,
+      editFollowupDateError: false
     })
   },
 

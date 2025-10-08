@@ -1,0 +1,174 @@
+
+/* 随访记录模态框组件样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 32rpx;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 24rpx;
+  width: 100%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 32rpx 32rpx 24rpx;
+  border-bottom: 2rpx solid #f3f4f6;
+  position: relative;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f2937;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.modal-subtitle {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.modal-title-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.modal-title-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 16rpx;
+}
+
+.close-btn {
+  position: absolute;
+  top: 32rpx;
+  right: 32rpx;
+  background: transparent;
+  border: none;
+  padding: 8rpx;
+}
+
+.close-icon {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24rpx 32rpx;
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8rpx;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  border: 2rpx solid #e5e7eb;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  background: white;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-textarea {
+  resize: none;
+  min-height: 120rpx;
+}
+
+.disabled-input {
+  background-color: #f9fafb;
+  color: #6b7280;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+
+/* 底部按钮区域 */
+.modal-footer {
+  padding: 24rpx 32rpx;
+  border-top: 2rpx solid #f3f4f6;
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-cancel,
+.btn-confirm {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.btn-cancel {
+  background: white;
+  border: 2rpx solid #d1d5db;
+  color: #374151;
+}
+
+.btn-confirm {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-confirm:active {
+  background: #2563eb;
+}
+
+.btn-loading {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 16rpx;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .modal {
+    padding: 16rpx;
+  }
+}

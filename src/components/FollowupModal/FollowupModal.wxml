@@ -1,0 +1,68 @@
+
+<!-- 随访记录模态框组件 -->
+<view class="modal">
+  <view class="modal-content">
+    <view class="modal-header">
+      <view class="modal-title-with-icon">
+        <image src="/images/calendar.png" class="modal-title-icon" />
+        <text>{{modalTitle}}</text>
+      </view>
+      <text class="modal-subtitle">{{modalSubtitle}}</text>
+      <button class="close-btn" bindtap="onClose">
+        <image src="/images/close.png" class="close-icon" />
+      </button>
+    </view>
+
+    <view class="modal-body">
+      <view class="form-group">
+        <label class="form-label">本次随访日期</label>
+        <input 
+          type="date" 
+          value="{{followupData.followupDate}}" 
+          disabled="{{disabled || isEditing}}"
+          bindinput="onInput"
+          data-field="followupDate"
+          class="form-input {{isEditing ? 'disabled-input' : ''}}"
+          min="{{minDate}}"
+        />
+      </view>
+
+      <view class="form-group">
+        <label class="form-label">下次随访日期</label>
+        <input 
+          type="date" 
+          value="{{followupData.nextFollowupDate}}" 
+          disabled="{{disabled}}"
+          bindinput="onInput"
+          data-field="nextFollowupDate"
+          class="form-input"
+          min="{{followupData.followupDate || minDate}}"
+        />
+        <view wx:if="{{dateError}}" class="error-message">
+          <text>下次随访日期不能早于本次随访日期</text>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <label class="form-label">随访内容</label>
+        <textarea 
+          value="{{followupData.content}}" 
+          placeholder="请输入本次随访的具体内容和建议..." 
+          disabled="{{disabled}}"
+          bindinput="onInput"
+          data-field="content"
+          class="form-textarea"
+          rows="3"
+        />
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="onCancel" disabled="{{disabled}}">取消</button>
+      <button class="btn-confirm" bindtap="onConfirm" disabled="{{disabled || dateError}}">
+        <image wx:if="{{disabled}}" src="/images/loading.gif" class="btn-loading" />
+        <text>{{confirmText}}</text>
+      </button>
+    </view>
+  </view>
+</view>
