@@ -111,153 +111,125 @@
   gap: 16rpx;
 }
 
-/* 总览卡片基础样式 */
+/* 总览卡片基础样式 - 优化布局 */
 .overview-card {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   padding: 24rpx;
-  border-radius: 16rpx;
+  border-radius: 20rpx;
   background: #ffffff;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.08);
   border: 2rpx solid transparent;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
   cursor: pointer;
+  min-height: 140rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .overview-card:active {
   transform: translateY(2rpx);
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.12);
 }
 
-/* 卡片图标样式 */
+/* 卡片数值样式 - 移动到右上角 */
+.card-value {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1f2937;
+  line-height: 1;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+/* 卡片图标样式 - 修改为圆形 */
 .card-icon-wrapper {
-  width: 56rpx;
-  height: 56rpx;
-  border-radius: 14rpx;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%; /* 改为圆形 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16rpx;
+  margin-bottom: 12rpx;
   position: relative;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+  z-index: 1;
 }
 
 .card-icon {
-  width: 32rpx;
-  height: 32rpx;
+  width: 28rpx;
+  height: 28rpx;
+  filter: brightness(0) invert(1); /* 图标变为白色 */
 }
 
-/* 卡片内容样式 */
-.card-content {
-  flex: 1;
-  margin-bottom: 12rpx;
-}
-
-.card-value {
-  display: block;
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 4rpx;
-  line-height: 1.2;
-}
-
+/* 卡片标签样式 - 移动到图标下方 */
 .card-label {
-  display: block;
-  font-size: 26rpx;
+  font-size: 24rpx;
   color: #6b7280;
   font-weight: 500;
-}
-
-/* 卡片趋势标签 */
-.card-trend {
   margin-top: auto;
+  padding-top: 8rpx;
+  line-height: 1.3;
 }
 
-.trend-text {
-  font-size: 24rpx;
-  font-weight: 500;
-  padding: 6rpx 12rpx;
-  border-radius: 8rpx;
-  background: rgba(255, 255, 255, 0.9);
+/* 移除卡片趋势标签 */
+.card-trend {
+  display: none;
 }
 
 /* 特定卡片样式 - 使用指定的颜色方案 */
 
 /* 用户总数卡片 - 蓝色 */
 .overview-card.total-users {
-  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  background: linear-gradient(135deg, #e0f7ff, #b3e0ff);
   border-color: #93c5fd;
 }
 
 .overview-card.total-users .card-icon-wrapper {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-}
-
-.overview-card.total-users .trend-text {
-  color: #1d4ed8;
-  background: rgba(59, 130, 246, 0.1);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
 
 /* 本年新增用户卡片 - 青色 */
 .overview-card.new-users-year {
-  background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
-  border-color: #99f6e4;
+  background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+  border-color: #81e6d9;
 }
 
 .overview-card.new-users-year .card-icon-wrapper {
   background: linear-gradient(135deg, #0d9488, #0f766e);
 }
 
-.overview-card.new-users-year .trend-text {
-  color: #0f766e;
-  background: rgba(13, 148, 136, 0.1);
-}
-
 /* 本月新增用户卡片 - 紫色 */
 .overview-card.new-users-month {
-  background: linear-gradient(135deg, #faf5ff, #f3e8ff);
-  border-color: #e9d5ff;
+  background: linear-gradient(135deg, #f5f3ff, #e9d5ff);
+  border-color: #c4b5fd;
 }
 
 .overview-card.new-users-month .card-icon-wrapper {
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
 }
 
-.overview-card.new-users-month .trend-text {
-  color: #7c3aed;
-  background: rgba(139, 92, 246, 0.1);
-}
-
 /* 本月随访卡片 - 绿色 */
 .overview-card.followed-month {
   background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-  border-color: #bbf7d0;
+  border-color: #86efac;
 }
 
 .overview-card.followed-month .card-icon-wrapper {
   background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
-.overview-card.followed-month .trend-text {
-  color: #16a34a;
-  background: rgba(34, 197, 94, 0.1);
-}
-
 /* 过期随访卡片 - 红色 */
 .overview-card.overdue-followup {
-  background: linear-gradient(135deg, #fef2f2, #fee2e2);
-  border-color: #fecaca;
+  background: linear-gradient(135deg, #fef2f2, #fecaca);
+  border-color: #fca5a5;
 }
 
 .overview-card.overdue-followup .card-icon-wrapper {
   background: linear-gradient(135deg, #ef4444, #dc2626);
-}
-
-.overview-card.overdue-followup .trend-text {
-  color: #dc2626;
-  background: rgba(239, 68, 68, 0.1);
 }
 
 /* 无随访记录卡片 - 灰色 */
@@ -268,11 +240,6 @@
 
 .overview-card.no-followup .card-icon-wrapper {
   background: linear-gradient(135deg, #6b7280, #4b5563);
-}
-
-.overview-card.no-followup .trend-text {
-  color: #4b5563;
-  background: rgba(107, 114, 128, 0.1);
 }
 
 /* 数据卡片详情模态框样式 */
