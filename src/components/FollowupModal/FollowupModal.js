@@ -69,22 +69,16 @@ Component({
       const value = e.detail.value
       
       // 更新内部数据
-      const newData = { 
-        ...this.data.localFollowupData, 
-        [field]: value 
-      }
+      const updateData = {}
+      updateData[`localFollowupData.${field}`] = value
       
-      this.setData({
-        'localFollowupData.followupDate': newData.followupDate,
-        'localFollowupData.nextFollowupDate': newData.nextFollowupDate,
-        'localFollowupData.content': newData.content
+      this.setData(updateData, () => {
+        // 在回调中验证日期，确保数据已更新
+        this.validateDates(this.data.localFollowupData)
+        
+        // 触发输入事件，通知父组件
+        this.triggerEvent('input', { field, value })
       })
-      
-      // 验证日期
-      this.validateDates(newData)
-      
-      // 触发输入事件，通知父组件
-      this.triggerEvent('input', { field, value })
     },
 
     // 输入处理
@@ -93,19 +87,13 @@ Component({
       const value = e.detail.value
       
       // 更新内部数据
-      const newData = { 
-        ...this.data.localFollowupData, 
-        [field]: value 
-      }
+      const updateData = {}
+      updateData[`localFollowupData.${field}`] = value
       
-      this.setData({
-        'localFollowupData.followupDate': newData.followupDate,
-        'localFollowupData.nextFollowupDate': newData.nextFollowupDate,
-        'localFollowupData.content': newData.content
+      this.setData(updateData, () => {
+        // 触发输入事件，通知父组件
+        this.triggerEvent('input', { field, value })
       })
-      
-      // 触发输入事件，通知父组件
-      this.triggerEvent('input', { field, value })
     },
 
     // 验证日期

@@ -19,7 +19,7 @@
         <view class="picker-container {{isEditing ? 'disabled-picker' : ''}}">
           <picker 
             mode="date" 
-            value="{{followupData.followupDate}}" 
+            value="{{localFollowupData.followupDate}}" 
             disabled="{{disabled || isEditing}}"
             bindchange="onDateChange"
             data-field="followupDate"
@@ -27,8 +27,8 @@
             class="date-picker"
           >
             <view class="picker-display">
-              <text class="picker-text {{followupData.followupDate ? '' : 'placeholder'}}">
-                {{followupData.followupDate ? followupData.followupDate : '请选择本次随访日期'}}
+              <text class="picker-text {{localFollowupData.followupDate ? '' : 'placeholder'}}">
+                {{localFollowupData.followupDate ? localFollowupData.followupDate : '请选择本次随访日期'}}
               </text>
               <image src="/images/calendar-select.png" class="picker-icon" />
             </view>
@@ -41,16 +41,16 @@
         <view class="picker-container">
           <picker 
             mode="date" 
-            value="{{followupData.nextFollowupDate}}" 
+            value="{{localFollowupData.nextFollowupDate}}" 
             disabled="{{disabled}}"
             bindchange="onDateChange"
             data-field="nextFollowupDate"
-            start="{{followupData.followupDate || minDate}}"
+            start="{{localFollowupData.followupDate || minDate}}"
             class="date-picker"
           >
             <view class="picker-display">
-              <text class="picker-text {{followupData.nextFollowupDate ? '' : 'placeholder'}}">
-                {{followupData.nextFollowupDate ? followupData.nextFollowupDate : '请选择下次随访日期'}}
+              <text class="picker-text {{localFollowupData.nextFollowupDate ? '' : 'placeholder'}}">
+                {{localFollowupData.nextFollowupDate ? localFollowupData.nextFollowupDate : '请选择下次随访日期'}}
               </text>
               <image src="/images/calendar-select.png" class="picker-icon" />
             </view>
@@ -64,7 +64,7 @@
       <view class="form-group">
         <label class="form-label">随访内容</label>
         <textarea 
-          value="{{followupData.content}}" 
+          value="{{localFollowupData.content}}" 
           placeholder="请输入本次随访的具体内容和建议..." 
           disabled="{{disabled}}"
           bindinput="onInput"
