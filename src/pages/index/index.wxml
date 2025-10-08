@@ -20,6 +20,77 @@
     <button class="search-btn" bindtap="handleSearch">搜索</button>
   </view>
 
+  <!-- 数据总览卡片区域 -->
+  <view class="overview-section">
+    <view class="section-header">
+      <text class="section-title">数据总览</text>
+    </view>
+    
+    <!-- 总览卡片加载状态 -->
+    <view wx:if="{{overviewLoading}}" class="overview-loading">
+      <image src="/images/loading.gif" class="loading-icon" />
+      <text>加载中...</text>
+    </view>
+
+    <!-- 总览卡片网格布局 -->
+    <view wx:else class="overview-grid">
+      <!-- 用户总数卡片 -->
+      <view class="overview-card total-users">
+        <view class="card-icon">
+          <image src="/images/users.png" class="icon" />
+        </view>
+        <view class="card-content">
+          <text class="card-value">{{overviewData.totalUsers}}</text>
+          <text class="card-label">用户总数</text>
+        </view>
+      </view>
+
+      <!-- 本年新增用户卡片 -->
+      <view class="overview-card new-users">
+        <view class="card-icon">
+          <image src="/images/user-plus.png" class="icon" />
+        </view>
+        <view class="card-content">
+          <text class="card-value">{{overviewData.newUsersThisYear}}</text>
+          <text class="card-label">本年新增</text>
+        </view>
+      </view>
+
+      <!-- 本月随访卡片 -->
+      <view class="overview-card followed-month">
+        <view class="card-icon">
+          <image src="/images/calendar-check.png" class="icon" />
+        </view>
+        <view class="card-content">
+          <text class="card-value">{{overviewData.followedThisMonth}}</text>
+          <text class="card-label">本月随访</text>
+        </view>
+      </view>
+
+      <!-- 过期随访卡片 -->
+      <view class="overview-card overdue-followup">
+        <view class="card-icon">
+          <image src="/images/alert-triangle.png" class="icon" />
+        </view>
+        <view class="card-content">
+          <text class="card-value">{{overviewData.overdueFollowup}}</text>
+          <text class="card-label">过期随访</text>
+        </view>
+      </view>
+
+      <!-- 无随访记录卡片 -->
+      <view class="overview-card no-followup">
+        <view class="card-icon">
+          <image src="/images/user-x.png" class="icon" />
+        </view>
+        <view class="card-content">
+          <text class="card-value">{{overviewData.noFollowupRecords}}</text>
+          <text class="card-label">无随访记录</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 添加用户按钮区域 -->
   <view class="add-user-btn">
     <!-- 添加用户按钮，点击显示添加用户模态框 -->
