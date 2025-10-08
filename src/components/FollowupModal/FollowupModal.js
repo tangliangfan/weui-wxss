@@ -69,7 +69,7 @@ Component({
       const { field } = e.currentTarget.dataset
       const value = e.detail.value
       
-      // 更新内部数据
+      // 先更新显示，再验证日期
       const updateData = {}
       updateData[`localFollowupData.${field}`] = value
       
