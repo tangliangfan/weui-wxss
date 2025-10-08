@@ -41,7 +41,11 @@
       "items": {
         "type": "Object"
       }
+    },
+    {
+      "name": "createdAt",
+      "title": "创建时间",
+      "type": "Date"
     }
   ]
 }
-  

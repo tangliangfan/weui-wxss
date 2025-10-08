@@ -1,187 +1,261 @@
 
-<!--index.wxml-->
+<!-- 页面容器 -->
 <view class="container">
-  <!-- 搜索栏 -->
-  <search-bar 
-    search-text="{{searchText}}" 
-    bind:search="handleSearch" 
-    bind:input="onSearchInput"
-    bind:add-user="handleAddUser"
-  ></search-bar>
+  <!-- 搜索栏区域 -->
+  <view class="search-bar">
+    <!-- 搜索输入框容器 -->
+    <view class="search-input">
+      <!-- 搜索图标 -->
+      <image src="/images/search.png" class="search-icon" />
+      <!-- 搜索输入框，绑定搜索文本和输入事件 -->
+      <input 
+        type="text" 
+        placeholder="搜索姓名、手机号或小区名称..." 
+        value="{{searchText}}" 
+        bindinput="onSearchInput"
+        bindconfirm="handleSearch"
+      />
+    </view>
+    <!-- 搜索按钮，点击触发搜索 -->
+    <button class="search-btn" bindtap="handleSearch">搜索</button>
+  </view>
 
-  <!-- 数据总览卡片 -->
-  <view class="dashboard-section">
-    <view class="section-title">数据总览</view>
-    <view class="stats-grid">
-      <!-- 总用户数 -->
-      <view class="stat-card primary">
-        <view class="stat-icon">👥</view>
-        <view class="stat-content">
-          <view class="stat-value">{{dashboardStats.totalUsers}}</view>
-          <view class="stat-label">用户总数</view>
+  <!-- 添加用户按钮区域 -->
+  <view class="add-user-btn">
+    <!-- 添加用户按钮，点击显示添加用户模态框 -->
+    <button class="btn-primary" bindtap="handleAddUser">
+      <!-- 添加图标 -->
+      <image src="/images/plus.png" class="btn-icon" />
+      <!-- 按钮文字 -->
+      添加新用户
+    </button>
+  </view>
+
+  <!-- 用户列表区域 -->
+  <view class="user-list">
+    <!-- 列表头部，显示标题和数量 -->
+    <view class="section-header">
+      <text class="section-title">待随访用户</text>
+      <text class="section-count">{{filteredUsers.length}} 位</text>
+    </view>
+
+    <!-- 加载中状态显示 -->
+    <view wx:if="{{loading}}" class="loading">
+      <image src="/images/loading.gif" class="loading-icon" />
+      <text>加载中...</text>
+    </view>
+
+    <!-- 空状态显示，当没有用户数据时 -->
+    <view wx:if="{{!loading && filteredUsers.length === 0}}" class="empty">
+      <image src="/images/user-empty.png" class="empty-icon" />
+      <text>暂无待随访用户</text>
+    </view>
+
+    <!-- 用户列表循环渲染，每个用户卡片 -->
+    <view wx:for="{{filteredUsers}}" wx:key="_id" class="user-card" bindtap="handleUserClick" data-user="{{item}}">
+      <!-- 随访剩余时间显示 - 只在用户卡片中显示，搜索结果中不显示 -->
+      <view wx:if="{{item.followups && item.followups.length > 0 && item.followups[item.followups.length - 1].nextFollowupDate}}" class="followup-time-badge {{getFollowupTimeClass(item)}}">
+        <text>{{getFollowupTimeText(item)}}</text>
+      </view>
+
+      <!-- 用户卡片头部，包含姓名和状态标签 -->
+      <view class="user-header">
+        <text class="user-name">{{item.name || '未命名用户'}}</text>
+        <!-- 状态标签，根据随访状态显示不同样式 -->
+        <view class="status-badge {{item.statusClass}}">
+          {{item.statusText}}
         </view>
       </view>
 
-      <!-- 本年新增 -->
-      <view class="stat-card success">
-        <view class="stat-icon">📈</view>
-        <view class="stat-content">
-          <view class="stat-value">{{dashboardStats.newUsersThisYear}}</view>
-          <view class="stat-label">本年新增</view>
+      <!-- 用户信息详情区域 -->
+      <view class="user-info">
+        <!-- 手机号信息项 -->
+        <view class="info-item">
+          <image src="/images/phone.png" class="info-icon" />
+          <text>{{item.phone || '未设置手机号'}}</text>
         </view>
-      </view>
-
-      <!-- 本月随访 -->
-      <view class="stat-card warning">
-        <view class="stat-icon">📅</view>
-        <view class="stat-content">
-          <view class="stat-value">{{dashboardStats.followedThisMonth}}</view>
-          <view class="stat-label">本月随访</view>
+        <!-- 地址信息项 -->
+        <view class="info-item">
+          <image src="/images/map-pin.png" class="info-icon" />
+          <text>{{item.address || '未设置地址'}}</text>
         </view>
-      </view>
-
-      <!-- 已过期 -->
-      <view class="stat-card danger">
-        <view class="stat-icon">⏰</view>
-        <view class="stat-content">
-          <view class="stat-value">{{dashboardStats.overdueFollowup}}</view>
-          <view class="stat-label">已过期</view>
-        </view>
-      </view>
-
-      <!-- 无记录 -->
-      <view class="stat-card secondary">
-        <view class="stat-icon">📝</view>
-        <view class="stat-content">
-          <view class="stat-value">{{dashboardStats.noFollowupRecords}}</view>
-          <view class="stat-label">无记录</view>
+        <!-- 下次随访日期信息项，如果有随访记录才显示 -->
+        <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="info-item">
+          <image src="/images/calendar.png" class="info-icon" />
+          <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
         </view>
       </view>
     </view>
+  </view>
+</view>
 
-    <!-- 统计图表 -->
-    <view class="chart-container">
-      <view class="chart-title">数据分布</view>
-      <view class="chart-grid">
-        <view 
-          wx:for="{{chartData.labels}}" 
-          wx:for-item="label" 
-          wx:for-index="index" 
-          class="chart-item"
-        >
-          <view class="chart-color" style="background-color: {{chartData.datasets[0].backgroundColor[index]}}"></view>
-          <view class="chart-info">
-            <view class="chart-value">{{chartData.datasets[0].data[index]}}</view>
-            <view class="chart-label">{{label}}</view>
+  <!-- 搜索弹窗模态框 - 优化头部排版 -->
+  <view wx:if="{{showSearchModal}}" class="modal">
+    <view class="modal-content search-modal">
+      <!-- 弹窗头部 - 优化为上下排版，文字左对齐 -->
+      <view class="search-modal-header">
+        <view class="search-header-content">
+          <text class="search-modal-title">搜索结果</text>
+          <text class="search-modal-count">找到 {{searchResults.length}} 个匹配的用户</text>
+        </view>
+        <!-- 关闭按钮 -->
+        <image src="/images/close.png" class="search-close-icon" bindtap="hideSearchModal" />
+      </view>
+
+      <!-- 弹窗内容区域，可滚动 -->
+      <scroll-view class="modal-body" scroll-y>
+        <!-- 搜索加载中状态 -->
+        <view wx:if="{{searchLoading}}" class="loading">
+          <image src="/images/loading.gif" class="loading-icon" />
+          <text>搜索中...</text>
+        </view>
+
+        <!-- 搜索结果为空状态 -->
+        <view wx:if="{{!searchLoading && searchResults.length === 0}}" class="empty">
+          <image src="/images/search-empty.png" class="empty-icon" />
+          <text>未找到匹配的用户</text>
+        </view>
+
+        <!-- 搜索结果列表循环渲染 - 搜索结果中不显示随访时间徽章 -->
+        <view wx:for="{{searchResults}}" wx:key="_id" class="search-result-item" bindtap="handleSearchResultClick" data-user="{{item}}">
+          <!-- 搜索结果项头部 -->
+          <view class="result-header">
+            <view class="result-name-container">
+              <text class="result-name">{{item.name || '未命名用户'}}</text>
+            </view>
+            <!-- 删除按钮，使用绝对定位避免被遮挡，并完全阻止事件冒泡 -->
+            <view class="delete-btn-container" catchtap="stopPropagation">
+              <image src="/images/trash.png" class="delete-icon" bindtap="handleDeleteClick" data-user="{{item}}" />
+            </view>
+          </view>
+          <!-- 搜索结果信息 -->
+          <view class="result-info">
+            <view class="result-info-item">
+              <image src="/images/phone.png" class="result-info-icon" />
+              <text>{{item.phone || '未设置手机号'}}</text>
+            </view>
+            <view class="result-info-item">
+              <image src="/images/map-pin.png" class="result-info-icon" />
+              <text>{{item.address || '未设置地址'}}</text>
+            </view>
+            <!-- 下次随访日期显示 -->
+            <view wx:if="{{item.followups && item.followups[item.followups.length - 1]}}" class="result-info-item">
+              <image src="/images/calendar.png" class="result-info-icon" />
+              <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
+            </view>
           </view>
         </view>
-      </view>
+      </scroll-view>
     </view>
   </view>
-
-  <!-- 用户列表 -->
-  <view class="user-list-section">
-    <view class="section-title">待随访用户</view>
-    <view class="user-list">
-      <block wx:for="{{filteredUsers}}" wx:key="_id">
-        <user-card 
-          user="{{item}}" 
-          bind:click="handleUserClick" 
-          bind:delete="handleDeleteClick"
-        ></user-card>
-      </block>
-    </view>
-    
-    <!-- 空状态 -->
-    <view wx:if="{{filteredUsers.length === 0 && !loading}}" class="empty-state">
-      <image src="/images/empty-state.png" class="empty-image"></image>
-      <text class="empty-text">暂无待随访用户</text>
-    </view>
-  </view>
-
-  <!-- 加载状态 -->
-  <loading wx:if="{{loading}}"></loading>
-
-  <!-- 搜索模态框 -->
-  <modal 
-    show="{{showSearchModal}}" 
-    title="搜索结果" 
-    bind:close="hideSearchModal"
-  >
-    <view class="search-results">
-      <block wx:for="{{searchResults}}" wx:key="_id">
-        <user-card 
-          user="{{item}}" 
-          bind:click="handleSearchResultClick"
-        ></user-card>
-      </block>
-      <view wx:if="{{searchResults.length === 0}}" class="empty-search">
-        <text>未找到相关用户</text>
-      </view>
-    </view>
-  </modal>
 
   <!-- 添加用户模态框 -->
-  <modal 
-    show="{{showAddUserModal}}" 
-    title="添加用户" 
-    bind:close="hideModal"
-  >
-    <view class="add-user-form">
-      <view class="form-group">
-        <text class="form-label">姓名</text>
-        <input 
-          class="form-input" 
-          placeholder="请输入姓名" 
-          value="{{newUserForm.name}}" 
-          data-field="name"
-          bindinput="onFormInput"
-        />
+  <view wx:if="{{showAddUserModal}}" class="modal">
+    <view class="modal-content">
+      <!-- 弹窗头部 -->
+      <view class="modal-header">
+        <text class="modal-title">添加新用户</text>
+        <text class="modal-subtitle">请填写用户基本信息</text>
+        <!-- 关闭按钮 -->
+        <image src="/images/close.png" class="close-icon" bindtap="hideModal" />
       </view>
-      <view class="form-group">
-        <text class="form-label">手机号</text>
-        <input 
-          class="form-input" 
-          placeholder="请输入手机号" 
-          type="number"
-          value="{{newUserForm.phone}}" 
-          data-field="phone"
-          bindinput="onFormInput"
-        />
-      </view>
-      <view class="form-group">
-        <text class="form-label">地址</text>
-        <input 
-          class="form-input" 
-          placeholder="请输入地址" 
-          value="{{newUserForm.address}}" 
-          data-field="address"
-          bindinput="onFormInput"
-        />
-      </view>
-      <button 
-        class="submit-btn" 
-        bindtap="handleSaveNewUser" 
-        loading="{{addUserLoading}}"
-      >
-        保存
-      </button>
-    </view>
-  </modal>
 
-  <!-- 删除确认对话框 -->
-  <modal 
-    show="{{showDeleteDialog}}" 
-    title="确认删除" 
-    bind:close="hideModal"
-  >
-    <view class="delete-dialog">
-      <text>确定要删除用户 "{{userToDelete ? userToDelete.name : ''}}" 吗？</text>
-      <view class="dialog-buttons">
+      <!-- 弹窗内容区域 -->
+      <view class="modal-body">
+        <!-- 表单区域 -->
+        <view class="form-group">
+          <text class="form-label">姓名</text>
+          <input 
+            type="text" 
+            placeholder="请输入姓名" 
+            value="{{newUserForm.name}}" 
+            bindinput="onFormInput" 
+            data-field="name"
+            class="form-input"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">手机号</text>
+          <input 
+            type="number" 
+            placeholder="请输入手机号" 
+            value="{{newUserForm.phone}}" 
+            bindinput="onFormInput" 
+            data-field="phone"
+            class="form-input"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">地址</text>
+          <input 
+            type="text" 
+            placeholder="请输入详细地址" 
+            value="{{newUserForm.address}}" 
+            bindinput="onFormInput" 
+            data-field="address"
+            class="form-input"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">基础疾病</text>
+          <textarea 
+            placeholder="请输入基础疾病，多个疾病用顿号分隔" 
+            value="{{newUserForm.diseases}}" 
+            bindinput="onFormInput" 
+            data-field="diseases"
+            class="form-textarea"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">用药情况</text>
+          <textarea 
+            placeholder="请输入用药情况，每行一个药物" 
+            value="{{newUserForm.medications}}" 
+            bindinput="onFormInput" 
+            data-field="medications"
+            class="form-textarea"
+          />
+        </view>
+      </view>
+
+      <!-- 底部按钮区域 -->
+      <view class="modal-footer">
         <button class="btn-cancel" bindtap="hideModal">取消</button>
-        <button class="btn-confirm" bindtap="confirmDelete" loading="{{deleting}}">确定</button>
+        <button class="btn-confirm" bindtap="handleSaveNewUser" loading="{{addUserLoading}}">
+          {{addUserLoading ? '保存中...' : '保存'}}
+        </button>
       </view>
     </view>
-  </modal>
+  </view>
+
+  <!-- 删除确认对话框 - 优化文字排版 -->
+  <view wx:if="{{showDeleteDialog}}" class="modal">
+    <view class="modal-content delete-modal">
+      <!-- 警告图标 -->
+      <view class="delete-warning-icon">
+        <image src="/images/warning.png" class="warning-icon" />
+      </view>
+      
+      <!-- 对话框内容 - 左对齐布局 -->
+      <view class="delete-content">
+        <text class="delete-title">确认删除</text>
+        <view class="delete-message">
+          <text class="delete-subtitle">确定要删除用户 "{{userToDelete ? userToDelete.name : ''}}" 吗？</text>
+          <text class="delete-warning">此操作不可恢复，请谨慎操作！</text>
+        </view>
+      </view>
+
+      <!-- 底部按钮区域 -->
+      <view class="delete-footer">
+        <button class="delete-btn-cancel" bindtap="hideModal">取消</button>
+        <button class="delete-btn-confirm" bindtap="confirmDelete" loading="{{deleting}}">
+          {{deleting ? '删除中...' : '确认删除'}}
+        </button>
+      </view>
+    </view>
+  </view>
 </view>
-  
