@@ -117,8 +117,19 @@
           <view wx:for="{{userData.followups}}" wx:key="index" class="followup-item">
             <view class="followup-header">
               <text class="followup-date">{{item.formattedFollowupDate || item.followupDate || '未设置日期'}}</text>
-              <view wx:if="{{item.nextFollowupDate}}" class="next-followup-badge">
-                <text>下次: {{item.formattedNextFollowupDate || item.nextFollowupDate}}</text>
+              <view class="followup-actions">
+                <!-- 只显示最近一条记录的修改按钮 -->
+                <button 
+                  wx:if="{{index === userData.followups.length - 1}}" 
+                  class="edit-followup-btn" 
+                  bindtap="handleEditFollowup" 
+                  data-index="{{index}}"
+                >
+                  <image src="/images/edit.png" class="edit-icon-small" />
+                </button>
+                <view wx:if="{{item.nextFollowupDate}}" class="next-followup-badge {{item.nextFollowupStatus}}">
+                  <text>下次: {{item.formattedNextFollowupDate || item.nextFollowupDate}}</text>
+                </view>
               </view>
             </view>
             <text class="followup-content">{{item.content || '无随访内容'}}</text>
@@ -293,6 +304,69 @@
       <view class="modal-footer">
         <button class="btn-cancel" bindtap="hideModal" disabled="{{saving}}">取消</button>
         <button class="btn-confirm" bindtap="handleSaveFollowup" disabled="{{saving}}">
+          <image wx:if="{{saving}}" src="/images/loading.gif" class="btn-loading" />
+          <text>保存</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑随访弹窗 -->
+  <view wx:if="{{showEditFollowupDialog}}" class="modal">
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title-with-icon">
+          <image src="/images/calendar.png" class="modal-title-icon" />
+          <text>编辑随访记录</text>
+        </view>
+        <text class="modal-subtitle">修改本次随访内容和下次随访时间</text>
+        <button class="close-btn" bindtap="hideModal">
+          <image src="/images/close.png" class="close-icon" />
+        </button>
+      </view>
+
+      <view class="modal-body">
+        <view class="form-group">
+          <label class="form-label">本次随访日期</label>
+          <input 
+            type="date" 
+            value="{{editFollowupForm.followupDate}}" 
+            disabled="{{saving}}"
+            bindinput="onEditFollowupInput"
+            data-field="followupDate"
+            class="form-input"
+          />
+        </view>
+
+        <view class="form-group">
+          <label class="form-label">下次随访日期</label>
+          <input 
+            type="date" 
+            value="{{editFollowupForm.nextFollowupDate}}" 
+            disabled="{{saving}}"
+            bindinput="onEditFollowupInput"
+            data-field="nextFollowupDate"
+            class="form-input"
+          />
+        </view>
+
+        <view class="form-group">
+          <label class="form-label">随访内容</label>
+          <textarea 
+            value="{{editFollowupForm.content}}" 
+            placeholder="请输入本次随访的具体内容和建议..." 
+            disabled="{{saving}}"
+            bindinput="onEditFollowupInput"
+            data-field="content"
+            class="form-textarea"
+            rows="3"
+          />
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideModal" disabled="{{saving}}">取消</button>
+        <button class="btn-confirm" bindtap="handleSaveEditFollowup" disabled="{{saving}}">
           <image wx:if="{{saving}}" src="/images/loading.gif" class="btn-loading" />
           <text>保存</text>
         </button>

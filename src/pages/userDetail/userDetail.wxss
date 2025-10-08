@@ -308,13 +308,44 @@ page {
   color: #1f2937;
 }
 
+.followup-actions {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.edit-followup-btn {
+  background: transparent;
+  border: none;
+  padding: 8rpx;
+}
+
+.edit-icon-small {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+/* 下次随访日期徽章样式 */
 .next-followup-badge {
-  background: #dcfce7;
-  color: #166534;
   padding: 8rpx 16rpx;
   border-radius: 16rpx;
   font-size: 24rpx;
   font-weight: 500;
+}
+
+.next-followup-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.next-followup-badge.expired {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.next-followup-badge.passed {
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
 .followup-content {
