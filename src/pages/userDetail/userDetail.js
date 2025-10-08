@@ -226,17 +226,17 @@ Page({
     }
   },
 
-  // 编辑随访输入处理
+  // 编辑随访输入处理 - 修复数据同步问题
   onEditFollowupInput(e) {
-    const { field } = e.currentTarget.dataset
-    const value = e.detail.value
+    const { field, value } = e.detail
     
+    // 直接使用 FollowupModal 组件传递过来的数据更新 editFollowupForm
     this.setData({
       [`editFollowupForm.${field}`]: value
     })
     
     // 验证日期
-    if (field === 'nextFollowupDate') {
+    if (field === 'nextFollowupDate' || field === 'followupDate') {
       this.validateEditFollowupDates()
     }
   },
