@@ -88,7 +88,6 @@
   transform: translateY(-50%);
   padding: 20rpx;
   z-index: 10;
-  cursor: pointer;
 }
 
 .eye-image {
@@ -136,3 +135,4 @@
   word-wrap: break-word;
   white-space: pre-wrap;
 }
+  

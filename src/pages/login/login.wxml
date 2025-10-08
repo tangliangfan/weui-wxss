@@ -39,7 +39,7 @@
           />
           <view class="eye-icon" bindtap="togglePassword">
             <image 
-              src="{{showPassword ? 'https://healthmanagementinfosys01-0ae99f-1381435234.tcloudbaseapp.com/resources/2025-10/lowcode-2381039' : 'https://healthmanagementinfosys01-0ae99f-1381435234.tcloudbaseapp.com/resources/2025-10/lowcode-2381039'}}" 
+              src="{{showPassword ? '/images/eye-off.png' : '/images/eye.png'}}" 
               mode="aspectFit" 
               class="eye-image"
             />
@@ -62,3 +62,4 @@
     </view>
   </view>
 </view>
+  
