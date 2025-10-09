@@ -11,7 +11,8 @@ Page({
       password: ''  // 密码输入框的值
     },
     loading: false, // 加载状态，控制登录按钮的加载动画
-    showPassword: false // 是否显示密码，控制密码的可见性
+    showPassword: false, // 是否显示密码，控制密码的可见性
+    passwordFocus: false // 控制密码输入框的聚焦状态
   },
 
   // 输入框变化事件处理函数
@@ -29,28 +30,21 @@ Page({
     // 添加调试日志，检查函数是否被调用
     console.log('togglePassword called, current showPassword:', this.data.showPassword);
     
-    // 切换showPassword的状态（true/false）
+    // 先取消聚焦，然后重新聚焦来刷新输入框
     this.setData({
-      showPassword: !this.data.showPassword // 取反当前状态
+      passwordFocus: false,
+      showPassword: !this.data.showPassword
     }, () => {
       // 设置完成后的回调，确认状态已更新
       console.log('showPassword updated to:', this.data.showPassword);
       
-      // 修复：微信小程序中密码类型切换需要重新聚焦输入框
-      // 使用正确的微信小程序API进行聚焦
+      // 延迟重新聚焦输入框
       setTimeout(() => {
-        // 创建选择器查询并直接调用focus方法
-        wx.createSelectorQuery()
-          .select('#passwordInput')
-          .focus()
-          .exec((res) => {
-            if (res && res[0]) {
-              console.log('密码输入框聚焦成功');
-            } else {
-              console.log('密码输入框聚焦失败');
-            }
-          });
-      }, 100);
+        this.setData({
+          passwordFocus: true
+        });
+        console.log('密码输入框重新聚焦');
+      }, 50);
     });
   },
 

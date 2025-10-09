@@ -37,11 +37,11 @@
             data-field="password"
             class="input"
             disabled="{{loading}}"
-            focus="{{false}}"
+            focus="{{passwordFocus}}"
           />
-          <!-- 修复：添加 catchtap 阻止事件冒泡，确保点击事件被正确触发 -->
-          <view class="eye-icon" bindtap="togglePassword" catchtap="togglePassword">
-            <!-- 修复：使用内置图标替代外部图片，避免图片路径问题 -->
+          <!-- 修复：使用更简单可靠的点击事件处理 -->
+          <view class="eye-icon" bindtap="togglePassword">
+            <!-- 使用内置图标替代外部图片，避免图片路径问题 -->
             <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
           </view>
         </view>
