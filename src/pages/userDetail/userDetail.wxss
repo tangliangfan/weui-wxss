@@ -40,10 +40,13 @@ page {
   height: 32rpx;
 }
 
+/* 修改导航标题位置到左边 */
 .nav-title {
   font-size: 36rpx;
   font-weight: 600;
   color: #1f2937;
+  text-align: left; /* 确保文本左对齐 */
+  flex: 1; /* 占据剩余空间 */
 }
 
 /* 加载状态 */
