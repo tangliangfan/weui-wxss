@@ -12,7 +12,9 @@ Page({
     },
     loading: false, // 加载状态，控制登录按钮的加载动画
     showPassword: false, // 是否显示密码，控制密码的可见性
-    passwordFocus: false // 控制密码输入框的聚焦状态
+    passwordFocus: false, // 控制密码输入框的聚焦状态
+    showCustomToast: false, // 控制自定义提示框显示
+    toastText: '' // 自定义提示框文本
   },
 
   // 输入框变化事件处理函数
@@ -23,6 +25,21 @@ Page({
     this.setData({
       [`formData.${field}`]: value // 使用模板字符串动态设置字段值
     });
+  },
+
+  // 显示自定义提示框
+  showCustomToast(text) {
+    this.setData({
+      toastText: text,
+      showCustomToast: true
+    });
+    
+    // 3秒后自动隐藏
+    setTimeout(() => {
+      this.setData({
+        showCustomToast: false
+      });
+    }, 3000);
   },
 
   // 切换密码显示/隐藏状态
@@ -54,12 +71,8 @@ Page({
     
     // 验证用户名和密码是否为空
     if (!username || !password) {
-      // 如果任一字段为空，显示提示信息
-      wx.showToast({
-        title: '请填写账号和密码', // 提示内容
-        icon: 'none', // 不显示图标
-        duration: 2000 // 显示时长2秒
-      });
+      // 使用自定义提示框替代微信原生提示框
+      this.showCustomToast('请填写账号和密码');
       return; // 终止函数执行
     }
 
@@ -77,12 +90,8 @@ Page({
         // 保存用户信息到本地存储
         wx.setStorageSync('userInfo', result.data.user);
         
-        // 显示登录成功提示
-        wx.showToast({
-          title: '登录成功', // 提示内容
-          icon: 'success', // 成功图标
-          duration: 1000 // 显示时长1秒
-        });
+        // 使用自定义提示框显示成功信息
+        this.showCustomToast('登录成功');
         
         // 1秒后跳转到首页
         setTimeout(() => {
@@ -92,21 +101,13 @@ Page({
         }, 1000);
       } else {
         // 登录失败，显示错误信息
-        wx.showToast({
-          title: result.message || '登录失败，请检查账号密码', // 使用服务器返回的消息或默认消息
-          icon: 'none', // 不显示图标
-          duration: 3000 // 显示时长3秒
-        });
+        this.showCustomToast(result.message || '登录失败，请检查账号密码');
       }
     } catch (error) {
       // 捕获并处理网络请求错误
       console.error('登录错误:', error); // 在控制台输出错误信息
       // 显示网络异常提示
-      wx.showToast({
-        title: '网络连接异常，请稍后重试', // 提示内容
-        icon: 'none', // 不显示图标
-        duration: 3000 // 显示时长3秒
-      });
+      this.showCustomToast('网络连接异常，请稍后重试');
     } finally {
       // 无论成功失败，都关闭加载状态
       this.setData({ loading: false });

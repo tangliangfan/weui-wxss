@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 40rpx;
+  position: relative;
 }
 
 .login-card {
@@ -71,6 +72,8 @@
   padding: 28rpx;
   font-size: 28rpx;
   background: white;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input:focus {
@@ -91,101 +94,13 @@
   cursor: pointer;
 }
 
-.eye-svg-container {
-  width: 24rpx;
-  height: 24rpx;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.eye-icon-svg {
-  width: 24rpx;
-  height: 24rpx;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* 睁眼图标样式 */
-.eye-open {
-  position: relative;
-}
-
-.eye-path {
-  width: 20rpx;
-  height: 12rpx;
-  border: 2rpx solid #6b7280;
-  border-top: none;
-  border-radius: 0 0 10rpx 10rpx;
-  position: absolute;
-  top: 4rpx;
-  left: 2rpx;
-}
-
-.eye-circle {
-  width: 6rpx;
-  height: 6rpx;
-  background: #6b7280;
-  border-radius: 50%;
-  position: absolute;
-  top: 8rpx;
-  left: 9rpx;
-}
-
-/* 闭眼图标样式 */
-.eye-closed {
-  position: relative;
-}
-
-.eye-off-path1 {
-  width: 8rpx;
-  height: 8rpx;
-  border: 2rpx solid #6b7280;
-  border-radius: 50%;
-  position: absolute;
-  top: 4rpx;
-  left: 2rpx;
-}
-
-.eye-off-path2 {
-  width: 8rpx;
-  height: 8rpx;
-  border: 2rpx solid #6b7280;
-  border-radius: 50%;
-  position: absolute;
-  top: 4rpx;
-  left: 10rpx;
-}
-
-.eye-off-path3 {
-  width: 16rpx;
-  height: 2rpx;
-  background: #6b7280;
-  position: absolute;
-  top: 11rpx;
-  left: 4rpx;
-  transform: rotate(-45deg);
-}
-
-.eye-off-line {
-  width: 20rpx;
-  height: 2rpx;
-  background: #6b7280;
-  position: absolute;
-  top: 11rpx;
-  left: 2rpx;
-  transform: rotate(45deg);
-}
-
-.eye-icon:active .eye-path,
-.eye-icon:active .eye-circle,
-.eye-icon:active .eye-off-path1,
-.eye-icon:active .eye-off-path2,
-.eye-icon:active .eye-off-path3,
-.eye-icon:active .eye-off-line {
-  border-color: #3b82f6;
-  background: #3b82f6;
+.eye-text {
+  font-size: 36rpx;
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
 }
 
 .login-btn {
@@ -197,6 +112,7 @@
   font-size: 32rpx;
   font-weight: 600;
   margin: 40rpx 60rpx;
+  width: calc(100% - 120rpx);
 }
 
 .login-btn:active {
@@ -217,14 +133,45 @@
   color: #9ca3af;
 }
 
-/* 修复提示框样式 */
-.weui-toast {
-  max-width: 80%;
+/* 移除可能导致问题的微信原生提示框样式 */
+.weui-toast,
+.weui-toast__content {
+  display: none;
 }
 
-.weui-toast__content {
+/* 自定义提示框样式 */
+.custom-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 32rpx 48rpx;
+  border-radius: 16rpx;
   font-size: 28rpx;
   line-height: 1.4;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  max-width: 80%;
   word-wrap: break-word;
   white-space: pre-wrap;
+  text-align: center;
+}
+
+.custom-toast.show {
+  opacity: 1;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-text {
+  display: block;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
 }

@@ -39,22 +39,8 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用简约SVG风格眼睛图标 -->
           <view class="eye-icon" bindtap="togglePassword">
-            <view class="eye-svg-container">
-              <!-- 睁眼图标 -->
-              <view class="eye-icon-svg eye-open" wx:if="{{!showPassword}}">
-                <view class="eye-path"></view>
-                <view class="eye-circle"></view>
-              </view>
-              <!-- 闭眼图标 -->
-              <view class="eye-icon-svg eye-closed" wx:if="{{showPassword}}">
-                <view class="eye-off-path1"></view>
-                <view class="eye-off-path2"></view>
-                <view class="eye-off-path3"></view>
-                <view class="eye-off-line"></view>
-              </view>
-            </view>
+            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
           </view>
         </view>
       </view>
@@ -71,6 +57,13 @@
 
     <view class="footer">
       <text class="footer-text">账号申请：联系系统开发人员或管理员</text>
+    </view>
+  </view>
+
+  <!-- 自定义提示框组件 -->
+  <view class="custom-toast {{showCustomToast ? 'show' : ''}}" wx:if="{{showCustomToast}}">
+    <view class="toast-content">
+      <text class="toast-text">{{toastText}}</text>
     </view>
   </view>
 </view>
