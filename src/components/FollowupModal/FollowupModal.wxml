@@ -63,7 +63,6 @@
 
       <view class="form-group">
         <label class="form-label">随访内容</label>
-        <!-- 修复文本区域绑定问题 -->
         <textarea 
           value="{{localFollowupData.content}}" 
           placeholder="请输入本次随访的具体内容和建议..." 
