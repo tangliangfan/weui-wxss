@@ -1,8 +1,4 @@
 
-// 修改说明：修复了编辑随访输入处理函数，正确处理 FollowupModal 组件传递的数据
-// 原方法：onEditFollowupInput(e) 使用 e.currentTarget.dataset.field 和 e.detail.value
-// 修改后：直接使用 e.detail.field 和 e.detail.value，确保数据正确同步
-
 const { callCloudFunction, showToast, showLoading, hideLoading } = require('../../utils/cloud')
 const { formatDate } = require('../../utils/util')
 
@@ -231,6 +227,8 @@ Page({
   },
 
   // 编辑随访输入处理 - 修复数据同步问题
+  // 原为：onEditFollowupInput(e) { const { field } = e.currentTarget.dataset; const value = e.detail.value; this.setData({ [`editFollowupForm.${field}`]: value }); if (field === 'nextFollowupDate' || field === 'followupDate') { this.validateEditFollowupDates() } }
+  // 现修改为：直接使用 FollowupModal 组件传递过来的数据更新 editFollowupForm
   onEditFollowupInput(e) {
     const { field, value } = e.detail
     
@@ -602,4 +600,3 @@ Page({
     return formatDate(dateStr)
   }
 })
-  

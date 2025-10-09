@@ -20,6 +20,8 @@ Component({
         nextFollowupDate: '',
         content: ''
       },
+      // 原为：observer: function(newVal) { this.setData({ 'localFollowupData.followupDate': newVal.followupDate, 'localFollowupData.nextFollowupDate': newVal.nextFollowupDate, 'localFollowupData.content': newVal.content }) }
+      // 现修改为：添加了空值检查和静默验证
       observer: function(newVal) {
         // 当外部传入的 followupData 变化时，更新内部数据
         this.setData({
@@ -83,6 +85,8 @@ Component({
     },
 
     // 输入处理 - 修复文本输入问题
+    // 原为：onInput(e) { const value = e.detail.value; this.setData({ 'localFollowupData.content': value }); this.triggerEvent('input', { value }) }
+    // 现修改为：支持所有字段的输入处理，并正确传递字段名和值
     onInput(e) {
       const { field } = e.currentTarget.dataset
       const value = e.detail.value
@@ -97,7 +101,7 @@ Component({
       })
     },
 
-    // 验证日期（不触发事件）
+    // 新增方法：验证日期（不触发事件）
     validateDatesSilent(data) {
       const { followupDate, nextFollowupDate } = data
       
@@ -169,4 +173,3 @@ Component({
     }
   }
 })
-  
