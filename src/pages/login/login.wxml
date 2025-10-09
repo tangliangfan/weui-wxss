@@ -39,23 +39,9 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用更美观的眼睛图标 -->
-          <view class="eye-toggle" bindtap="togglePassword">
-            <view class="eye-icon {{showPassword ? 'eye-open' : 'eye-closed'}}">
-              <!-- 眼睛图标SVG -->
-              <view class="eye-svg">
-                <view class="eyeball">
-                  <view class="pupil"></view>
-                  <view class="highlight"></view>
-                </view>
-                <view class="eyelid {{showPassword ? '' : 'closed'}}"></view>
-                <view class="eyelashes">
-                  <view class="lash lash-1"></view>
-                  <view class="lash lash-2"></view>
-                  <view class="lash lash-3"></view>
-                </view>
-              </view>
-            </view>
+          <!-- 使用简单的眼睛图标 -->
+          <view class="eye-icon" bindtap="togglePassword">
+            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
           </view>
         </view>
       </view>
