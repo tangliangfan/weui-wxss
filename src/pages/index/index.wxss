@@ -510,7 +510,7 @@
   align-items: center;
   justify-content: center;
   padding: 80rpx 0;
-  color: #999;
+  color: край
 }
 
 .empty-icon {
@@ -650,19 +650,20 @@
   margin-bottom: 12rpx;
 }
 
-/* 修复表单输入框宽度超出容器问题 */
+/* 修复表单输入框宽度超出容器问题 - 增加高度补偿 */
 .form-input, .form-textarea {
   width: 100%;
-  padding: 20rpx;
+  padding: 28rpx; /* 增加内边距补偿高度 */
   border: 2rpx solid #e8e8e8;
   border-radius: 12rpx;
   font-size: 28rpx;
   background: #fafafa;
   box-sizing: border-box; /* 确保内边距和边框包含在宽度内 */
+  min-height: 96rpx; /* 设置最小高度确保足够的可视区域 */
 }
 
 .form-textarea {
-  min-height: 120rpx;
+  min-height: 160rpx; /* 文本区域保持更大的高度 */
 }
 
 .modal-footer {
