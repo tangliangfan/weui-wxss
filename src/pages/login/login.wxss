@@ -1,7 +1,4 @@
 
-/* 引入微信小程序图标字体 */
-@import "https://at.alicdn.com/t/c/font_4480813_8x9k4q2z1zr.css";
-
 .login-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #eff6ff, #dbeafe);
@@ -74,8 +71,6 @@
   padding: 28rpx;
   font-size: 28rpx;
   background: white;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .input:focus {
@@ -91,32 +86,17 @@
   right: 20rpx;
   top: 50%;
   transform: translateY(-50%);
-  width: 40rpx;
-  height: 40rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 20rpx;
   z-index: 10;
+  cursor: pointer;
 }
 
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 32rpx;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.eye-text {
+  font-size: 36rpx;
   color: #6b7280;
 }
 
-.icon-eye-open:before {
-  content: "\e60a";
-}
-
-.icon-eye-close:before {
-  content: "\e60b";
-}
-
-.eye-icon:active .iconfont {
+.eye-icon:active .eye-text {
   color: #3b82f6;
 }
 
@@ -129,7 +109,6 @@
   font-size: 32rpx;
   font-weight: 600;
   margin: 40rpx 60rpx;
-  width: calc(100% - 120rpx);
 }
 
 .login-btn:active {

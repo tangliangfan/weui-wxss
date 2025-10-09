@@ -39,10 +39,9 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用更简单可靠的眼睛图标 -->
+          <!-- 使用简单美观的眼睛图标 -->
           <view class="eye-icon" bindtap="togglePassword">
-            <!-- 使用微信小程序内置图标 -->
-            <text class="iconfont {{showPassword ? 'icon-eye-close' : 'icon-eye-open'}}"></text>
+            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
           </view>
         </view>
       </view>
