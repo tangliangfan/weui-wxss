@@ -228,10 +228,11 @@ Page({
     }
   },
 
-  // 新增随访输入处理
+  // 新增随访输入处理 - 修复输入问题
+  // 原为：onNewFollowupInput(e) { const { field } = e.currentTarget.dataset; const value = e.detail.value; this.setData({ [`newFollowup.${field}`]: value }); if (field === 'nextFollowupDate' || field === 'followupDate') { this.validateNewFollowupDates() } }
+  // 现修改为：统一事件处理方式，确保数据正确更新
   onNewFollowupInput(e) {
-    const { field } = e.currentTarget.dataset // 获取字段名
-    const value = e.detail.value // 获取输入值
+    const { field, value } = e.detail // 从事件详情获取字段名和值
     
     // 更新对应字段的值
     this.setData({
