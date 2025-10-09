@@ -26,9 +26,15 @@ Page({
 
   // 切换密码显示/隐藏状态
   togglePassword() {
+    // 添加调试日志，检查函数是否被调用
+    console.log('togglePassword called, current showPassword:', this.data.showPassword);
+    
     // 切换showPassword的状态（true/false）
     this.setData({
       showPassword: !this.data.showPassword // 取反当前状态
+    }, () => {
+      // 设置完成后的回调，确认状态已更新
+      console.log('showPassword updated to:', this.data.showPassword);
     });
   },
 
