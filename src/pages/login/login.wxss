@@ -71,6 +71,8 @@
   padding: 28rpx;
   font-size: 28rpx;
   background: white;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input:focus {
@@ -88,16 +90,17 @@
   transform: translateY(-50%);
   padding: 20rpx;
   z-index: 10;
-  cursor: pointer;
 }
 
-.eye-text {
+.icon-text {
   font-size: 36rpx;
   color: #6b7280;
+  display: block;
 }
 
-.eye-icon:active .eye-text {
+.eye-icon:active .icon-text {
   color: #3b82f6;
+  transform: scale(0.95);
 }
 
 .login-btn {
@@ -109,14 +112,17 @@
   font-size: 32rpx;
   font-weight: 600;
   margin: 40rpx 60rpx;
+  width: calc(100% - 120rpx);
 }
 
 .login-btn:active {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(2rpx);
 }
 
 .login-btn[disabled] {
   background: #9ca3af;
+  transform: none;
 }
 
 .footer {

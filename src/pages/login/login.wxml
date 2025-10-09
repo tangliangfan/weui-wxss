@@ -39,9 +39,9 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用简单美观的眼睛图标 -->
+          <!-- 使用简单可靠的眼睛图标 -->
           <view class="eye-icon" bindtap="togglePassword">
-            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
+            <text class="icon-text">{{showPassword ? '🙈' : '👁️'}}</text>
           </view>
         </view>
       </view>
