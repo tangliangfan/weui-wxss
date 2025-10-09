@@ -91,13 +91,101 @@
   cursor: pointer;
 }
 
-.eye-text {
-  font-size: 32rpx;
-  color: #6b7280;
+.eye-svg-container {
+  width: 24rpx;
+  height: 24rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.eye-icon:active .eye-text {
-  color: #3b82f6;
+.eye-icon-svg {
+  width: 24rpx;
+  height: 24rpx;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* 睁眼图标样式 */
+.eye-open {
+  position: relative;
+}
+
+.eye-path {
+  width: 20rpx;
+  height: 12rpx;
+  border: 2rpx solid #6b7280;
+  border-top: none;
+  border-radius: 0 0 10rpx 10rpx;
+  position: absolute;
+  top: 4rpx;
+  left: 2rpx;
+}
+
+.eye-circle {
+  width: 6rpx;
+  height: 6rpx;
+  background: #6b7280;
+  border-radius: 50%;
+  position: absolute;
+  top: 8rpx;
+  left: 9rpx;
+}
+
+/* 闭眼图标样式 */
+.eye-closed {
+  position: relative;
+}
+
+.eye-off-path1 {
+  width: 8rpx;
+  height: 8rpx;
+  border: 2rpx solid #6b7280;
+  border-radius: 50%;
+  position: absolute;
+  top: 4rpx;
+  left: 2rpx;
+}
+
+.eye-off-path2 {
+  width: 8rpx;
+  height: 8rpx;
+  border: 2rpx solid #6b7280;
+  border-radius: 50%;
+  position: absolute;
+  top: 4rpx;
+  left: 10rpx;
+}
+
+.eye-off-path3 {
+  width: 16rpx;
+  height: 2rpx;
+  background: #6b7280;
+  position: absolute;
+  top: 11rpx;
+  left: 4rpx;
+  transform: rotate(-45deg);
+}
+
+.eye-off-line {
+  width: 20rpx;
+  height: 2rpx;
+  background: #6b7280;
+  position: absolute;
+  top: 11rpx;
+  left: 2rpx;
+  transform: rotate(45deg);
+}
+
+.eye-icon:active .eye-path,
+.eye-icon:active .eye-circle,
+.eye-icon:active .eye-off-path1,
+.eye-icon:active .eye-off-path2,
+.eye-icon:active .eye-off-path3,
+.eye-icon:active .eye-off-line {
+  border-color: #3b82f6;
+  background: #3b82f6;
 }
 
 .login-btn {

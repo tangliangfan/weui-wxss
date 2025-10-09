@@ -39,9 +39,22 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用简单的眼睛图标 -->
+          <!-- 使用简约SVG风格眼睛图标 -->
           <view class="eye-icon" bindtap="togglePassword">
-            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
+            <view class="eye-svg-container">
+              <!-- 睁眼图标 -->
+              <view class="eye-icon-svg eye-open" wx:if="{{!showPassword}}">
+                <view class="eye-path"></view>
+                <view class="eye-circle"></view>
+              </view>
+              <!-- 闭眼图标 -->
+              <view class="eye-icon-svg eye-closed" wx:if="{{showPassword}}">
+                <view class="eye-off-path1"></view>
+                <view class="eye-off-path2"></view>
+                <view class="eye-off-path3"></view>
+                <view class="eye-off-line"></view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
