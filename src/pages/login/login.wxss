@@ -74,6 +74,9 @@
   background: white;
   width: 100%;
   box-sizing: border-box;
+  /* 修复：明确设置高度，避免 box-sizing 导致的高度变化 */
+  height: 96rpx;
+  line-height: 40rpx;
 }
 
 .input:focus {
@@ -113,6 +116,9 @@
   font-weight: 600;
   margin: 40rpx 60rpx;
   width: calc(100% - 120rpx);
+  /* 修复：明确设置按钮高度 */
+  height: 96rpx;
+  box-sizing: border-box;
 }
 
 .login-btn:active {
@@ -175,3 +181,4 @@
   writing-mode: horizontal-tb;
   text-orientation: mixed;
 }
+  
