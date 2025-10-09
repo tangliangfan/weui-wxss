@@ -35,6 +35,7 @@
             bindinput="onInputChange" 
             data-field="password"
             class="input"
+            password="{{!showPassword}}"
             disabled="{{loading}}"
           />
           <view class="eye-icon" bindtap="togglePassword">
@@ -62,4 +63,3 @@
     </view>
   </view>
 </view>
-  

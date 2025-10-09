@@ -142,14 +142,10 @@ page {
   margin-right: 16rpx;
 }
 
-/* 基本信息与健康档案编辑按钮 - 优化布局 */
 .edit-btn {
   background: transparent;
   border: none;
   padding: 8rpx;
-  margin-right: 20rpx; /* 与容器边距20rpx */
-  width: auto; /* 宽度可调 */
-  min-width: 40rpx; /* 最小宽度 */
 }
 
 .edit-icon {
@@ -318,14 +314,10 @@ page {
   gap: 12rpx;
 }
 
-/* 随访记录编辑按钮 - 优化布局 */
 .edit-followup-btn {
   background: transparent;
   border: none;
   padding: 8rpx;
-  width: auto; /* 宽度可调 */
-  min-width: 40rpx; /* 最小宽度 */
-  margin-left: 16rpx; /* 移动到随访内容右边 */
 }
 
 .edit-icon-small {

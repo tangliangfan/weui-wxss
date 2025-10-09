@@ -650,6 +650,7 @@
   margin-bottom: 12rpx;
 }
 
+/* 修复表单输入框宽度超出容器问题 */
 .form-input, .form-textarea {
   width: 100%;
   padding: 20rpx;
@@ -657,6 +658,7 @@
   border-radius: 12rpx;
   font-size: 28rpx;
   background: #fafafa;
+  box-sizing: border-box; /* 确保内边距和边框包含在宽度内 */
 }
 
 .form-textarea {
@@ -865,4 +867,3 @@
 .stop-propagation {
   /* 空样式，用于事件处理 */
 }
-  
