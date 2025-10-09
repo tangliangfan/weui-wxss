@@ -11,8 +11,7 @@ Page({
       password: ''  // 密码输入框的值
     },
     loading: false, // 加载状态，控制登录按钮的加载动画
-    showPassword: false, // 是否显示密码，控制密码的可见性
-    passwordInputId: 'passwordInput' // 密码输入框的唯一ID
+    showPassword: false // 是否显示密码，控制密码的可见性
   },
 
   // 输入框变化事件处理函数
@@ -38,18 +37,19 @@ Page({
       console.log('showPassword updated to:', this.data.showPassword);
       
       // 修复：微信小程序中密码类型切换需要重新聚焦输入框
-      // 延迟执行以确保DOM更新完成
+      // 使用正确的微信小程序API进行聚焦
       setTimeout(() => {
-        // 创建选择器查询
-        const query = wx.createSelectorQuery();
-        query.select('#passwordInput').boundingClientRect();
-        query.exec((res) => {
-          if (res && res[0]) {
-            // 重新聚焦密码输入框
-            const passwordInput = wx.createSelectorQuery().select('#passwordInput');
-            passwordInput.focus();
-          }
-        });
+        // 创建选择器查询并直接调用focus方法
+        wx.createSelectorQuery()
+          .select('#passwordInput')
+          .focus()
+          .exec((res) => {
+            if (res && res[0]) {
+              console.log('密码输入框聚焦成功');
+            } else {
+              console.log('密码输入框聚焦失败');
+            }
+          });
       }, 100);
     });
   },
