@@ -39,10 +39,17 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 修复：使用更简单可靠的点击事件处理 -->
-          <view class="eye-icon" bindtap="togglePassword">
-            <!-- 使用内置图标替代外部图片，避免图片路径问题 -->
-            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
+          <!-- 美观的密码切换图标 -->
+          <view class="eye-toggle {{showPassword ? 'active' : ''}}" bindtap="togglePassword">
+            <view class="eye-icon">
+              <!-- 眼睛图标 -->
+              <view class="eye-svg">
+                <view class="eye-outline"></view>
+                <view class="eye-pupil"></view>
+                <view class="eye-lid {{showPassword ? 'open' : 'closed'}}"></view>
+                <view class="eye-slash {{showPassword ? '' : 'visible'}}"></view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
