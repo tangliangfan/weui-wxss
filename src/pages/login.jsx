@@ -102,6 +102,9 @@ export default function LoginPage(props) {
       handleLogin(e);
     }
   };
+  const togglePassword = () => {
+    setShowPassword(prev => !prev);
+  };
   return <div style={style} className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-[360px] mx-auto">
         <Card className="w-full shadow-lg rounded-2xl border-0">
@@ -129,7 +132,7 @@ export default function LoginPage(props) {
                 </label>
                 <div className="relative">
                   <Input type={showPassword ? 'text' : 'password'} placeholder="请输入密码" value={formData.password} onChange={e => handleInputChange('password', e.target.value)} onKeyPress={handleKeyPress} className="h-12 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-base pr-12" disabled={loading} />
-                  <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 p-2" onClick={() => setShowPassword(!showPassword)} disabled={loading}>
+                  <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 p-2" onClick={togglePassword} disabled={loading}>
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
