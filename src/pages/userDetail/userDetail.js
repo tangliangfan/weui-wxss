@@ -1,4 +1,8 @@
 
+// 修改说明：修复了编辑随访输入处理函数，正确处理 FollowupModal 组件传递的数据
+// 原方法：onEditFollowupInput(e) 使用 e.currentTarget.dataset.field 和 e.detail.value
+// 修改后：直接使用 e.detail.field 和 e.detail.value，确保数据正确同步
+
 const { callCloudFunction, showToast, showLoading, hideLoading } = require('../../utils/cloud')
 const { formatDate } = require('../../utils/util')
 
@@ -598,3 +602,4 @@ Page({
     return formatDate(dateStr)
   }
 })
+  
