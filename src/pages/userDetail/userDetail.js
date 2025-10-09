@@ -193,17 +193,14 @@ Page({
   // 打开新增随访弹窗
   handleAddFollowup() {
     const today = new Date().toISOString().split('T')[0] // 今天日期
-    const nextWeek = new Date() // 下周日期
-    nextWeek.setDate(nextWeek.getDate() + 7) // 加7天
-    const nextWeekStr = nextWeek.toISOString().split('T')[0] // 格式化
     
-    // 设置新增随访数据和显示弹窗
+    // 设置新增随访数据和显示弹窗 - 只设置本次随访日期为今天，下次随访日期和内容留空让用户选择
     this.setData({
       showFollowupDialog: true,
       newFollowup: {
-        followupDate: today, // 默认今天
-        nextFollowupDate: nextWeekStr, // 默认一周后
-        content: '' // 空内容
+        followupDate: today, // 默认本次随访日期为今天
+        nextFollowupDate: '', // 下次随访日期留空，让用户选择
+        content: '' // 随访内容留空，让用户输入
       },
       newFollowupDateError: false // 重置错误状态
     })
