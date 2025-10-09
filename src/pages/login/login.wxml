@@ -39,9 +39,21 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用简单可靠的眼睛图标 -->
+          <!-- 使用简单美观的眼睛图标 -->
           <view class="eye-icon" bindtap="togglePassword">
-            <text class="icon-text">{{showPassword ? '🙈' : '👁️'}}</text>
+            <view class="eye-svg-container">
+              <view class="eye-svg {{showPassword ? 'eye-hidden' : 'eye-visible'}}">
+                <!-- 可见状态的眼睛图标 -->
+                <view class="eye-visible-icon">
+                  <view class="eye-outline"></view>
+                  <view class="eye-pupil"></view>
+                </view>
+                <!-- 隐藏状态的闭眼图标 -->
+                <view class="eye-hidden-icon">
+                  <view class="eye-line"></view>
+                </view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -61,3 +73,4 @@
     </view>
   </view>
 </view>
+  
