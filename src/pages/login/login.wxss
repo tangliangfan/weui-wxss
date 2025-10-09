@@ -69,14 +69,13 @@
 .input {
   border: 2rpx solid #e5e7eb;
   border-radius: 24rpx;
-  padding: 28rpx;
+  padding: 0 28rpx; /* 修复：移除上下padding，使用line-height垂直居中 */
   font-size: 28rpx;
   background: white;
   width: 100%;
   box-sizing: border-box;
-  /* 修复：明确设置高度，避免 box-sizing 导致的高度变化 */
   height: 96rpx;
-  line-height: 40rpx;
+  line-height: 96rpx; /* 修复：使用与高度相同的line-height实现垂直居中 */
 }
 
 .input:focus {
@@ -111,13 +110,13 @@
   color: white;
   border: none;
   border-radius: 24rpx;
-  padding: 28rpx;
+  padding: 0; /* 修复：移除上下padding，使用line-height垂直居中 */
   font-size: 32rpx;
   font-weight: 600;
   margin: 40rpx 60rpx;
   width: calc(100% - 120rpx);
-  /* 修复：明确设置按钮高度 */
   height: 96rpx;
+  line-height: 96rpx; /* 修复：使用与高度相同的line-height实现垂直居中 */
   box-sizing: border-box;
 }
 
