@@ -37,12 +37,10 @@
             class="input"
             disabled="{{loading}}"
           />
-          <view class="eye-icon" bindtap="togglePassword">
-            <image 
-              src="{{showPassword ? '/images/eye-off.png' : '/images/eye.png'}}" 
-              mode="aspectFit" 
-              class="eye-image"
-            />
+          <!-- 修复：添加 catchtap 阻止事件冒泡，确保点击事件被正确触发 -->
+          <view class="eye-icon" bindtap="togglePassword" catchtap="togglePassword">
+            <!-- 修复：使用内置图标替代外部图片，避免图片路径问题 -->
+            <text class="eye-text">{{showPassword ? '🙈' : '👁️'}}</text>
           </view>
         </view>
       </view>

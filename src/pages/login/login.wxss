@@ -88,11 +88,18 @@
   transform: translateY(-50%);
   padding: 20rpx;
   z-index: 10;
+  /* 修复：确保图标可点击 */
+  cursor: pointer;
 }
 
-.eye-image {
+.eye-text {
+  font-size: 36rpx;
+  /* 修复：确保图标可见 */
+  display: block;
   width: 40rpx;
   height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
 }
 
 .login-btn {
