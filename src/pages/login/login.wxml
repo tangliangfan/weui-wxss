@@ -39,15 +39,19 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 美观的密码切换图标 -->
-          <view class="eye-toggle {{showPassword ? 'active' : ''}}" bindtap="togglePassword">
-            <view class="eye-icon">
-              <!-- 眼睛图标 -->
-              <view class="eye-svg">
-                <view class="eye-outline"></view>
-                <view class="eye-pupil"></view>
-                <view class="eye-lid {{showPassword ? 'open' : 'closed'}}"></view>
-                <view class="eye-slash {{showPassword ? '' : 'visible'}}"></view>
+          <!-- 使用简单美观的眼睛图标 -->
+          <view class="eye-icon" bindtap="togglePassword">
+            <view class="eye-svg-container">
+              <view class="eye-svg {{showPassword ? 'eye-hidden' : 'eye-visible'}}">
+                <!-- 可见状态的眼睛图标 -->
+                <view class="eye-visible-icon">
+                  <view class="eye-outline"></view>
+                  <view class="eye-pupil"></view>
+                </view>
+                <!-- 隐藏状态的闭眼图标 -->
+                <view class="eye-hidden-icon">
+                  <view class="eye-line"></view>
+                </view>
               </view>
             </view>
           </view>
@@ -69,3 +73,4 @@
     </view>
   </view>
 </view>
+  
