@@ -82,7 +82,7 @@ Component({
       })
     },
 
-    // 输入处理
+    // 输入处理 - 修复文本输入问题
     onInput(e) {
       const { field } = e.currentTarget.dataset
       const value = e.detail.value
