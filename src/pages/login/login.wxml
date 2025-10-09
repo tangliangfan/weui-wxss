@@ -39,21 +39,10 @@
             disabled="{{loading}}"
             focus="{{passwordFocus}}"
           />
-          <!-- 使用简单美观的眼睛图标 -->
+          <!-- 使用更简单可靠的眼睛图标 -->
           <view class="eye-icon" bindtap="togglePassword">
-            <view class="eye-svg-container">
-              <view class="eye-svg {{showPassword ? 'eye-hidden' : 'eye-visible'}}">
-                <!-- 可见状态的眼睛图标 -->
-                <view class="eye-visible-icon">
-                  <view class="eye-outline"></view>
-                  <view class="eye-pupil"></view>
-                </view>
-                <!-- 隐藏状态的闭眼图标 -->
-                <view class="eye-hidden-icon">
-                  <view class="eye-line"></view>
-                </view>
-              </view>
-            </view>
+            <!-- 使用微信小程序内置图标 -->
+            <text class="iconfont {{showPassword ? 'icon-eye-close' : 'icon-eye-open'}}"></text>
           </view>
         </view>
       </view>
@@ -73,4 +62,3 @@
     </view>
   </view>
 </view>
-  
