@@ -137,7 +137,7 @@
   opacity: 0.3;
 }
 
-/* 文本区域样式 */
+/* 文本区域样式 - 修复输入问题 */
 .form-textarea {
   width: 100%;
   border: 2rpx solid #e5e7eb;
@@ -146,16 +146,26 @@
   font-size: 28rpx;
   background: white;
   resize: none;
-  min-height: 120rpx;
+  min-height: 200rpx;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
 
 .form-textarea:focus {
   border-color: #3b82f6;
   outline: none;
+  background-color: #f8fafc;
 }
 
 .form-textarea::placeholder {
   color: #9ca3af;
+  font-size: 26rpx;
+}
+
+.form-textarea:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  border-color: #f3f4f6;
 }
 
 .error-message {
@@ -224,5 +234,11 @@
   .picker-icon {
     width: 20rpx;
     height: 20rpx;
+  }
+  
+  .form-textarea {
+    min-height: 160rpx;
+    padding: 20rpx;
+    font-size: 26rpx;
   }
 }
