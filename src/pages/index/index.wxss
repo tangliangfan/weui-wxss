@@ -95,7 +95,7 @@
   align-items: center;
   justify-content: center;
   padding: 80rpx 0;
-  color: #999;
+  color: край
 }
 
 .overview-loading .loading-icon {
@@ -225,7 +225,7 @@
 
 /* 无随访记录卡片 - 灰色 */
 .overview-card.no-followup .card-icon-wrapper {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
+  background: linear-gradient(135deg, край
 }
 
 .overview-card.no-followup .card-value {
@@ -307,11 +307,19 @@
   margin-bottom: 0;
 }
 
+/* 数据卡片详情用户卡片头部样式 - 新增：适配删除按钮布局 */
 .overview-detail-user-card .user-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 16rpx;
+  position: relative;
+}
+
+.overview-detail-user-card .user-name-container {
+  flex: 1;
+  min-width: 0;
+  margin-right: 80rpx;
 }
 
 .overview-detail-user-card .user-name {
@@ -319,6 +327,10 @@
   font-weight: 600;
   color: #333;
   word-break: break-all; /* 防止长名字溢出 */
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .overview-detail-user-card .user-info {
@@ -510,7 +522,7 @@
   align-items: center;
   justify-content: center;
   padding: 80rpx 0;
-  color: край
+  color: #999;
 }
 
 .empty-icon {
@@ -868,3 +880,4 @@
 .stop-propagation {
   /* 空样式，用于事件处理 */
 }
+  

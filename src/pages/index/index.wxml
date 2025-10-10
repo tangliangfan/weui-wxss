@@ -215,14 +215,16 @@
           <text>暂无相关用户</text>
         </view>
 
-        <!-- 用户列表循环渲染 -->
-        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card" bindtap="handleOverviewDetailUserClick" data-user="{{item}}">
-          <!-- 用户卡片头部 -->
+        <!-- 用户列表循环渲染 - 新增：添加删除按钮 -->
+        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card">
+          <!-- 用户卡片头部 - 修改：添加删除按钮容器 -->
           <view class="user-header">
-            <text class="user-name">{{item.name || '未命名用户'}}</text>
-            <!-- 状态标签 -->
-            <view class="status-badge {{item.statusClass}}">
-              {{item.statusText}}
+            <view class="user-name-container">
+              <text class="user-name">{{item.name || '未命名用户'}}</text>
+            </view>
+            <!-- 删除按钮，使用绝对定位避免被遮挡，并完全阻止事件冒泡 -->
+            <view class="delete-btn-container" catchtap="stopPropagation">
+              <image src="/images/trash.png" class="delete-icon" bindtap="handleDeleteClick" data-user="{{item}}" />
             </view>
           </view>
 
@@ -248,11 +250,6 @@
               <image src="/images/calendar.png" class="info-icon" />
               <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
             </view>
-          </view>
-
-          <!-- 新增：删除按钮，布局与搜索结果列表保持一致 -->
-          <view class="delete-btn-container" catchtap="stopPropagation">
-            <image src="/images/trash.png" class="delete-icon" bindtap="handleDeleteClick" data-user="{{item}}" />
           </view>
         </view>
       </scroll-view>

@@ -33,9 +33,7 @@ Page({
       totalUsers: 0, // 用户总人数
       newUsersThisYear: 0, // 本年新增用户数
       newUsersThisMonth: 0, // 本月新增用户数
-      followedThisMonth: 0, // 本月已随访人数
-      overdueFollowup: 0, // 已过随访日期人数
-      noFollowupRecords: 0 // 无随访记录人数
+      followedThisMonth: 极
     },
     overviewLoading: false, // 总览数据加载状态
     showOverviewDetailModal: false, // 控制数据卡片详情模态框显示
@@ -700,3 +698,4 @@ Page({
     // 阻止事件冒泡的辅助函数 - 在小程序中不需要此方法
     // 使用 WXML 中的 catchtap 来阻止事件冒泡
   })
+  
