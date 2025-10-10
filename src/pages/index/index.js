@@ -331,17 +331,6 @@ Page({
       });
     },
     
-    // 数据卡片详情删除按钮点击事件 - 新增函数
-    handleOverviewDetailDeleteClick(e) {
-      // 获取要删除的用户数据
-      const user = e.currentTarget.dataset.user;
-      // 显示删除确认对话框，并设置待删除用户
-      this.setData({
-        userToDelete: user,
-        showDeleteDialog: true
-      });
-    },
-    
     // 关闭数据卡片详情模态框
     hideOverviewDetailModal() {
       this.setData({
@@ -560,11 +549,6 @@ Page({
         // 更新搜索结果列表，移除已删除的用户
         this.setData({
           searchResults: this.data.searchResults.filter(user => user._id !== userToDelete._id)
-        })
-        
-        // 更新数据卡片详情用户列表，移除已删除的用户
-        this.setData({
-          overviewDetailUsers: this.data.overviewDetailUsers.filter(user => user._id !== userToDelete._id)
         })
         
         // 刷新用户列表和数据总览

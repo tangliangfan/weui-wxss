@@ -215,20 +215,14 @@
           <text>暂无相关用户</text>
         </view>
 
-        <!-- 用户列表循环渲染 - 新增：添加删除按钮，布局与搜索结果列表保持一致 -->
-        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card">
-          <!-- 用户卡片头部 - 修改：添加删除按钮容器 -->
+        <!-- 用户列表循环渲染 -->
+        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card" bindtap="handleOverviewDetailUserClick" data-user="{{item}}">
+          <!-- 用户卡片头部 -->
           <view class="user-header">
-            <view class="user-name-container">
-              <text class="user-name">{{item.name || '未命名用户'}}</text>
-            </view>
+            <text class="user-name">{{item.name || '未命名用户'}}</text>
             <!-- 状态标签 -->
             <view class="status-badge {{item.statusClass}}">
               {{item.statusText}}
-            </view>
-            <!-- 删除按钮 - 新增：使用绝对定位，完全阻止事件冒泡 -->
-            <view class="delete-btn-container" catchtap="stopPropagation">
-              <image src="/images/trash.png" class="delete-icon" bindtap="handleOverviewDetailDeleteClick" data-user="{{item}}" />
             </view>
           </view>
 
@@ -244,7 +238,7 @@
               <image src="/images/map-pin.png" class="info-icon" />
               <text>{{item.address || '未设置地址'}}</text>
             </view>
-            <!-- 创建时间信息项 -->
+            <!-- 创建时间信息项 - 修复：使用格式化后的字段 -->
             <view wx:if="{{item.createdAt}}" class="info-item">
               <image src="/images/calendar.png" class="info-icon" />
               <text>创建时间: {{item.formattedCreatedAt || '未设置日期'}}</text>
@@ -254,6 +248,11 @@
               <image src="/images/calendar.png" class="info-icon" />
               <text>下次随访: {{item.formattedNextFollowupDate || '未设置日期'}}</text>
             </view>
+          </view>
+
+          <!-- 新增：删除按钮，布局与搜索结果列表保持一致 -->
+          <view class="delete-btn-container" catchtap="stopPropagation">
+            <image src="/images/trash.png" class="delete-icon" bindtap="handleDeleteClick" data-user="{{item}}" />
           </view>
         </view>
       </scroll-view>
@@ -430,3 +429,4 @@
     </view>
   </view>
 </view>
+  
