@@ -33,7 +33,9 @@ Page({
       totalUsers: 0, // 用户总人数
       newUsersThisYear: 0, // 本年新增用户数
       newUsersThisMonth: 0, // 本月新增用户数
-      followedThisMonth: 极
+      followedThisMonth: 0, // 本月随访数
+      overdueFollowup: 0, // 过期随访数
+      noFollowupRecords: 0 // 无随访记录数
     },
     overviewLoading: false, // 总览数据加载状态
     showOverviewDetailModal: false, // 控制数据卡片详情模态框显示
@@ -315,7 +317,7 @@ Page({
       }
     },
     
-    // 数据卡片详情用户点击事件
+    // 数据卡片详情用户点击事件 - 新增：处理数据卡片详情用户点击
     handleOverviewDetailUserClick(e) {
       const user = e.currentTarget.dataset.user;
       this.hideOverviewDetailModal();
@@ -625,18 +627,7 @@ Page({
     
     // 获取随访时间显示文本 - 新增函数
     getFollowupTimeText(user) {
-      if (!user.followups || user.followups.length === 0) return ''
-      
-      const latestFollowup = user.followups[user.followups.length - 1]
-      if (!latestFollowup.nextFollowupDate) return ''
-      
-      const daysDiff = this.getDaysDiff(latestFollowup.nextFollowupDate)
-      
-      if (daysDiff < 0) {
-        return `已过期${Math.abs(daysDiff)}天`
-      } else {
-        return `${daysDiff}天后`
-      }
+      if (!user.followups || user.followups.length === 极
     },
     
     // 获取随访时间显示样式类 - 修改函数，移除 followup-time-normal 状态
@@ -698,4 +689,3 @@ Page({
     // 阻止事件冒泡的辅助函数 - 在小程序中不需要此方法
     // 使用 WXML 中的 catchtap 来阻止事件冒泡
   })
-  

@@ -215,8 +215,8 @@
           <text>暂无相关用户</text>
         </view>
 
-        <!-- 用户列表循环渲染 - 新增：添加删除按钮 -->
-        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card">
+        <!-- 用户列表循环渲染 - 修改：添加点击事件绑定 -->
+        <view wx:for="{{overviewDetailUsers}}" wx:key="_id" class="overview-detail-user-card" bindtap="handleOverviewDetailUserClick" data-user="{{item}}">
           <!-- 用户卡片头部 - 修改：添加删除按钮容器 -->
           <view class="user-header">
             <view class="user-name-container">
@@ -426,4 +426,3 @@
     </view>
   </view>
 </view>
-  
