@@ -625,9 +625,20 @@ Page({
       }
     },
     
-    // 获取随访时间显示文本 - 新增函数
+    // 获取随访时间显示文本 - 修复：补全函数代码
     getFollowupTimeText(user) {
-      if (!user.followups || user.followups.length === 极
+      if (!user.followups || user.followups.length === 0) return ''
+      
+      const latestFollowup = user.followups[user.followups.length - 1]
+      if (!latestFollowup.nextFollowupDate) return ''
+      
+      const daysDiff = this.getDaysDiff(latestFollowup.nextFollowupDate)
+      
+      if (daysDiff < 0) {
+        return `已过期${Math.abs(daysDiff)}天`
+      } else {
+        return `${daysDiff}天后`
+      }
     },
     
     // 获取随访时间显示样式类 - 修改函数，移除 followup-time-normal 状态
